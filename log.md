@@ -36,6 +36,30 @@ I copied contents directly from Netlify (the link just mentioned),
 after running `blogdown::hugo_version()` to verify it's the same version I use.
 And then it worked.
 
+## Getting to MVP
+
+Of course I mean [minimum viable product][9] here.
+To me, a minimum viable product has
+
+* no real content yet,
+* a modicum of personalization so it looks like my site, and
+* no obvious boilerplate content so it looks like someone else's site.
+
+I took care of all of that in my [very next commit][10].
+(Commit note: Unfortunately, I no longer have admin privileges on my Mac,
+and I can't get `gitmoji-cli` to work.
+No more fancy emojis for now.)
+
+Next I wanted to add an icon, though.
+[According to the docs][11], the process is different depending on your version.
+Before v4.7 it's a bit more complicated.
+Thankfully, according to `./themes/hugo-academic/data/academic.toml`,
+I'm on v4.7.0.
+I simply had to "Save [my] icon as a square 512x512 pixel image
+named icon.png and place the image in [my] root assets/images/ folder[.]"
+For now—again, as an MVP—that meant using my standard image,
+and finding a [simple site][12] to convert it to the right size and type.
+
 [1]: https://djnavarro.net/post/starting-blogdown/
 [2]: https://twitter.com/djnavarro
 [3]: https://github.com/carloscuesta/gitmoji-cli
@@ -44,3 +68,7 @@ And then it worked.
 [6]: https://discourse.gohugo.io/t/academic-theme-netlify-deployment-problems/22186/3
 [7]: https://gohugo.io/hosting-and-deployment/hosting-on-netlify/#configure-hugo-version-in-netlify
 [8]: https://docs.netlify.com/configure-builds/file-based-configuration/#sample-file"
+[9]: https://en.wikipedia.org/wiki/Minimum_viable_product
+[10]: https://github.com/BenjaminWolfe/benjamin/commit/653f8ded2b0bfb7c001af682c15f02e97bffe69d
+[11]: https://sourcethemes.com/academic/docs/customization/#website-icon
+[12]: http://convert-my-image.com/ImageConverter
