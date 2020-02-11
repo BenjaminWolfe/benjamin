@@ -34,6 +34,7 @@ which in turn pointed me to using a [netlify.toml][7] file
 at the [project root][8].
 I copied contents directly from Netlify (the link just mentioned),
 after running `blogdown::hugo_version()` to verify it's the same version I use.
+And then it worked.
 
 [1]: https://djnavarro.net/post/starting-blogdown/
 [2]: https://twitter.com/djnavarro

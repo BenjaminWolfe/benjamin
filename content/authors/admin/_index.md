@@ -1,48 +1,50 @@
 ---
 authors:
 - admin
-bio: My research interests include distributed robotics, mobile computing and programmable
-  matter.
-education:
-  courses:
-  - course: PhD in Artificial Intelligence
-    institution: Stanford University
-    year: 2012
-  - course: MEng in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
-    year: 2009
-  - course: BSc in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
-    year: 2008
-email: ""
+bio: Lorem ipsum (bio placeholder).
+email: "benjamin.e.wolfe@gmail.com"
 interests:
-- Artificial Intelligence
-- Computational Linguistics
-- Information Retrieval
-name: Nelson Bighetti
+- R & package development
+- learning & teaching
+- data visualization
+- analytics community building
+- music, fine teas, time in nature
+name: Benjamin E. Wolfe
 organizations:
-- name: Stanford University
-  url: ""
-role: Professor of Artificial Intelligence
+- name: Digital Partners, A Munich Re company
+  url: "https://www.munichre.com/digital-partners/en.html"
+role: Data Scientist
 social:
 - icon: envelope
   icon_pack: fas
   link: '#contact'
 - icon: twitter
   icon_pack: fab
-  link: https://twitter.com/GeorgeCushen
-- icon: google-scholar
-  icon_pack: ai
-  link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
+  link: https://twitter.com/BenjaminWolfe
 - icon: github
   icon_pack: fab
-  link: https://github.com/gcushen
+  link: https://github.com/BenjaminWolfe
+- icon: linkedin
+  icon_pack: fab
+  link: https://www.linkedin.com/in/BenjaminWolfe
+- icon: cv
+  link: files/resume.pdf
+
+# Enter email to display Gravatar (if Gravatar enabled in Config)
+email: "benjamin.e.wolfe@gmail.com"
+
 superuser: true
 user_groups:
 - Researchers
 - Visitors
 ---
 
-Nelson Bighetti is a professor of artificial intelligence at the Stanford AI Lab. His research interests include distributed robotics, mobile computing and programmable matter. He leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.
+Data scientist [@DP_InsurTech](https://www.twitter.com/DP_InsurTech),
+recreational [#rstats](https://www.twitter.com/#rstats) developer, 
+lifelong learner, analytics community builder, and tidyverse fan.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+I live in Austin, TX with my wife Karin and kids Brylie & Evan,
+all of us Bay Area transplants. 
+When I'm not at my laptop, you can find me with my white lab, Ivy,
+my [Roo hammock](https://kammok.com/products/roo-double-camping-hammock),
+my binoculars, and my journal.

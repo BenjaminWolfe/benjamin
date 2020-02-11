@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Authors | Academic</title>
+    <title>Authors | Benjamin E. Wolfe</title>
     <link>/authors/</link>
       <atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
     <description>Authors</description>
@@ -11,8 +11,20 @@
       <link>/authors/admin/</link>
       <pubDate>Sun, 07 Apr 2019 00:00:00 +0000</pubDate>
       <guid>/authors/admin/</guid>
-      <description>&lt;p&gt;Nelson Bighetti is a professor of artificial intelligence at the Stanford AI Lab. His research interests include distributed robotics, mobile computing and programmable matter. He leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.&lt;/p&gt;
-&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.&lt;/p&gt;
+      <description>&lt;p&gt;Data scientist 
+&lt;a href=&#34;https://www.twitter.com/DP_InsurTech&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;@DP_InsurTech&lt;/a&gt;
+,
+recreational 
+&lt;a href=&#34;https://www.twitter.com/#rstats&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;#rstats&lt;/a&gt;
+ developer,
+lifelong learner, analytics community builder, and tidyverse fan.&lt;/p&gt;
+&lt;p&gt;I live in Austin, TX with my wife Karin and kids Brylie &amp;amp; Evan,
+all of us Bay Area transplants.
+When I&amp;rsquo;m not at my laptop, you can find me with my white lab, Ivy,
+my 
+&lt;a href=&#34;https://kammok.com/products/roo-double-camping-hammock&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Roo hammock&lt;/a&gt;
+,
+my binoculars, and my journal.&lt;/p&gt;
 </description>
     </item>
     
