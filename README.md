@@ -17,6 +17,6 @@ or more informally on [Twitter][5].
 
 [1]: https://benjamin-wolfe.netlify.com
 [2]: log.md
-[3]: commits/master
-[4]: issues
+[3]: https://github.com/BenjaminWolfe/benjamin/commits/master
+[4]: https://github.com/BenjaminWolfe/benjamin/issues
 [5]: https://twitter.com/BenjaminWolfe
