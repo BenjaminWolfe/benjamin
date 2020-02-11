@@ -23,7 +23,7 @@ social:
   link: https://twitter.com/BenjaminWolfe
 - icon: github
   icon_pack: fab
-  link: https://github.com/BenjaminWolfe
+  link: https://github.com/BenjaminWolfe/benjamin
 - icon: linkedin
   icon_pack: fab
   link: https://www.linkedin.com/in/BenjaminWolfe

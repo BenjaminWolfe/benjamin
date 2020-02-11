@@ -53,7 +53,7 @@ No more fancy emojis for now.)
 Next I wanted to add an icon, though.
 [According to the docs][11], the process is different depending on your version.
 Before v4.7 it's a bit more complicated.
-Thankfully, according to `./themes/hugo-academic/data/academic.toml`,
+Thankfully, according to [themes/hugo-academic/data/academic.toml][13],
 I'm on v4.7.0.
 I simply had to "Save [my] icon as a square 512x512 pixel image
 named icon.png and place the image in [my] root assets/images/ folder[.]"
@@ -72,3 +72,4 @@ and finding a [simple site][12] to convert it to the right size and type.
 [10]: https://github.com/BenjaminWolfe/benjamin/commit/653f8ded2b0bfb7c001af682c15f02e97bffe69d
 [11]: https://sourcethemes.com/academic/docs/customization/#website-icon
 [12]: http://convert-my-image.com/ImageConverter
+[13]: themes/hugo-academic/data/academic.toml
