@@ -94,6 +94,58 @@ Considered using `draft: true` in my posts (see [this tweet][15]),
 but [Alison Hill][16] [convinced me otherwise][17]
 via these posts from [herself][18] and [Garrick Aden-Buie][19].
 
+## Branches
+
+Again following the post from Garrick Aden-Buie above,
+I created a new branch called `development`.
+I know GAB actually recommended making a new branch for each post,
+but I thought I'd keep it simple.
+
+You'll find the ability to create a new branch at the top of GitHub
+where it says _Branch: Master_.
+Click on that and you'll notice the text box says "Find or create a branch...."
+Simply type the name of the branch, hit Enter, and you're done!
+
+Then I had to check out the branch locally.
+Git UIs like Atlassian's [SourceTree][21] usually make this a breeze.
+But at the moment I was tinkering with the command line,
+so I thought I'd try my hand at it.
+
+The relevant commands are as follows:
+
+```bash
+cd ~/Documents/GitHub/benjamin
+git fetch
+git branch -a
+git checkout development
+```
+
+To walk through those:
+
+* Change directories to where I keep my local repo.
+* Fetch changes from GitHub.
+* Take a look at what branches there are.
+  The ones that start `remote/origin` are out on GitHub.
+  The ones that don't live locally.
+* Check out the new branch, in my case named `development`.
+
+__A note of caution__ on that last one, as well as a tip.
+You might think you're checking out the _remote_ branch,
+and use something like this:
+
+```bash
+# do not do this!
+git checkout origin/development
+```
+
+If you try this, as I did, you'll get an error that all git users dread,
+saying you're in a 'detached HEAD' state.
+
+And now the tip: If that happens,
+just go back and rerun the statement the right way.
+Do it right away and you'll be good.
+I was.
+
 [1]: https://djnavarro.net/post/starting-blogdown/
 [2]: https://twitter.com/djnavarro
 [3]: https://github.com/carloscuesta/gitmoji-cli
@@ -114,3 +166,4 @@ via these posts from [herself][18] and [Garrick Aden-Buie][19].
 [18]: https://alison.rbind.io/post/2019-03-04-hugo-troubleshooting/#dates
 [19]: https://www.garrickadenbuie.com/blog/blogdown-netlify-new-post-workflow/
 [20]: https://twitter.com/apreshill/status/1234524051692875777
+[21]: https://www.sourcetreeapp.com/
