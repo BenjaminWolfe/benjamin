@@ -2,7 +2,7 @@
 authors:
 - admin
 bio: Lorem ipsum (bio placeholder).
-email: "benjamin.e.wolfe@gmail.com"
+email: benjamin.e.wolfe@gmail.com
 interests:
 - R & package development
 - learning & teaching
@@ -12,7 +12,7 @@ interests:
 name: Benjamin E. Wolfe
 organizations:
 - name: Digital Partners, A Munich Re company
-  url: "https://www.munichre.com/digital-partners/en.html"
+  url: https://www.munichre.com/digital-partners/en.html
 role: Data Scientist
 social:
 - icon: envelope
@@ -29,9 +29,6 @@ social:
   link: https://www.linkedin.com/in/BenjaminWolfe
 - icon: cv
   link: files/resume.pdf
-
-# Enter email to display Gravatar (if Gravatar enabled in Config)
-email: "benjamin.e.wolfe@gmail.com"
 
 superuser: true
 user_groups:

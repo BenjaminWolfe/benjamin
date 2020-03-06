@@ -60,6 +60,40 @@ named icon.png and place the image in [my] root assets/images/ folder[.]"
 For now—again, as an MVP—that meant using my standard image,
 and finding a [simple site][12] to convert it to the right size and type.
 
+## Tweaks with My First Post
+
+When I started the wizard to create my first post,
+I got an error saying that `blogdown` could not read the YAML
+at `content/authors/admin/_index.md`.
+
+Actually, I got a warning, but it was converted to an error
+because of this line I added to my `.Rprofile` on a tip from [Jenny Bryan][14]:
+
+```r
+options(
+  error = rlang::entrace,
+  rlang_backtrace_on_error = "branch",
+  warn = 2 # handle warnings as errors
+)
+```
+
+In that file I noticed two things:
+
+1. I had added quotation marks where they were probably not necessary.
+1. I had specified `email` twice, the second time with a commented note.
+
+I suspect it was the 2nd of these that made the difference, but I changed both.
+Whatever I did fixed it.
+
+Alison Hill recommended [setting a number of other options][20],
+which you'll also see in the site's `.Rprofile`.
+
+## Drafts
+
+Considered using `draft: true` in my posts (see [this tweet][15]),
+but [Alison Hill][16] [convinced me otherwise][17]
+via these posts from [herself][18] and [Garrick Aden-Buie][19].
+
 [1]: https://djnavarro.net/post/starting-blogdown/
 [2]: https://twitter.com/djnavarro
 [3]: https://github.com/carloscuesta/gitmoji-cli
@@ -73,3 +107,10 @@ and finding a [simple site][12] to convert it to the right size and type.
 [11]: https://sourcethemes.com/academic/docs/customization/#website-icon
 [12]: http://convert-my-image.com/ImageConverter
 [13]: themes/hugo-academic/data/academic.toml
+[14]: https://twitter.com/JennyBryan
+[15]: https://twitter.com/BenjaminWolfe/status/1234516998157217793
+[16]: https://twitter.com/apreshill
+[17]: https://twitter.com/apreshill/status/1234519975248875526
+[18]: https://alison.rbind.io/post/2019-03-04-hugo-troubleshooting/#dates
+[19]: https://www.garrickadenbuie.com/blog/blogdown-netlify-new-post-workflow/
+[20]: https://twitter.com/apreshill/status/1234524051692875777
