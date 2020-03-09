@@ -22,15 +22,14 @@
 
 &lt;div id=&#34;TOC&#34;&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#your-output-is-easy-to-share&#34;&gt;Your Output is Easy to Share&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#but-it-could-be-smaller-and-cleaner&#34;&gt;But It Could Be Smaller and Cleaner&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#the-ease-of-sharing-knitrs-html-output&#34;&gt;The Ease of Sharing Knitr’s HTML Output&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#setup&#34;&gt;Setup&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#the-cost-of-simplicity-file-size-transparency&#34;&gt;The Cost of Simplicity: File Size &amp;amp; Transparency&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#file-size&#34;&gt;File Size&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#clarity&#34;&gt;Clarity&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#minified-libraries&#34;&gt;Minified Libraries&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#images&#34;&gt;Images&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#transparency&#34;&gt;Transparency&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#and-you-cant-diff-files&#34;&gt;And You Can’t Diff Files&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#practical-consequences-diffing-files&#34;&gt;Practical Consequences: Diffing Files&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#intermission&#34;&gt;Intermission!&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#adding-the-dt-library&#34;&gt;Adding the DT Library&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
@@ -38,38 +37,51 @@
 &lt;li&gt;&lt;a href=&#34;#using-content-delivery-networks-cdns&#34;&gt;Using Content Delivery Networks (CDNs)&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#getting-started&#34;&gt;Getting Started&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#rounding-up-libraries&#34;&gt;Rounding Up Libraries&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#removing-them&#34;&gt;Removing Them&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#manual-example&#34;&gt;Manual Example&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#deleting-files&#34;&gt;Deleting Files&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#removing-them&#34;&gt;Removing Them&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#pause-what-weve-accomplished&#34;&gt;Pause: What We’ve Accomplished&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#writing-a-script&#34;&gt;Writing a Script&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#have-a-script-do-the-work&#34;&gt;Have a Script Do the Work&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#swapping-in-cdns&#34;&gt;Swapping in CDNs&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#removing-files&#34;&gt;Removing Files&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#looping&#34;&gt;Looping&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#connecting-to-git&#34;&gt;Connecting to Git&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#have-git-run-the-script&#34;&gt;Have Git Run the Script&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#writing-the-bash-script&#34;&gt;Writing the Bash Script&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#tweaking-the-r-script&#34;&gt;Tweaking the R Script&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#troubleshooting&#34;&gt;Troubleshooting&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#logging&#34;&gt;Logging&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#zipping-your-files&#34;&gt;Zipping Your Files&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#zip-your-files&#34;&gt;Zip Your Files&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 
-&lt;div id=&#34;your-output-is-easy-to-share&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Your Output is Easy to Share&lt;/h2&gt;
-&lt;p&gt;Have you ever noticed, when you render an &lt;a href=&#34;https://rmarkdown.rstudio.com/&#34;&gt;R Markdown&lt;/a&gt; file as HTML,
-that it comes out as a single HTML file, easy to share with your readers?&lt;/p&gt;
-&lt;p&gt;If you haven’t noticed, or you don’t know what I mean,
-you can “follow along at home” with this &lt;a href=&#34;https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html&#34;&gt;minimal reproducible example&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;(I follow this same example through the entire post.
-If you’d like to follow along but maybe don’t have your laptop in front of you,
-I put it up in a &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo&#34;&gt;GitHub repository&lt;/a&gt;,
-and you can walk through the steps there.
-For the first section, check &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a553b780b1bfd37daa1b05e6ec48e022d7850d4f&#34;&gt;this commit&lt;/a&gt; and &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/7b79bc5bd333e12e5146953b646aff364f827eef&#34;&gt;this one&lt;/a&gt;.)&lt;/p&gt;
+&lt;div id=&#34;the-ease-of-sharing-knitrs-html-output&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The Ease of Sharing Knitr’s HTML Output&lt;/h2&gt;
+&lt;p&gt;Have you ever noticed that when you save a page from the internet,
+you get an HTML page &lt;em&gt;plus&lt;/em&gt; an extra folder of supporting files?&lt;/p&gt;
+&lt;p&gt;For example, right-click on my website and click “Save As…,”&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;37-save-blog.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;and this is what you get:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;38-saved-blog.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;But when you when you render an &lt;a href=&#34;https://rmarkdown.rstudio.com/&#34;&gt;R Markdown&lt;/a&gt; file as HTML,
+instead it comes out as a single HTML file, with no folder of supporting files?&lt;/p&gt;
+&lt;p&gt;If you haven’t noticed this difference, or you don’t know what I mean,
+we’ll walk through a &lt;a href=&#34;https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html&#34;&gt;minimal reproducible example&lt;/a&gt; below
+to better understand it.&lt;/p&gt;
+&lt;p&gt;This simplicity makes your output very easy to share with stakeholders.
+But it has its drawbacks, and we’ll use the same example
+later in the post to see those as well.
+Then we’ll spend time exploring ways around those drawbacks.&lt;/p&gt;
+&lt;p&gt;Since you might not be at your laptop to actually run this example,
+you can also find it in a separate &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo&#34;&gt;GitHub repository&lt;/a&gt;.
+You can follow the repository &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/commits/master&#34;&gt;commit by commit&lt;/a&gt;
+as we explore &lt;code&gt;knitr&lt;/code&gt;’s simplicity, the down sides of that simplicity,
+and what can be done about those down sides.
+To &lt;a href=&#34;https://en.wikipedia.org/wiki/Cut_to_the_chase&#34;&gt;cut to the chase&lt;/a&gt;,
+you can just look at my &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/cdnify.R&#34;&gt;cdnify.R&lt;/a&gt; and &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/pre-commit&#34;&gt;pre-commit&lt;/a&gt; scripts there.&lt;/p&gt;
+&lt;p&gt;This upcoming section is covered by the &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a553b780b1bfd37daa1b05e6ec48e022d7850d4f&#34;&gt;third&lt;/a&gt; and &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/7b79bc5bd333e12e5146953b646aff364f827eef&#34;&gt;fourth commits&lt;/a&gt;.&lt;/p&gt;
+&lt;div id=&#34;setup&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Setup&lt;/h3&gt;
 &lt;p&gt;In RStudio, from the &lt;em&gt;New File&lt;/em&gt; menu at the top left, choose &lt;em&gt;R Markdown…&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;01-menu-r-markdown.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In the dialog box, feel free to add a title. Then select &lt;em&gt;HTML&lt;/em&gt; and hit &lt;em&gt;OK&lt;/em&gt;.&lt;/p&gt;
@@ -83,8 +95,9 @@ Open it up to see a beautiful HTML version of the Rmd file you started with.
 This one file can be sent to a stakeholder, who can then open it up and read it.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;04-initial-html.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
-&lt;div id=&#34;but-it-could-be-smaller-and-cleaner&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;But It Could Be Smaller and Cleaner&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-cost-of-simplicity-file-size-transparency&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The Cost of Simplicity: File Size &amp;amp; Transparency&lt;/h2&gt;
 &lt;p&gt;Unfortunately, this simplicity comes with two costs.&lt;/p&gt;
 &lt;div id=&#34;file-size&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;File Size&lt;/h3&gt;
@@ -92,11 +105,11 @@ This one file can be sent to a stakeholder, who can then open it up and read it.
 If you look at your report itself, you’ll see that it’s quite small:
 less than a kilobyte.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;05-r-markdown-filesize.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;But if you look at the HTML file, you’ll see it’s &lt;em&gt;more than 700 kilobytes&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;But if you look at the HTML file, it’s &lt;em&gt;more than 700 kilobytes&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;06-initial-html-filesize.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So what changed?
 It’s obviously not that HTML is 700x longer than markdown for the same text.&lt;/p&gt;
-&lt;p&gt;Two things changed:&lt;/p&gt;
+&lt;p&gt;Two things:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;There’s now an embedded image (the plot).&lt;/li&gt;
 &lt;li&gt;There are &lt;em&gt;scripts&lt;/em&gt; and &lt;em&gt;styling&lt;/em&gt; embedded in the file as well
@@ -129,10 +142,10 @@ at how much each of those affects the size of the file.&lt;/p&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
-&lt;div id=&#34;clarity&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Clarity&lt;/h3&gt;
+&lt;div id=&#34;transparency&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Transparency&lt;/h3&gt;
 &lt;p&gt;The second cost of putting everything in one easy-to-share HTML file
-is &lt;em&gt;clarity&lt;/em&gt;.&lt;/p&gt;
+is &lt;em&gt;transparency&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;To see this cost, let’s peel back the curtain a little on the HTML file.
 If you’re viewing the report in the RStudio viewer,
 go to the top left and click &lt;em&gt;Open in Browser&lt;/em&gt;:&lt;/p&gt;
@@ -144,13 +157,13 @@ right-click on the report and click &lt;em&gt;View Page Source&lt;/em&gt;:&lt;/p
 what’s called &lt;em&gt;minified JavaScript&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;09-minified-jquery.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Let’s talk through that for a moment.&lt;/p&gt;
-&lt;div id=&#34;minified-libraries&#34; class=&#34;section level4&#34;&gt;
-&lt;h4&gt;Minified Libraries&lt;/h4&gt;
+&lt;div id=&#34;minified-javascript-css&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Minified JavaScript &amp;amp; CSS&lt;/h4&gt;
 &lt;p&gt;This small web page relies on a number of &lt;em&gt;JavaScript and CSS libraries&lt;/em&gt;.
 One of them, the one depicted here, is a JS library called &lt;em&gt;jQuery&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Normally, when your code relies on a library,
+&lt;p&gt;Usually, when code (in any language) relies on a library,
 you simply refer to it at the top of the page with one line.
-For example, if your R script relies on the &lt;code&gt;lubridate&lt;/code&gt; package,
+For example, if you have an R script that relies on the &lt;code&gt;lubridate&lt;/code&gt; package,
 you might include a line like this at the top of your script:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(lubridate)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now in your R script, that line relies on whoever’s running your code
@@ -178,8 +191,8 @@ otherwise meaningless text string.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&#34;and-you-cant-diff-files&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;And You Can’t Diff Files&lt;/h2&gt;
+&lt;div id=&#34;practical-consequences-diffing-files&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Practical Consequences: Diffing Files&lt;/h2&gt;
 &lt;p&gt;All of this has consequences for your workflow,
 perhaps the biggest of which is that you can’t diff files.&lt;/p&gt;
 &lt;p&gt;If you don’t use git much for version control,
@@ -739,11 +752,11 @@ and less than half the size of the original file
 before we split out the libraries.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;30-shrunk-folder.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;If you don’t care to script or automate the process,
-feel free to skip down to &lt;em&gt;Zipping Your Files&lt;/em&gt; and call it good!&lt;/p&gt;
+feel free to skip down to &lt;em&gt;Zip Your Files&lt;/em&gt; and call it good!&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&#34;writing-a-script&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Writing a Script&lt;/h2&gt;
+&lt;div id=&#34;have-a-script-do-the-work&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Have a Script Do the Work&lt;/h2&gt;
 &lt;p&gt;Now comes the time when we ask ourselves:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;This seems pretty straightforward. Do you think we can do it in a script?&lt;/p&gt;
@@ -977,8 +990,8 @@ walk(
 )&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&#34;connecting-to-git&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Connecting to Git&lt;/h2&gt;
+&lt;div id=&#34;have-git-run-the-script&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Have Git Run the Script&lt;/h2&gt;
 &lt;p&gt;Now that we’ve scripted the whole process,
 I’d prefer not to have to think about it at all.&lt;/p&gt;
 &lt;p&gt;We can accomplish that goal by creating what’s called a &lt;a href=&#34;https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks&#34;&gt;git hook&lt;/a&gt;.
@@ -1126,8 +1139,8 @@ including which version was removed and what URL was used to replace it.&lt;/li&
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&#34;zipping-your-files&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Zipping Your Files&lt;/h2&gt;
+&lt;div id=&#34;zip-your-files&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Zip Your Files&lt;/h2&gt;
 &lt;p&gt;In the end, this method does leave you with a &lt;em&gt;folder&lt;/em&gt; of files to share,
 rather than a simple HTML file.
 You can still send them easily by zipping both the report and the report files

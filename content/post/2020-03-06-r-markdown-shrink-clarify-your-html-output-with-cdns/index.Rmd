@@ -21,7 +21,7 @@ projects: []
 output:
   blogdown::html_page:
     toc: true
-    toc_depth: 4
+    toc_depth: 3
 ---
 
 ```{r setup, echo=F, message=F}
@@ -29,19 +29,42 @@ library(tidyverse)
 library(kableExtra)
 ```
 
-## Your Output is Easy to Share
+## The Ease of Sharing Knitr's HTML Output
 
-Have you ever noticed, when you render an [R Markdown][4] file as HTML,
-that it comes out as a single HTML file, easy to share with your readers?
+Have you ever noticed that when you save a page from the internet,
+you get an HTML page _plus_ an extra folder of supporting files?
 
-If you haven't noticed, or you don't know what I mean, 
-you can "follow along at home" with this [minimal reproducible example][3].
+For example, right-click on my website and click "Save As...,"
 
-(I follow this same example through the entire post.
-If you'd like to follow along but maybe don't have your laptop in front of you,
-I put it up in a [GitHub repository][5],
-and you can walk through the steps there.
-For the first section, check [this commit][1] and [this one][2].)
+![](37-save-blog.png)
+
+and this is what you get:
+
+![](38-saved-blog.png)
+
+But when you when you render an [R Markdown][4] file as HTML,
+instead it comes out as a single HTML file, with no folder of supporting files?
+
+If you haven't noticed this difference, or you don't know what I mean,
+we'll walk through a [minimal reproducible example][3] below
+to better understand it.
+
+This simplicity makes your output very easy to share with stakeholders.
+But it has its drawbacks, and we'll use the same example
+later in the post to see those as well.
+Then we'll spend time exploring ways around those drawbacks.
+
+Since you might not be at your laptop to actually run this example,
+you can also find it in a separate [GitHub repository][5].
+You can follow the repository [commit by commit][30]
+as we explore `knitr`'s simplicity, the down sides of that simplicity,
+and what can be done about those down sides.
+To [cut to the chase][28],
+you can just look at my [cdnify.R][27] and [pre-commit][29] scripts there.
+
+This upcoming section is covered by the [third][1] and [fourth commits][2].
+
+### Setup
 
 In RStudio, from the _New File_ menu at the top left, choose _R Markdown..._.
 
@@ -63,7 +86,7 @@ This one file can be sent to a stakeholder, who can then open it up and read it.
 
 ![](04-initial-html.png)
 
-## But It Could Be Smaller and Cleaner
+## The Cost of Simplicity: File Size & Transparency
 
 Unfortunately, this simplicity comes with two costs.
 
@@ -75,14 +98,14 @@ less than a kilobyte.
 
 ![](05-r-markdown-filesize.png)
 
-But if you look at the HTML file, you'll see it's _more than 700 kilobytes_.
+But if you look at the HTML file, it's _more than 700 kilobytes_.
 
 ![](06-initial-html-filesize.png)
 
 So what changed?
 It's obviously not that HTML is 700x longer than markdown for the same text.
 
-Two things changed:
+Two things:
 
 1. There's now an embedded image (the plot).
 1. There are _scripts_ and _styling_ embedded in the file as well
@@ -96,10 +119,10 @@ at how much each of those affects the size of the file.
 | 713 kB        | image             | 630 kB       | 83 kB                  |
 | 713 kB        | scripts + styling | 93 kB        | 620 kB!                |
 
-### Clarity
+### Transparency
 
 The second cost of putting everything in one easy-to-share HTML file
-is _clarity_.
+is _transparency_.
 
 To see this cost, let's peel back the curtain a little on the HTML file.
 If you're viewing the report in the RStudio viewer,
@@ -119,14 +142,14 @@ what's called _minified JavaScript_.
 
 Let's talk through that for a moment.
 
-#### Minified Libraries
+#### Minified JavaScript & CSS
 
 This small web page relies on a number of _JavaScript and CSS libraries_.
 One of them, the one depicted here, is a JS library called _jQuery_.
 
-Normally, when your code relies on a library,
+Usually, when code (in any language) relies on a library,
 you simply refer to it at the top of the page with one line.
-For example, if your R script relies on the `lubridate` package,
+For example, if you have an R script that relies on the `lubridate` package,
 you might include a line like this at the top of your script:
 
 ```r
@@ -159,7 +182,7 @@ To see this, scroll down in the source to where you'd expect to see the picture:
 You'll see that the picture is a png file, but it's encoded as a really long,
 otherwise meaningless text string.
 
-## And You Can't Diff Files
+## Practical Consequences: Diffing Files
 
 All of this has consequences for your workflow,
 perhaps the biggest of which is that you can't diff files.
@@ -588,9 +611,9 @@ before we split out the libraries.
 ![](30-shrunk-folder.png)
 
 If you don't care to script or automate the process,
-feel free to skip down to _Zipping Your Files_ and call it good!
+feel free to skip down to _Zip Your Files_ and call it good!
 
-## Writing a Script
+## Have a Script Do the Work
 
 Now comes the time when we ask ourselves:
 
@@ -855,7 +878,7 @@ walk(
 )
 ```
 
-## Connecting to Git
+## Have Git Run the Script
 
 Now that we've scripted the whole process,
 I'd prefer not to have to think about it at all.
@@ -1055,7 +1078,7 @@ Here's a quick preview of the changes you'll see in the enhanced script:
   If anything _is_ changed, you'll see exactly what,
   including which version was removed and what URL was used to replace it.
 
-## Zipping Your Files
+## Zip Your Files
 
 In the end, this method does leave you with a _folder_ of files to share,
 rather than a simple HTML file.
@@ -1106,3 +1129,6 @@ and easily understand what's changed.
 [25]: https://www.r-bloggers.com/passing-arguments-to-an-r-script-from-command-lines/
 [26]: https://stat.ethz.ch/R-manual/R-devel/library/base/html/interactive.html
 [27]: https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/cdnify.R
+[28]: https://en.wikipedia.org/wiki/Cut_to_the_chase
+[29]: https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/pre-commit
+[30]: https://github.com/BenjaminWolfe/knitr-cdn-demo/commits/master

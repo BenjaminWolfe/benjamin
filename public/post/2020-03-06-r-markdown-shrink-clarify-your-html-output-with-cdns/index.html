@@ -28,7 +28,7 @@
   
     
   
-  <meta name="description" content="Your Output is Easy to Share But It Could Be Smaller and Cleaner File Size Clarity Minified Libraries Images   And You Can’t Diff Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started Rounding Up Libraries Removing Them Manual Example Deleting Files  Pause: What We’ve Accomplished  Writing a Script Swapping in CDNs Removing Files Looping  Connecting to Git Writing the Bash Script Tweaking the R Script Troubleshooting Logging  Zipping Your Files   Your Output is Easy to Share Have you ever noticed, when you render an R Markdown file as HTML, that it comes out as a single HTML file, easy to share with your readers?">
+  <meta name="description" content="The Ease of Sharing Knitr’s HTML Output Setup  The Cost of Simplicity: File Size &amp; Transparency File Size Transparency  Practical Consequences: Diffing Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started Rounding Up Libraries Removing Them Pause: What We’ve Accomplished  Have a Script Do the Work Swapping in CDNs Removing Files Looping  Have Git Run the Script Writing the Bash Script Tweaking the R Script Troubleshooting Logging  Zip Your Files   The Ease of Sharing Knitr’s HTML Output Have you ever noticed that when you save a page from the internet, you get an HTML page plus an extra folder of supporting files?">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/2020-03-06-r-markdown-shrink-clarify-your-html-output-with-cdns/">
@@ -233,13 +233,13 @@
   <meta property="og:site_name" content="Benjamin E. Wolfe">
   <meta property="og:url" content="/post/2020-03-06-r-markdown-shrink-clarify-your-html-output-with-cdns/">
   <meta property="og:title" content="R Markdown: Shrink &amp; Clarify Your HTML Output with CDNs | Benjamin E. Wolfe">
-  <meta property="og:description" content="Your Output is Easy to Share But It Could Be Smaller and Cleaner File Size Clarity Minified Libraries Images   And You Can’t Diff Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started Rounding Up Libraries Removing Them Manual Example Deleting Files  Pause: What We’ve Accomplished  Writing a Script Swapping in CDNs Removing Files Looping  Connecting to Git Writing the Bash Script Tweaking the R Script Troubleshooting Logging  Zipping Your Files   Your Output is Easy to Share Have you ever noticed, when you render an R Markdown file as HTML, that it comes out as a single HTML file, easy to share with your readers?"><meta property="og:image" content="/img/benjamin.jpeg">
+  <meta property="og:description" content="The Ease of Sharing Knitr’s HTML Output Setup  The Cost of Simplicity: File Size &amp; Transparency File Size Transparency  Practical Consequences: Diffing Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started Rounding Up Libraries Removing Them Pause: What We’ve Accomplished  Have a Script Do the Work Swapping in CDNs Removing Files Looping  Have Git Run the Script Writing the Bash Script Tweaking the R Script Troubleshooting Logging  Zip Your Files   The Ease of Sharing Knitr’s HTML Output Have you ever noticed that when you save a page from the internet, you get an HTML page plus an extra folder of supporting files?"><meta property="og:image" content="/img/benjamin.jpeg">
   <meta property="twitter:image" content="/img/benjamin.jpeg"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2020-03-06T00:00:00&#43;00:00">
     
-    <meta property="article:modified_time" content="2020-03-06T09:39:10-06:00">
+    <meta property="article:modified_time" content="2020-03-09T00:53:34-05:00">
   
 
   
@@ -270,7 +270,7 @@
   "headline": "R Markdown: Shrink \u0026 Clarify Your HTML Output with CDNs",
   
   "datePublished": "2020-03-06T00:00:00Z",
-  "dateModified": "2020-03-06T09:39:10-06:00",
+  "dateModified": "2020-03-09T00:53:34-05:00",
   
   "author": {
     "@type": "Person",
@@ -285,7 +285,7 @@
       "url": "img//"
     }
   },
-  "description": "Your Output is Easy to Share But It Could Be Smaller and Cleaner File Size Clarity Minified Libraries Images   And You Can’t Diff Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started Rounding Up Libraries Removing Them Manual Example Deleting Files  Pause: What We’ve Accomplished  Writing a Script Swapping in CDNs Removing Files Looping  Connecting to Git Writing the Bash Script Tweaking the R Script Troubleshooting Logging  Zipping Your Files   Your Output is Easy to Share Have you ever noticed, when you render an R Markdown file as HTML, that it comes out as a single HTML file, easy to share with your readers?"
+  "description": "The Ease of Sharing Knitr’s HTML Output Setup  The Cost of Simplicity: File Size \u0026amp; Transparency File Size Transparency  Practical Consequences: Diffing Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started Rounding Up Libraries Removing Them Pause: What We’ve Accomplished  Have a Script Do the Work Swapping in CDNs Removing Files Looping  Have Git Run the Script Writing the Bash Script Tweaking the R Script Troubleshooting Logging  Zip Your Files   The Ease of Sharing Knitr’s HTML Output Have you ever noticed that when you save a page from the internet, you get an HTML page plus an extra folder of supporting files?"
 }
 </script>
 
@@ -557,7 +557,7 @@
           Last updated on
       
     
-    2020-03-06
+    2020-03-09
   </span>
   
 
@@ -566,7 +566,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    22 min read
+    23 min read
   </span>
   
 
@@ -607,15 +607,14 @@
 
 <div id="TOC">
 <ul>
-<li><a href="#your-output-is-easy-to-share">Your Output is Easy to Share</a></li>
-<li><a href="#but-it-could-be-smaller-and-cleaner">But It Could Be Smaller and Cleaner</a><ul>
+<li><a href="#the-ease-of-sharing-knitrs-html-output">The Ease of Sharing Knitr’s HTML Output</a><ul>
+<li><a href="#setup">Setup</a></li>
+</ul></li>
+<li><a href="#the-cost-of-simplicity-file-size-transparency">The Cost of Simplicity: File Size &amp; Transparency</a><ul>
 <li><a href="#file-size">File Size</a></li>
-<li><a href="#clarity">Clarity</a><ul>
-<li><a href="#minified-libraries">Minified Libraries</a></li>
-<li><a href="#images">Images</a></li>
+<li><a href="#transparency">Transparency</a></li>
 </ul></li>
-</ul></li>
-<li><a href="#and-you-cant-diff-files">And You Can’t Diff Files</a></li>
+<li><a href="#practical-consequences-diffing-files">Practical Consequences: Diffing Files</a></li>
 <li><a href="#intermission">Intermission!</a><ul>
 <li><a href="#adding-the-dt-library">Adding the DT Library</a></li>
 </ul></li>
@@ -623,38 +622,51 @@
 <li><a href="#using-content-delivery-networks-cdns">Using Content Delivery Networks (CDNs)</a><ul>
 <li><a href="#getting-started">Getting Started</a></li>
 <li><a href="#rounding-up-libraries">Rounding Up Libraries</a></li>
-<li><a href="#removing-them">Removing Them</a><ul>
-<li><a href="#manual-example">Manual Example</a></li>
-<li><a href="#deleting-files">Deleting Files</a></li>
-</ul></li>
+<li><a href="#removing-them">Removing Them</a></li>
 <li><a href="#pause-what-weve-accomplished">Pause: What We’ve Accomplished</a></li>
 </ul></li>
-<li><a href="#writing-a-script">Writing a Script</a><ul>
+<li><a href="#have-a-script-do-the-work">Have a Script Do the Work</a><ul>
 <li><a href="#swapping-in-cdns">Swapping in CDNs</a></li>
 <li><a href="#removing-files">Removing Files</a></li>
 <li><a href="#looping">Looping</a></li>
 </ul></li>
-<li><a href="#connecting-to-git">Connecting to Git</a><ul>
+<li><a href="#have-git-run-the-script">Have Git Run the Script</a><ul>
 <li><a href="#writing-the-bash-script">Writing the Bash Script</a></li>
 <li><a href="#tweaking-the-r-script">Tweaking the R Script</a></li>
 <li><a href="#troubleshooting">Troubleshooting</a></li>
 <li><a href="#logging">Logging</a></li>
 </ul></li>
-<li><a href="#zipping-your-files">Zipping Your Files</a></li>
+<li><a href="#zip-your-files">Zip Your Files</a></li>
 </ul>
 </div>
 
-<div id="your-output-is-easy-to-share" class="section level2">
-<h2>Your Output is Easy to Share</h2>
-<p>Have you ever noticed, when you render an <a href="https://rmarkdown.rstudio.com/">R Markdown</a> file as HTML,
-that it comes out as a single HTML file, easy to share with your readers?</p>
-<p>If you haven’t noticed, or you don’t know what I mean,
-you can “follow along at home” with this <a href="https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html">minimal reproducible example</a>.</p>
-<p>(I follow this same example through the entire post.
-If you’d like to follow along but maybe don’t have your laptop in front of you,
-I put it up in a <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo">GitHub repository</a>,
-and you can walk through the steps there.
-For the first section, check <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a553b780b1bfd37daa1b05e6ec48e022d7850d4f">this commit</a> and <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/7b79bc5bd333e12e5146953b646aff364f827eef">this one</a>.)</p>
+<div id="the-ease-of-sharing-knitrs-html-output" class="section level2">
+<h2>The Ease of Sharing Knitr’s HTML Output</h2>
+<p>Have you ever noticed that when you save a page from the internet,
+you get an HTML page <em>plus</em> an extra folder of supporting files?</p>
+<p>For example, right-click on my website and click “Save As…,”</p>
+<p><img src="37-save-blog.png" /></p>
+<p>and this is what you get:</p>
+<p><img src="38-saved-blog.png" /></p>
+<p>But when you when you render an <a href="https://rmarkdown.rstudio.com/">R Markdown</a> file as HTML,
+instead it comes out as a single HTML file, with no folder of supporting files?</p>
+<p>If you haven’t noticed this difference, or you don’t know what I mean,
+we’ll walk through a <a href="https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html">minimal reproducible example</a> below
+to better understand it.</p>
+<p>This simplicity makes your output very easy to share with stakeholders.
+But it has its drawbacks, and we’ll use the same example
+later in the post to see those as well.
+Then we’ll spend time exploring ways around those drawbacks.</p>
+<p>Since you might not be at your laptop to actually run this example,
+you can also find it in a separate <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo">GitHub repository</a>.
+You can follow the repository <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commits/master">commit by commit</a>
+as we explore <code>knitr</code>’s simplicity, the down sides of that simplicity,
+and what can be done about those down sides.
+To <a href="https://en.wikipedia.org/wiki/Cut_to_the_chase">cut to the chase</a>,
+you can just look at my <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/cdnify.R">cdnify.R</a> and <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/pre-commit">pre-commit</a> scripts there.</p>
+<p>This upcoming section is covered by the <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a553b780b1bfd37daa1b05e6ec48e022d7850d4f">third</a> and <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/7b79bc5bd333e12e5146953b646aff364f827eef">fourth commits</a>.</p>
+<div id="setup" class="section level3">
+<h3>Setup</h3>
 <p>In RStudio, from the <em>New File</em> menu at the top left, choose <em>R Markdown…</em>.</p>
 <p><img src="01-menu-r-markdown.png" /></p>
 <p>In the dialog box, feel free to add a title. Then select <em>HTML</em> and hit <em>OK</em>.</p>
@@ -668,8 +680,9 @@ Open it up to see a beautiful HTML version of the Rmd file you started with.
 This one file can be sent to a stakeholder, who can then open it up and read it.</p>
 <p><img src="04-initial-html.png" /></p>
 </div>
-<div id="but-it-could-be-smaller-and-cleaner" class="section level2">
-<h2>But It Could Be Smaller and Cleaner</h2>
+</div>
+<div id="the-cost-of-simplicity-file-size-transparency" class="section level2">
+<h2>The Cost of Simplicity: File Size &amp; Transparency</h2>
 <p>Unfortunately, this simplicity comes with two costs.</p>
 <div id="file-size" class="section level3">
 <h3>File Size</h3>
@@ -677,11 +690,11 @@ This one file can be sent to a stakeholder, who can then open it up and read it.
 If you look at your report itself, you’ll see that it’s quite small:
 less than a kilobyte.</p>
 <p><img src="05-r-markdown-filesize.png" /></p>
-<p>But if you look at the HTML file, you’ll see it’s <em>more than 700 kilobytes</em>.</p>
+<p>But if you look at the HTML file, it’s <em>more than 700 kilobytes</em>.</p>
 <p><img src="06-initial-html-filesize.png" /></p>
 <p>So what changed?
 It’s obviously not that HTML is 700x longer than markdown for the same text.</p>
-<p>Two things changed:</p>
+<p>Two things:</p>
 <ol style="list-style-type: decimal">
 <li>There’s now an embedded image (the plot).</li>
 <li>There are <em>scripts</em> and <em>styling</em> embedded in the file as well
@@ -714,10 +727,10 @@ at how much each of those affects the size of the file.</p>
 </tbody>
 </table>
 </div>
-<div id="clarity" class="section level3">
-<h3>Clarity</h3>
+<div id="transparency" class="section level3">
+<h3>Transparency</h3>
 <p>The second cost of putting everything in one easy-to-share HTML file
-is <em>clarity</em>.</p>
+is <em>transparency</em>.</p>
 <p>To see this cost, let’s peel back the curtain a little on the HTML file.
 If you’re viewing the report in the RStudio viewer,
 go to the top left and click <em>Open in Browser</em>:</p>
@@ -729,13 +742,13 @@ right-click on the report and click <em>View Page Source</em>:</p>
 what’s called <em>minified JavaScript</em>.</p>
 <p><img src="09-minified-jquery.png" /></p>
 <p>Let’s talk through that for a moment.</p>
-<div id="minified-libraries" class="section level4">
-<h4>Minified Libraries</h4>
+<div id="minified-javascript-css" class="section level4">
+<h4>Minified JavaScript &amp; CSS</h4>
 <p>This small web page relies on a number of <em>JavaScript and CSS libraries</em>.
 One of them, the one depicted here, is a JS library called <em>jQuery</em>.</p>
-<p>Normally, when your code relies on a library,
+<p>Usually, when code (in any language) relies on a library,
 you simply refer to it at the top of the page with one line.
-For example, if your R script relies on the <code>lubridate</code> package,
+For example, if you have an R script that relies on the <code>lubridate</code> package,
 you might include a line like this at the top of your script:</p>
 <pre class="r"><code>library(lubridate)</code></pre>
 <p>Now in your R script, that line relies on whoever’s running your code
@@ -763,8 +776,8 @@ otherwise meaningless text string.</p>
 </div>
 </div>
 </div>
-<div id="and-you-cant-diff-files" class="section level2">
-<h2>And You Can’t Diff Files</h2>
+<div id="practical-consequences-diffing-files" class="section level2">
+<h2>Practical Consequences: Diffing Files</h2>
 <p>All of this has consequences for your workflow,
 perhaps the biggest of which is that you can’t diff files.</p>
 <p>If you don’t use git much for version control,
@@ -1324,11 +1337,11 @@ and less than half the size of the original file
 before we split out the libraries.</p>
 <p><img src="30-shrunk-folder.png" /></p>
 <p>If you don’t care to script or automate the process,
-feel free to skip down to <em>Zipping Your Files</em> and call it good!</p>
+feel free to skip down to <em>Zip Your Files</em> and call it good!</p>
 </div>
 </div>
-<div id="writing-a-script" class="section level2">
-<h2>Writing a Script</h2>
+<div id="have-a-script-do-the-work" class="section level2">
+<h2>Have a Script Do the Work</h2>
 <p>Now comes the time when we ask ourselves:</p>
 <blockquote>
 <p>This seems pretty straightforward. Do you think we can do it in a script?</p>
@@ -1562,8 +1575,8 @@ walk(
 )</code></pre>
 </div>
 </div>
-<div id="connecting-to-git" class="section level2">
-<h2>Connecting to Git</h2>
+<div id="have-git-run-the-script" class="section level2">
+<h2>Have Git Run the Script</h2>
 <p>Now that we’ve scripted the whole process,
 I’d prefer not to have to think about it at all.</p>
 <p>We can accomplish that goal by creating what’s called a <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">git hook</a>.
@@ -1711,8 +1724,8 @@ including which version was removed and what URL was used to replace it.</li>
 </ul>
 </div>
 </div>
-<div id="zipping-your-files" class="section level2">
-<h2>Zipping Your Files</h2>
+<div id="zip-your-files" class="section level2">
+<h2>Zip Your Files</h2>
 <p>In the end, this method does leave you with a <em>folder</em> of files to share,
 rather than a simple HTML file.
 You can still send them easily by zipping both the report and the report files
