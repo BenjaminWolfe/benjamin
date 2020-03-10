@@ -79,7 +79,7 @@
     </item>
     
     <item>
-      <title>R Markdown: Shrink &amp; Clarify Your HTML Output with CDNs</title>
+      <title>R Markdown: Shrink &amp; Tidy Up Your HTML Output with CDNs</title>
       <link>/post/2020-03-06-r-markdown-shrink-clarify-your-html-output-with-cdns/</link>
       <pubDate>Fri, 06 Mar 2020 00:00:00 +0000</pubDate>
       <guid>/post/2020-03-06-r-markdown-shrink-clarify-your-html-output-with-cdns/</guid>
@@ -88,10 +88,10 @@
 
 &lt;div id=&#34;TOC&#34;&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#the-ease-of-sharing-knitrs-html-output&#34;&gt;The Ease of Sharing Knitr’s HTML Output&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#setup&#34;&gt;Setup&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#the-simplicity-of-knitrs-html-output&#34;&gt;The Simplicity of Knitr’s HTML Output&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#example-setup&#34;&gt;Example Setup&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#the-cost-of-simplicity-file-size-transparency&#34;&gt;The Cost of Simplicity: File Size &amp;amp; Transparency&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#the-costs-of-simplicity-file-size-transparency&#34;&gt;The Costs of Simplicity: File Size &amp;amp; Transparency&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#file-size&#34;&gt;File Size&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#transparency&#34;&gt;Transparency&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
@@ -112,7 +112,7 @@
 &lt;li&gt;&lt;a href=&#34;#looping&#34;&gt;Looping&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#have-git-run-the-script&#34;&gt;Have Git Run the Script&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#writing-the-bash-script&#34;&gt;Writing the Bash Script&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#writing-a-bash-script&#34;&gt;Writing a Bash Script&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#tweaking-the-r-script&#34;&gt;Tweaking the R Script&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#troubleshooting&#34;&gt;Troubleshooting&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#logging&#34;&gt;Logging&lt;/a&gt;&lt;/li&gt;
@@ -121,8 +121,8 @@
 &lt;/ul&gt;
 &lt;/div&gt;
 
-&lt;div id=&#34;the-ease-of-sharing-knitrs-html-output&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;The Ease of Sharing Knitr’s HTML Output&lt;/h2&gt;
+&lt;div id=&#34;the-simplicity-of-knitrs-html-output&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The Simplicity of Knitr’s HTML Output&lt;/h2&gt;
 &lt;p&gt;Have you ever noticed that when you save a page from the internet,
 you get an HTML page &lt;em&gt;plus&lt;/em&gt; an extra folder of supporting files?&lt;/p&gt;
 &lt;p&gt;For example, right-click on my website and click “Save As…,”&lt;/p&gt;
@@ -146,8 +146,8 @@ and what can be done about those down sides.
 To &lt;a href=&#34;https://en.wikipedia.org/wiki/Cut_to_the_chase&#34;&gt;cut to the chase&lt;/a&gt;,
 you can just look at my &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/cdnify.R&#34;&gt;cdnify.R&lt;/a&gt; and &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/pre-commit&#34;&gt;pre-commit&lt;/a&gt; scripts there.&lt;/p&gt;
 &lt;p&gt;This upcoming section is covered by the &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a553b780b1bfd37daa1b05e6ec48e022d7850d4f&#34;&gt;third&lt;/a&gt; and &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/7b79bc5bd333e12e5146953b646aff364f827eef&#34;&gt;fourth commits&lt;/a&gt;.&lt;/p&gt;
-&lt;div id=&#34;setup&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Setup&lt;/h3&gt;
+&lt;div id=&#34;example-setup&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Example Setup&lt;/h3&gt;
 &lt;p&gt;In RStudio, from the &lt;em&gt;New File&lt;/em&gt; menu at the top left, choose &lt;em&gt;R Markdown…&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;01-menu-r-markdown.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In the dialog box, feel free to add a title. Then select &lt;em&gt;HTML&lt;/em&gt; and hit &lt;em&gt;OK&lt;/em&gt;.&lt;/p&gt;
@@ -158,37 +158,39 @@ either using the &lt;em&gt;knit&lt;/em&gt; button at top or by hitting &lt;em&gt
 &lt;p&gt;&lt;img src=&#34;03-knit-document.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;What you’ll get is a single file called something like &lt;code&gt;report.html&lt;/code&gt;.
 Open it up to see a beautiful HTML version of the Rmd file you started with.
-This one file can be sent to a stakeholder, who can then open it up and read it.&lt;/p&gt;
+This file is all you need to send to a stakeholder
+for them to open and read your work.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;04-initial-html.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&#34;the-cost-of-simplicity-file-size-transparency&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;The Cost of Simplicity: File Size &amp;amp; Transparency&lt;/h2&gt;
+&lt;div id=&#34;the-costs-of-simplicity-file-size-transparency&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The Costs of Simplicity: File Size &amp;amp; Transparency&lt;/h2&gt;
 &lt;p&gt;Unfortunately, this simplicity comes with two costs.&lt;/p&gt;
 &lt;div id=&#34;file-size&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;File Size&lt;/h3&gt;
-&lt;p&gt;The first is &lt;em&gt;file size&lt;/em&gt;.
+&lt;p&gt;The first cost is &lt;em&gt;file size&lt;/em&gt;.
 If you look at your report itself, you’ll see that it’s quite small:
-less than a kilobyte.&lt;/p&gt;
+less than 1kB.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;05-r-markdown-filesize.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;But if you look at the HTML file, it’s &lt;em&gt;more than 700 kilobytes&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;But the HTML file is &lt;em&gt;more than 700kB&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;06-initial-html-filesize.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So what changed?
 It’s obviously not that HTML is 700x longer than markdown for the same text.&lt;/p&gt;
-&lt;p&gt;Two things:&lt;/p&gt;
+&lt;p&gt;Two things changed:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;There’s now an embedded image (the plot).&lt;/li&gt;
 &lt;li&gt;There are &lt;em&gt;scripts&lt;/em&gt; and &lt;em&gt;styling&lt;/em&gt; embedded in the file as well
-(JavaScript and CSS content).&lt;/li&gt;
+(JavaScript &amp;amp; CSS content).&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;And you might be surprised
-at how much each of those affects the size of the file.&lt;/p&gt;
+&lt;p&gt;We all know that images increase filesize.
+But it’s actually the scripts and styling
+that account for most of the difference:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr class=&#34;header&#34;&gt;
-&lt;th&gt;original size&lt;/th&gt;
-&lt;th&gt;take out the…&lt;/th&gt;
-&lt;th&gt;new filesize&lt;/th&gt;
+&lt;th&gt;original filesize&lt;/th&gt;
+&lt;th&gt;if we take out the…&lt;/th&gt;
+&lt;th&gt;the new size is…&lt;/th&gt;
 &lt;th&gt;so it accounted for…&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
@@ -220,40 +222,40 @@ go to the top left and click &lt;em&gt;Open in Browser&lt;/em&gt;:&lt;/p&gt;
 right-click on the report and click &lt;em&gt;View Page Source&lt;/em&gt;:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;08-view-page-source.png&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As you browse the page source, just under the title you’ll see
-what’s called &lt;em&gt;minified JavaScript&lt;/em&gt;.&lt;/p&gt;
+what’s called &lt;em&gt;minified code&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;09-minified-jquery.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Let’s talk through that for a moment.&lt;/p&gt;
+&lt;p&gt;Let’s talk through minified code for a moment.&lt;/p&gt;
 &lt;div id=&#34;minified-javascript-css&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;Minified JavaScript &amp;amp; CSS&lt;/h4&gt;
 &lt;p&gt;This small web page relies on a number of &lt;em&gt;JavaScript and CSS libraries&lt;/em&gt;.
 One of them, the one depicted here, is a JS library called &lt;em&gt;jQuery&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Usually, when code (in any language) relies on a library,
+&lt;p&gt;Usually, when code—in any language—relies on a library,
 you simply refer to it at the top of the page with one line.
 For example, if you have an R script that relies on the &lt;code&gt;lubridate&lt;/code&gt; package,
 you might include a line like this at the top of your script:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(lubridate)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now in your R script, that line relies on whoever’s running your code
-having &lt;code&gt;lubridate&lt;/code&gt; installed on their computer,
-or being able to install it easily from CRAN.
-But for an HTML report,
-where would jQuery be installed on your reader’s computer?
-Or what is CRAN for JavaScript?
-To simplify all of that, and keep everything in one file,
-&lt;code&gt;report.html&lt;/code&gt; &lt;em&gt;literally includes all of jQuery inside itself&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;But libraries are big, of course—sometimes really big.
-So this code is what’s called a &lt;a href=&#34;https://en.wikipedia.org/wiki/Minification_(programming)&#34;&gt;minified&lt;/a&gt; version of the library.
+&lt;p&gt;Then throughout your script, R knows what to do
+when you use functions from the &lt;code&gt;lubridate&lt;/code&gt; package.&lt;/p&gt;
+&lt;p&gt;But for that line to work, whoever’s running your code
+has to have &lt;code&gt;lubridate&lt;/code&gt; installed on their computer.
+So in the case of our HTML report—which uses jQuery
+much like we might use &lt;code&gt;lubridate&lt;/code&gt;—where would the library be installed?&lt;/p&gt;
+&lt;p&gt;To simplify all of that, and keep everything in one file,
+&lt;em&gt;literally all of jQuery is included in report.html&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;But libraries are big, of course; &lt;a href=&#34;https://mathiasbynens.be/demo/jquery-size&#34;&gt;jQuery itself is 250kB&lt;/a&gt;.
+So we often use what’s called a &lt;a href=&#34;https://en.wikipedia.org/wiki/Minification_(programming)&#34;&gt;minified&lt;/a&gt; version of the library.
 White space, new lines, and comments are stripped out,
 and variable names are as short as possible.
 It’s not meant to be readable; it’s meant to save filespace.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;images&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;Images&lt;/h4&gt;
-&lt;p&gt;Likewise, images are actually included &lt;em&gt;within the text of the HTML document&lt;/em&gt;,
+&lt;p&gt;Likewise, images are included &lt;em&gt;within the text of the HTML document&lt;/em&gt;,
 encoded as text.
 To see this, scroll down in the source to where you’d expect to see the picture:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;10-image-as-text.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;You’ll see that the picture is a png file, but it’s encoded as a really long,
-otherwise meaningless text string.&lt;/p&gt;
+&lt;p&gt;The picture is a png file, but it’s encoded as a long (83k characters!),
+otherwise meaningless string.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -262,46 +264,25 @@ otherwise meaningless text string.&lt;/p&gt;
 &lt;p&gt;All of this has consequences for your workflow,
 perhaps the biggest of which is that you can’t diff files.&lt;/p&gt;
 &lt;p&gt;If you don’t use git much for version control,
-or you don’t know the lingo,
-&lt;em&gt;diffing files&lt;/em&gt; just means comparing files (or contrasting them, technically)
+or you don’t follow the terminology,
+&lt;em&gt;diffing files&lt;/em&gt; just means comparing files (or contrasting them)
 to look for &lt;em&gt;differences&lt;/em&gt;.
-Diffing files is very useful when you ask questions like
-“What changed since the last time I ran this report?”
+Diffing files is good for answering questions like
+“What changed since the last time I ran this?”
 or “What have I accomplished since my last commit?”
-It’s what you see when you pull up a git UI and it shows you what’s changed.&lt;/p&gt;
+It’s what you see when you pull up a git UI to see what’s changed.&lt;/p&gt;
 &lt;p&gt;The problem is that most interfaces won’t diff large files automatically,
 and some won’t diff them at all.
-For example, this is what GitHub Desktop shows when I try to diff my HTML:&lt;/p&gt;
+This is what GitHub Desktop shows when I try to diff the HTML we just created:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;11-diff-too-large.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;But even when you can diff the files, all the gobbledeegook—both minified code
-and text-encoded images—makes it hard to make sense of the changes.&lt;/p&gt;
+&lt;p&gt;Of course you can click &lt;em&gt;Show Diff&lt;/em&gt;.
+But even when you &lt;em&gt;can&lt;/em&gt; diff the files, all the gobbledeegook—both minified code
+and text-encoded images—makes it harder to make sense of the changes.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;intermission&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Intermission!&lt;/h2&gt;
-&lt;p&gt;To reduce file size and increase clarity while keeping things easy to share,
-you’ll need 3 tips:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr class=&#34;header&#34;&gt;
-&lt;th&gt;tip (see below)&lt;/th&gt;
-&lt;th&gt;solves…&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;code externalization&lt;/td&gt;
-&lt;td&gt;clarity&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;even&#34;&gt;
-&lt;td&gt;content delivery networks (CDNs)&lt;/td&gt;
-&lt;td&gt;file size&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;file compression (.zip)&lt;/td&gt;
-&lt;td&gt;ease of use&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+&lt;p&gt;In a moment we’ll walk through 3 tips to tidy up your HTML output
+and reduce your file size while keeping things easy to share.&lt;/p&gt;
 &lt;p&gt;But before we do that I’d like to make just one change to our report.
 (If you’re following along in GitHub, see &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/fb3c31288afce993a5599f09a55fd0223a77ec97&#34;&gt;this commit&lt;/a&gt;.)
 You can skip this section if you like.
@@ -336,12 +317,35 @@ to pretty up your report, add widgets or improve the styling,
 you’re going to continue adding minified JS or CSS and increasing the filesize.
 In this case, we’re now up to 916 kilobytes, another increase of 203 kB!&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;14-size-with-dt.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;And now with that taken care of, we turn to the solution.
+As mentioned above we’ll walk through 3 steps:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th&gt;step (see below)&lt;/th&gt;
+&lt;th&gt;solves…&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;&lt;a href=&#34;#externalizing-code&#34;&gt;code externalization&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;transparency&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td&gt;&lt;a href=&#34;#using-content-delivery-networks-cdns&#34;&gt;content delivery networks (CDNs)&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;file size&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td&gt;&lt;a href=&#34;#zip-your-files&#34;&gt;file compression (.zip)&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;ease of use&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;externalizing-code&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Externalizing Code&lt;/h2&gt;
-&lt;p&gt;Now for the solution.
-First, we address the &lt;em&gt;clarity&lt;/em&gt; of the code,
+&lt;p&gt;First, we address the &lt;em&gt;clarity&lt;/em&gt; of the code,
 so that you can diff files and meaningfully keep track of changes.&lt;/p&gt;
 &lt;p&gt;You’ll remember that the HTML file includes entire JavaScript libraries,
 minified and embedded within them.
@@ -1084,8 +1088,8 @@ Make a copy of &lt;code&gt;pre-commit.sample&lt;/code&gt;, and delete the &lt;co
 But it’s important we run the script to remove local files “pre-commit,”
 because otherwise those libraries will live on in your commit history,
 bloating the repository forever.&lt;/p&gt;
-&lt;div id=&#34;writing-the-bash-script&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Writing the Bash Script&lt;/h3&gt;
+&lt;div id=&#34;writing-a-bash-script&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Writing a Bash Script&lt;/h3&gt;
 &lt;p&gt;Now I don’t actually know bash well, but that’s what Google is for:&lt;/p&gt;
 &lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;#!/bin/sh
 # check these variables (using forward slashes instead of backslashes):

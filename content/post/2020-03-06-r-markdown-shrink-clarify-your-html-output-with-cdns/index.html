@@ -1,5 +1,5 @@
 ---
-title: "R Markdown: Shrink & Clarify Your HTML Output with CDNs"
+title: "R Markdown: Shrink & Tidy Up Your HTML Output with CDNs"
 author: Benjamin Wolfe
 date: '2020-03-06'
 slug: []
@@ -28,10 +28,10 @@ output:
 
 <div id="TOC">
 <ul>
-<li><a href="#the-ease-of-sharing-knitrs-html-output">The Ease of Sharing Knitr’s HTML Output</a><ul>
-<li><a href="#setup">Setup</a></li>
+<li><a href="#the-simplicity-of-knitrs-html-output">The Simplicity of Knitr’s HTML Output</a><ul>
+<li><a href="#example-setup">Example Setup</a></li>
 </ul></li>
-<li><a href="#the-cost-of-simplicity-file-size-transparency">The Cost of Simplicity: File Size &amp; Transparency</a><ul>
+<li><a href="#the-costs-of-simplicity-file-size-transparency">The Costs of Simplicity: File Size &amp; Transparency</a><ul>
 <li><a href="#file-size">File Size</a></li>
 <li><a href="#transparency">Transparency</a></li>
 </ul></li>
@@ -52,7 +52,7 @@ output:
 <li><a href="#looping">Looping</a></li>
 </ul></li>
 <li><a href="#have-git-run-the-script">Have Git Run the Script</a><ul>
-<li><a href="#writing-the-bash-script">Writing the Bash Script</a></li>
+<li><a href="#writing-a-bash-script">Writing a Bash Script</a></li>
 <li><a href="#tweaking-the-r-script">Tweaking the R Script</a></li>
 <li><a href="#troubleshooting">Troubleshooting</a></li>
 <li><a href="#logging">Logging</a></li>
@@ -61,8 +61,8 @@ output:
 </ul>
 </div>
 
-<div id="the-ease-of-sharing-knitrs-html-output" class="section level2">
-<h2>The Ease of Sharing Knitr’s HTML Output</h2>
+<div id="the-simplicity-of-knitrs-html-output" class="section level2">
+<h2>The Simplicity of Knitr’s HTML Output</h2>
 <p>Have you ever noticed that when you save a page from the internet,
 you get an HTML page <em>plus</em> an extra folder of supporting files?</p>
 <p>For example, right-click on my website and click “Save As…,”</p>
@@ -86,8 +86,8 @@ and what can be done about those down sides.
 To <a href="https://en.wikipedia.org/wiki/Cut_to_the_chase">cut to the chase</a>,
 you can just look at my <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/cdnify.R">cdnify.R</a> and <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/pre-commit">pre-commit</a> scripts there.</p>
 <p>This upcoming section is covered by the <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a553b780b1bfd37daa1b05e6ec48e022d7850d4f">third</a> and <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/7b79bc5bd333e12e5146953b646aff364f827eef">fourth commits</a>.</p>
-<div id="setup" class="section level3">
-<h3>Setup</h3>
+<div id="example-setup" class="section level3">
+<h3>Example Setup</h3>
 <p>In RStudio, from the <em>New File</em> menu at the top left, choose <em>R Markdown…</em>.</p>
 <p><img src="01-menu-r-markdown.png" /></p>
 <p>In the dialog box, feel free to add a title. Then select <em>HTML</em> and hit <em>OK</em>.</p>
@@ -98,37 +98,39 @@ either using the <em>knit</em> button at top or by hitting <em>Control+Shift_K</
 <p><img src="03-knit-document.png" /></p>
 <p>What you’ll get is a single file called something like <code>report.html</code>.
 Open it up to see a beautiful HTML version of the Rmd file you started with.
-This one file can be sent to a stakeholder, who can then open it up and read it.</p>
+This file is all you need to send to a stakeholder
+for them to open and read your work.</p>
 <p><img src="04-initial-html.png" /></p>
 </div>
 </div>
-<div id="the-cost-of-simplicity-file-size-transparency" class="section level2">
-<h2>The Cost of Simplicity: File Size &amp; Transparency</h2>
+<div id="the-costs-of-simplicity-file-size-transparency" class="section level2">
+<h2>The Costs of Simplicity: File Size &amp; Transparency</h2>
 <p>Unfortunately, this simplicity comes with two costs.</p>
 <div id="file-size" class="section level3">
 <h3>File Size</h3>
-<p>The first is <em>file size</em>.
+<p>The first cost is <em>file size</em>.
 If you look at your report itself, you’ll see that it’s quite small:
-less than a kilobyte.</p>
+less than 1kB.</p>
 <p><img src="05-r-markdown-filesize.png" /></p>
-<p>But if you look at the HTML file, it’s <em>more than 700 kilobytes</em>.</p>
+<p>But the HTML file is <em>more than 700kB</em>.</p>
 <p><img src="06-initial-html-filesize.png" /></p>
 <p>So what changed?
 It’s obviously not that HTML is 700x longer than markdown for the same text.</p>
-<p>Two things:</p>
+<p>Two things changed:</p>
 <ol style="list-style-type: decimal">
 <li>There’s now an embedded image (the plot).</li>
 <li>There are <em>scripts</em> and <em>styling</em> embedded in the file as well
-(JavaScript and CSS content).</li>
+(JavaScript &amp; CSS content).</li>
 </ol>
-<p>And you might be surprised
-at how much each of those affects the size of the file.</p>
+<p>We all know that images increase filesize.
+But it’s actually the scripts and styling
+that account for most of the difference:</p>
 <table>
 <thead>
 <tr class="header">
-<th>original size</th>
-<th>take out the…</th>
-<th>new filesize</th>
+<th>original filesize</th>
+<th>if we take out the…</th>
+<th>the new size is…</th>
 <th>so it accounted for…</th>
 </tr>
 </thead>
@@ -160,40 +162,40 @@ go to the top left and click <em>Open in Browser</em>:</p>
 right-click on the report and click <em>View Page Source</em>:</p>
 <p><img src="08-view-page-source.png" /></p>
 <p>As you browse the page source, just under the title you’ll see
-what’s called <em>minified JavaScript</em>.</p>
+what’s called <em>minified code</em>.</p>
 <p><img src="09-minified-jquery.png" /></p>
-<p>Let’s talk through that for a moment.</p>
+<p>Let’s talk through minified code for a moment.</p>
 <div id="minified-javascript-css" class="section level4">
 <h4>Minified JavaScript &amp; CSS</h4>
 <p>This small web page relies on a number of <em>JavaScript and CSS libraries</em>.
 One of them, the one depicted here, is a JS library called <em>jQuery</em>.</p>
-<p>Usually, when code (in any language) relies on a library,
+<p>Usually, when code—in any language—relies on a library,
 you simply refer to it at the top of the page with one line.
 For example, if you have an R script that relies on the <code>lubridate</code> package,
 you might include a line like this at the top of your script:</p>
 <pre class="r"><code>library(lubridate)</code></pre>
-<p>Now in your R script, that line relies on whoever’s running your code
-having <code>lubridate</code> installed on their computer,
-or being able to install it easily from CRAN.
-But for an HTML report,
-where would jQuery be installed on your reader’s computer?
-Or what is CRAN for JavaScript?
-To simplify all of that, and keep everything in one file,
-<code>report.html</code> <em>literally includes all of jQuery inside itself</em>.</p>
-<p>But libraries are big, of course—sometimes really big.
-So this code is what’s called a <a href="https://en.wikipedia.org/wiki/Minification_(programming)">minified</a> version of the library.
+<p>Then throughout your script, R knows what to do
+when you use functions from the <code>lubridate</code> package.</p>
+<p>But for that line to work, whoever’s running your code
+has to have <code>lubridate</code> installed on their computer.
+So in the case of our HTML report—which uses jQuery
+much like we might use <code>lubridate</code>—where would the library be installed?</p>
+<p>To simplify all of that, and keep everything in one file,
+<em>literally all of jQuery is included in report.html</em>.</p>
+<p>But libraries are big, of course; <a href="https://mathiasbynens.be/demo/jquery-size">jQuery itself is 250kB</a>.
+So we often use what’s called a <a href="https://en.wikipedia.org/wiki/Minification_(programming)">minified</a> version of the library.
 White space, new lines, and comments are stripped out,
 and variable names are as short as possible.
 It’s not meant to be readable; it’s meant to save filespace.</p>
 </div>
 <div id="images" class="section level4">
 <h4>Images</h4>
-<p>Likewise, images are actually included <em>within the text of the HTML document</em>,
+<p>Likewise, images are included <em>within the text of the HTML document</em>,
 encoded as text.
 To see this, scroll down in the source to where you’d expect to see the picture:</p>
 <p><img src="10-image-as-text.png" /></p>
-<p>You’ll see that the picture is a png file, but it’s encoded as a really long,
-otherwise meaningless text string.</p>
+<p>The picture is a png file, but it’s encoded as a long (83k characters!),
+otherwise meaningless string.</p>
 </div>
 </div>
 </div>
@@ -202,46 +204,25 @@ otherwise meaningless text string.</p>
 <p>All of this has consequences for your workflow,
 perhaps the biggest of which is that you can’t diff files.</p>
 <p>If you don’t use git much for version control,
-or you don’t know the lingo,
-<em>diffing files</em> just means comparing files (or contrasting them, technically)
+or you don’t follow the terminology,
+<em>diffing files</em> just means comparing files (or contrasting them)
 to look for <em>differences</em>.
-Diffing files is very useful when you ask questions like
-“What changed since the last time I ran this report?”
+Diffing files is good for answering questions like
+“What changed since the last time I ran this?”
 or “What have I accomplished since my last commit?”
-It’s what you see when you pull up a git UI and it shows you what’s changed.</p>
+It’s what you see when you pull up a git UI to see what’s changed.</p>
 <p>The problem is that most interfaces won’t diff large files automatically,
 and some won’t diff them at all.
-For example, this is what GitHub Desktop shows when I try to diff my HTML:</p>
+This is what GitHub Desktop shows when I try to diff the HTML we just created:</p>
 <p><img src="11-diff-too-large.png" /></p>
-<p>But even when you can diff the files, all the gobbledeegook—both minified code
-and text-encoded images—makes it hard to make sense of the changes.</p>
+<p>Of course you can click <em>Show Diff</em>.
+But even when you <em>can</em> diff the files, all the gobbledeegook—both minified code
+and text-encoded images—makes it harder to make sense of the changes.</p>
 </div>
 <div id="intermission" class="section level2">
 <h2>Intermission!</h2>
-<p>To reduce file size and increase clarity while keeping things easy to share,
-you’ll need 3 tips:</p>
-<table>
-<thead>
-<tr class="header">
-<th>tip (see below)</th>
-<th>solves…</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>code externalization</td>
-<td>clarity</td>
-</tr>
-<tr class="even">
-<td>content delivery networks (CDNs)</td>
-<td>file size</td>
-</tr>
-<tr class="odd">
-<td>file compression (.zip)</td>
-<td>ease of use</td>
-</tr>
-</tbody>
-</table>
+<p>In a moment we’ll walk through 3 tips to tidy up your HTML output
+and reduce your file size while keeping things easy to share.</p>
 <p>But before we do that I’d like to make just one change to our report.
 (If you’re following along in GitHub, see <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/fb3c31288afce993a5599f09a55fd0223a77ec97">this commit</a>.)
 You can skip this section if you like.
@@ -276,12 +257,35 @@ to pretty up your report, add widgets or improve the styling,
 you’re going to continue adding minified JS or CSS and increasing the filesize.
 In this case, we’re now up to 916 kilobytes, another increase of 203 kB!</p>
 <p><img src="14-size-with-dt.png" /></p>
+<p>And now with that taken care of, we turn to the solution.
+As mentioned above we’ll walk through 3 steps:</p>
+<table>
+<thead>
+<tr class="header">
+<th>step (see below)</th>
+<th>solves…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#externalizing-code">code externalization</a></td>
+<td>transparency</td>
+</tr>
+<tr class="even">
+<td><a href="#using-content-delivery-networks-cdns">content delivery networks (CDNs)</a></td>
+<td>file size</td>
+</tr>
+<tr class="odd">
+<td><a href="#zip-your-files">file compression (.zip)</a></td>
+<td>ease of use</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="externalizing-code" class="section level2">
 <h2>Externalizing Code</h2>
-<p>Now for the solution.
-First, we address the <em>clarity</em> of the code,
+<p>First, we address the <em>clarity</em> of the code,
 so that you can diff files and meaningfully keep track of changes.</p>
 <p>You’ll remember that the HTML file includes entire JavaScript libraries,
 minified and embedded within them.
@@ -1024,8 +1028,8 @@ Make a copy of <code>pre-commit.sample</code>, and delete the <code>.sample</cod
 But it’s important we run the script to remove local files “pre-commit,”
 because otherwise those libraries will live on in your commit history,
 bloating the repository forever.</p>
-<div id="writing-the-bash-script" class="section level3">
-<h3>Writing the Bash Script</h3>
+<div id="writing-a-bash-script" class="section level3">
+<h3>Writing a Bash Script</h3>
 <p>Now I don’t actually know bash well, but that’s what Google is for:</p>
 <pre class="bash"><code>#!/bin/sh
 # check these variables (using forward slashes instead of backslashes):

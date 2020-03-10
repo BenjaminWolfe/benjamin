@@ -1,5 +1,5 @@
 ---
-title: "R Markdown: Shrink & Clarify Your HTML Output with CDNs"
+title: "R Markdown: Shrink & Tidy Up Your HTML Output with CDNs"
 author: Benjamin Wolfe
 date: '2020-03-06'
 slug: []
@@ -29,7 +29,7 @@ library(tidyverse)
 library(kableExtra)
 ```
 
-## The Ease of Sharing Knitr's HTML Output
+## The Simplicity of Knitr's HTML Output
 
 Have you ever noticed that when you save a page from the internet,
 you get an HTML page _plus_ an extra folder of supporting files?
@@ -64,7 +64,7 @@ you can just look at my [cdnify.R][27] and [pre-commit][29] scripts there.
 
 This upcoming section is covered by the [third][1] and [fourth commits][2].
 
-### Setup
+### Example Setup
 
 In RStudio, from the _New File_ menu at the top left, choose _R Markdown..._.
 
@@ -82,39 +82,41 @@ either using the _knit_ button at top or by hitting _Control+Shift_K_
 
 What you'll get is a single file called something like `report.html`.
 Open it up to see a beautiful HTML version of the Rmd file you started with.
-This one file can be sent to a stakeholder, who can then open it up and read it.
+This file is all you need to send to a stakeholder
+for them to open and read your work.
 
 ![](04-initial-html.png)
 
-## The Cost of Simplicity: File Size & Transparency
+## The Costs of Simplicity: File Size & Transparency
 
 Unfortunately, this simplicity comes with two costs.
 
 ### File Size
 
-The first is _file size_.
+The first cost is _file size_.
 If you look at your report itself, you'll see that it's quite small:
-less than a kilobyte.
+less than 1kB.
 
 ![](05-r-markdown-filesize.png)
 
-But if you look at the HTML file, it's _more than 700 kilobytes_.
+But the HTML file is _more than 700kB_.
 
 ![](06-initial-html-filesize.png)
 
 So what changed?
 It's obviously not that HTML is 700x longer than markdown for the same text.
 
-Two things:
+Two things changed:
 
 1. There's now an embedded image (the plot).
 1. There are _scripts_ and _styling_ embedded in the file as well
-   (JavaScript and CSS content).
+   (JavaScript & CSS content).
 
-And you might be surprised
-at how much each of those affects the size of the file.
+We all know that images increase filesize.
+But it's actually the scripts and styling
+that account for most of the difference:
 
-| original size | take out the...   | new filesize | so it accounted for... |
+| original filesize | if we take out the...   | the new size is... | so it accounted for... |
 | ------------- | ----------------- | ------------ | ---------------------- |
 | 713 kB        | image             | 630 kB       | 83 kB                  |
 | 713 kB        | scripts + styling | 93 kB        | 620 kB!                |
@@ -136,18 +138,18 @@ right-click on the report and click _View Page Source_:
 ![](08-view-page-source.png)
 
 As you browse the page source, just under the title you'll see
-what's called _minified JavaScript_.
+what's called _minified code_.
 
 ![](09-minified-jquery.png)
 
-Let's talk through that for a moment.
+Let's talk through minified code for a moment.
 
 #### Minified JavaScript & CSS
 
 This small web page relies on a number of _JavaScript and CSS libraries_.
 One of them, the one depicted here, is a JS library called _jQuery_.
 
-Usually, when code (in any language) relies on a library,
+Usually, when code—in any language—relies on a library,
 you simply refer to it at the top of the page with one line.
 For example, if you have an R script that relies on the `lubridate` package,
 you might include a line like this at the top of your script:
@@ -156,31 +158,33 @@ you might include a line like this at the top of your script:
 library(lubridate)
 ```
 
-Now in your R script, that line relies on whoever's running your code
-having `lubridate` installed on their computer,
-or being able to install it easily from CRAN.
-But for an HTML report,
-where would jQuery be installed on your reader's computer?
-Or what is CRAN for JavaScript?
-To simplify all of that, and keep everything in one file,
-`report.html` _literally includes all of jQuery inside itself_.
+Then throughout your script, R knows what to do
+when you use functions from the `lubridate` package.
 
-But libraries are big, of course—sometimes really big.
-So this code is what's called a [minified][6] version of the library.
+But for that line to work, whoever's running your code
+has to have `lubridate` installed on their computer.
+So in the case of our HTML report—which uses jQuery
+much like we might use `lubridate`—where would the library be installed?
+
+To simplify all of that, and keep everything in one file,
+_literally all of jQuery is included in report.html_.
+
+But libraries are big, of course; [jQuery itself is 250kB][31].
+So we often use what's called a [minified][6] version of the library.
 White space, new lines, and comments are stripped out,
 and variable names are as short as possible.
 It's not meant to be readable; it's meant to save filespace.
 
 #### Images
 
-Likewise, images are actually included _within the text of the HTML document_,
+Likewise, images are included _within the text of the HTML document_,
 encoded as text.
 To see this, scroll down in the source to where you'd expect to see the picture:
 
 ![](10-image-as-text.png)
 
-You'll see that the picture is a png file, but it's encoded as a really long,
-otherwise meaningless text string.
+The picture is a png file, but it's encoded as a long (83k characters!),
+otherwise meaningless string.
 
 ## Practical Consequences: Diffing Files
 
@@ -188,33 +192,28 @@ All of this has consequences for your workflow,
 perhaps the biggest of which is that you can't diff files.
 
 If you don't use git much for version control,
-or you don't know the lingo,
-_diffing files_ just means comparing files (or contrasting them, technically)
+or you don't follow the terminology,
+_diffing files_ just means comparing files (or contrasting them)
 to look for _differences_.
-Diffing files is very useful when you ask questions like
-"What changed since the last time I ran this report?"
+Diffing files is good for answering questions like
+"What changed since the last time I ran this?"
 or "What have I accomplished since my last commit?"
-It's what you see when you pull up a git UI and it shows you what's changed.
+It's what you see when you pull up a git UI to see what's changed.
 
 The problem is that most interfaces won't diff large files automatically,
 and some won't diff them at all.
-For example, this is what GitHub Desktop shows when I try to diff my HTML:
+This is what GitHub Desktop shows when I try to diff the HTML we just created:
 
 ![](11-diff-too-large.png)
 
-But even when you can diff the files, all the gobbledeegook—both minified code
-and text-encoded images—makes it hard to make sense of the changes.
+Of course you can click _Show Diff_.
+But even when you _can_ diff the files, all the gobbledeegook—both minified code
+and text-encoded images—makes it harder to make sense of the changes.
 
 ## Intermission!
 
-To reduce file size and increase clarity while keeping things easy to share,
-you'll need 3 tips:
-
-| tip (see below)                  | solves...   |
-| -------------------------------- | ----------- |
-| code externalization             | clarity     |
-| content delivery networks (CDNs) | file size   |
-| file compression (.zip)          | ease of use |
+In a moment we'll walk through 3 tips to tidy up your HTML output
+and reduce your file size while keeping things easy to share.
 
 But before we do that I'd like to make just one change to our report.
 (If you're following along in GitHub, see [this commit][7].)
@@ -274,9 +273,17 @@ In this case, we're now up to 916 kilobytes, another increase of 203 kB!
 
 ![](14-size-with-dt.png)
 
+And now with that taken care of, we turn to the solution.
+As mentioned above we'll walk through 3 steps:
+
+| step (see below)                                                          | solves...    |
+| ------------------------------------------------------------------------- | ------------ |
+| [code externalization](#externalizing-code)                               | transparency |
+| [content delivery networks (CDNs)](#using-content-delivery-networks-cdns) | file size    |
+| [file compression (.zip)](#zip-your-files)                                | ease of use  |
+
 ## Externalizing Code
 
-Now for the solution.
 First, we address the _clarity_ of the code,
 so that you can diff files and meaningfully keep track of changes.
 
@@ -912,7 +919,7 @@ But it's important we run the script to remove local files "pre-commit,"
 because otherwise those libraries will live on in your commit history,
 bloating the repository forever.
 
-### Writing the Bash Script
+### Writing a Bash Script
 
 Now I don't actually know bash well, but that's what Google is for:
 
@@ -1132,3 +1139,4 @@ and easily understand what's changed.
 [28]: https://en.wikipedia.org/wiki/Cut_to_the_chase
 [29]: https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/pre-commit
 [30]: https://github.com/BenjaminWolfe/knitr-cdn-demo/commits/master
+[31]: https://mathiasbynens.be/demo/jquery-size
