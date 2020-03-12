@@ -35,7 +35,7 @@
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#externalizing-code&#34;&gt;Externalizing Code&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#using-content-delivery-networks-cdns&#34;&gt;Using Content Delivery Networks (CDNs)&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#getting-started&#34;&gt;Getting Started&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#getting-started-with-cdns&#34;&gt;Getting Started with CDNs&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#rounding-up-libraries&#34;&gt;Rounding Up Libraries&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#removing-them&#34;&gt;Removing Them&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#pause-what-weve-accomplished&#34;&gt;Pause: What We’ve Accomplished&lt;/a&gt;&lt;/li&gt;
@@ -279,36 +279,48 @@ As mentioned above we’ll walk through 3 steps:&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;externalizing-code&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Externalizing Code&lt;/h2&gt;
-&lt;p&gt;First, we address the &lt;em&gt;clarity&lt;/em&gt; of the code,
-so that you can diff files and meaningfully keep track of changes.&lt;/p&gt;
-&lt;p&gt;You’ll remember that the HTML file includes entire JavaScript libraries,
-minified and embedded within them.
-What we’re going to do is &lt;em&gt;externalize&lt;/em&gt; those libraries
-so the code and the content live in separate places.&lt;/p&gt;
+&lt;p&gt;As we’ve seen, your HTML file includes entire libraries of JS &amp;amp; CSS code in it:
+code that bloats the file,
+code that won’t appreciably change from one version to the next,
+code that you couldn’t read even if you wanted to, because it’s minified.&lt;/p&gt;
+&lt;p&gt;So the first thing to do is to &lt;em&gt;split that code out
+into its own JavaScript and CSS files&lt;/em&gt;.
+What’s left in the HTML file will then be &lt;em&gt;actual content&lt;/em&gt;.
+It will be small enough to diff and meaningful to diff.
+And if the libraries change, you can track that separately.&lt;/p&gt;
+&lt;p&gt;Let’s get to it.&lt;/p&gt;
 &lt;p&gt;At the end of the &lt;em&gt;YAML&lt;/em&gt; at the top of your file
 is a line that tells &lt;code&gt;knitr&lt;/code&gt; how to output results:&lt;/p&gt;
 &lt;pre class=&#34;yaml&#34;&gt;&lt;code&gt;output: html_document&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;We need to add to that so that &lt;code&gt;knitr&lt;/code&gt; no longer tries to keep everything
+&lt;p&gt;We need to change that so that &lt;code&gt;knitr&lt;/code&gt; no longer tries to keep everything
 in the same document:&lt;/p&gt;
 &lt;pre class=&#34;yaml&#34;&gt;&lt;code&gt;output:
   html_document:
     self_contained: false&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The difference is dramatic.
-Suddenly the HTML file is only 7 kB in size (down 99%!):&lt;/p&gt;
+&lt;p&gt;When we do, and re-knit, the change is striking.
+Suddenly the HTML file is only 7 kB (down 99%!):&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;15-shrunk-html.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;All of that content has been moved to a separate folder called &lt;code&gt;report_files&lt;/code&gt;.
-In a way, this is a wonderful thing.
-If you look at the &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a0e6044e03ad78a171448de58ba96eaa8f8ed22f&#34;&gt;diff from this commit&lt;/a&gt; in my GitHub repository,
-it’s now far more readable.
-Each library file shows up separately, and you can identify it easily
-by the filename:&lt;/p&gt;
+&lt;p&gt;It’s smaller because all the code has been moved to a separate folder,
+a folder called &lt;code&gt;report_files&lt;/code&gt;.
+This folder is normal; it’s what you get when you save a page off the internet,
+as we saw above.&lt;/p&gt;
+&lt;p&gt;Not only is the HTML file smaller,
+but the git diff is now a lot more readable.
+In the &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a0e6044e03ad78a171448de58ba96eaa8f8ed22f&#34;&gt;diff from this commit&lt;/a&gt; in GitHub, for example,
+each library file shows up separately,
+and you can identify each one by filename
+without looking at the contents:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;16-jquery-diff.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Personally I find this newfound clarity and readability refreshing.
-I encourage you to check out &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/a0e6044e03ad78a171448de58ba96eaa8f8ed22f/report.html&#34;&gt;how clean the new HTML is&lt;/a&gt;,
-either in my repo or on your own.&lt;/p&gt;
-&lt;p&gt;But on the other hand, we’ve worsened the filesize bloat more than four-fold.
+&lt;p&gt;And the HTML file itself is much more readable.
+I encourage you to check it out,
+either by viewing the source on own HTML file
+or &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/a0e6044e03ad78a171448de58ba96eaa8f8ed22f/report.html&#34;&gt;checking my repo&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;There is one significant downside, though.
+While the files are cleaner, smaller, and easier to diff,
+we’ve increased the overall filesize more than 4x.
 The new &lt;code&gt;report_files&lt;/code&gt; folder takes up 4.3 megs!&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;17-report-files-size.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Where does this size come from?&lt;/p&gt;
 &lt;p&gt;In our case, 3.7 of those megabytes come from &lt;a href=&#34;https://getbootstrap.com/&#34;&gt;the Bootstrap library&lt;/a&gt;,
 which bills itself as “the most popular HTML, CSS, and JS library in the world.”
 Basically, it makes our content look pretty.&lt;/p&gt;
@@ -323,28 +335,34 @@ you’ll want to pare down.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;using-content-delivery-networks-cdns&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Using Content Delivery Networks (CDNs)&lt;/h2&gt;
-&lt;p&gt;At this point you might have a question:&lt;/p&gt;
+&lt;p&gt;Putting aside the filesize issue for just a moment,
+at this point you might have a question:&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;If Boostrap is the most popular HTML, CSS, and JS library in the world,
-all these people can’t be hosting Bootstrap separately, can they?
+&lt;p&gt;If Boostrap is the most popular
+HTML, CSS, and JS library in the world—obviously use by a lot of people—all
+these people can’t be hosting Bootstrap separately, can they?
 There’s got to be a way to point to a common location.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;If you have that question (as I did), you would be right!
 And the way it’s done is called a Content Delivery Network, or CDN.&lt;/p&gt;
-&lt;p&gt;You can see an example of this on &lt;a href=&#34;https://getbootstrap.com/&#34;&gt;Bootstrap’s site&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;You can see it, for example, on &lt;a href=&#34;https://getbootstrap.com/&#34;&gt;Bootstrap’s site&lt;/a&gt;:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;19-bootstrap-cdn.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;The idea is simply to refer to these at the top of your page,
+&lt;p&gt;Bootstrap is providing URLs for common locations
+where they host the library for everyone.
+Developers can then point to these URLs at the top of their HTML code,
 much like you’d include &lt;code&gt;library(lubridate)&lt;/code&gt; at the top of an R script.&lt;/p&gt;
-&lt;div id=&#34;getting-started&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Getting Started&lt;/h3&gt;
-&lt;p&gt;Currently, your file does something similar.
-It includes a reference to the Bootstrap library (along with other resources)—&lt;/p&gt;
+&lt;div id=&#34;getting-started-with-cdns&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Getting Started with CDNs&lt;/h3&gt;
+&lt;p&gt;Currently, your file does something similar, not quite the same;
+it doesn’t use CDNs.
+It does point to Bootstrap and other libraries at the top—&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;20-local-library-references.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;—but the references are &lt;em&gt;local&lt;/em&gt;, pointing to files in the &lt;code&gt;report_files&lt;/code&gt; folder.
-What we need, then, is to &lt;em&gt;replace&lt;/em&gt; those references
-with references to the Bootstrap CDN.
-And of course we’ll go for not just Bootstrap, but as many of them as possible.&lt;/p&gt;
-&lt;p&gt;We’ll do this in three steps:&lt;/p&gt;
+&lt;p&gt;—but the library references are &lt;em&gt;local&lt;/em&gt;,
+pointing to files in the &lt;code&gt;report_files&lt;/code&gt; folder.
+What we want, then, is to &lt;em&gt;replace&lt;/em&gt; those references with CDNs.&lt;/p&gt;
+&lt;p&gt;Then we can delete the local versions we no longer need, and—back to
+the problem we were solving—we’ll have reduced the overall filesize.&lt;/p&gt;
+&lt;p&gt;So again:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;First we find all the libraries we’re referencing,
 and see which ones have CDNs we can use.&lt;/li&gt;

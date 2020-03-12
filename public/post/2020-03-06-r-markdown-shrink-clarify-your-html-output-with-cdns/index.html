@@ -28,7 +28,7 @@
   
     
   
-  <meta name="description" content="The Simplicity of Knitr’s HTML Output Example Setup  The Costs of Simplicity: File Size &amp; Transparency File Size Transparency  Practical Consequences: Diffing Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started Rounding Up Libraries Removing Them Pause: What We’ve Accomplished  Have a Script Do the Work Swapping in CDNs Removing Files Looping  Have Git Run the Script Writing a Bash Script Tweaking the R Script Troubleshooting Logging  Zip Your Files   The Simplicity of Knitr’s HTML Output Have you ever noticed that when you save a page from the internet, you get an HTML page plus an extra folder of supporting files?">
+  <meta name="description" content="The Simplicity of Knitr’s HTML Output Example Setup  The Costs of Simplicity: File Size &amp; Transparency File Size Transparency  Practical Consequences: Diffing Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started with CDNs Rounding Up Libraries Removing Them Pause: What We’ve Accomplished  Have a Script Do the Work Swapping in CDNs Removing Files Looping  Have Git Run the Script Writing a Bash Script Tweaking the R Script Troubleshooting Logging  Zip Your Files   The Simplicity of Knitr’s HTML Output Have you ever noticed that when you save a page from the internet, you get an HTML page plus an extra folder of supporting files?">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/2020-03-06-r-markdown-shrink-clarify-your-html-output-with-cdns/">
@@ -233,13 +233,13 @@
   <meta property="og:site_name" content="Benjamin E. Wolfe">
   <meta property="og:url" content="/post/2020-03-06-r-markdown-shrink-clarify-your-html-output-with-cdns/">
   <meta property="og:title" content="R Markdown: Shrink &amp; Tidy Up Your HTML Output with CDNs | Benjamin E. Wolfe">
-  <meta property="og:description" content="The Simplicity of Knitr’s HTML Output Example Setup  The Costs of Simplicity: File Size &amp; Transparency File Size Transparency  Practical Consequences: Diffing Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started Rounding Up Libraries Removing Them Pause: What We’ve Accomplished  Have a Script Do the Work Swapping in CDNs Removing Files Looping  Have Git Run the Script Writing a Bash Script Tweaking the R Script Troubleshooting Logging  Zip Your Files   The Simplicity of Knitr’s HTML Output Have you ever noticed that when you save a page from the internet, you get an HTML page plus an extra folder of supporting files?"><meta property="og:image" content="/img/benjamin.jpeg">
+  <meta property="og:description" content="The Simplicity of Knitr’s HTML Output Example Setup  The Costs of Simplicity: File Size &amp; Transparency File Size Transparency  Practical Consequences: Diffing Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started with CDNs Rounding Up Libraries Removing Them Pause: What We’ve Accomplished  Have a Script Do the Work Swapping in CDNs Removing Files Looping  Have Git Run the Script Writing a Bash Script Tweaking the R Script Troubleshooting Logging  Zip Your Files   The Simplicity of Knitr’s HTML Output Have you ever noticed that when you save a page from the internet, you get an HTML page plus an extra folder of supporting files?"><meta property="og:image" content="/img/benjamin.jpeg">
   <meta property="twitter:image" content="/img/benjamin.jpeg"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2020-03-06T00:00:00&#43;00:00">
     
-    <meta property="article:modified_time" content="2020-03-09T10:56:16-05:00">
+    <meta property="article:modified_time" content="2020-03-10T09:27:01-05:00">
   
 
   
@@ -270,7 +270,7 @@
   "headline": "R Markdown: Shrink \u0026 Tidy Up Your HTML Output with CDNs",
   
   "datePublished": "2020-03-06T00:00:00Z",
-  "dateModified": "2020-03-09T10:56:16-05:00",
+  "dateModified": "2020-03-10T09:27:01-05:00",
   
   "author": {
     "@type": "Person",
@@ -285,7 +285,7 @@
       "url": "img//"
     }
   },
-  "description": "The Simplicity of Knitr’s HTML Output Example Setup  The Costs of Simplicity: File Size \u0026amp; Transparency File Size Transparency  Practical Consequences: Diffing Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started Rounding Up Libraries Removing Them Pause: What We’ve Accomplished  Have a Script Do the Work Swapping in CDNs Removing Files Looping  Have Git Run the Script Writing a Bash Script Tweaking the R Script Troubleshooting Logging  Zip Your Files   The Simplicity of Knitr’s HTML Output Have you ever noticed that when you save a page from the internet, you get an HTML page plus an extra folder of supporting files?"
+  "description": "The Simplicity of Knitr’s HTML Output Example Setup  The Costs of Simplicity: File Size \u0026amp; Transparency File Size Transparency  Practical Consequences: Diffing Files Intermission! Adding the DT Library  Externalizing Code Using Content Delivery Networks (CDNs) Getting Started with CDNs Rounding Up Libraries Removing Them Pause: What We’ve Accomplished  Have a Script Do the Work Swapping in CDNs Removing Files Looping  Have Git Run the Script Writing a Bash Script Tweaking the R Script Troubleshooting Logging  Zip Your Files   The Simplicity of Knitr’s HTML Output Have you ever noticed that when you save a page from the internet, you get an HTML page plus an extra folder of supporting files?"
 }
 </script>
 
@@ -557,7 +557,7 @@
           Last updated on
       
     
-    2020-03-09
+    2020-03-10
   </span>
   
 
@@ -620,7 +620,7 @@
 </ul></li>
 <li><a href="#externalizing-code">Externalizing Code</a></li>
 <li><a href="#using-content-delivery-networks-cdns">Using Content Delivery Networks (CDNs)</a><ul>
-<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#getting-started-with-cdns">Getting Started with CDNs</a></li>
 <li><a href="#rounding-up-libraries">Rounding Up Libraries</a></li>
 <li><a href="#removing-them">Removing Them</a></li>
 <li><a href="#pause-what-weve-accomplished">Pause: What We’ve Accomplished</a></li>
@@ -864,36 +864,48 @@ As mentioned above we’ll walk through 3 steps:</p>
 </div>
 <div id="externalizing-code" class="section level2">
 <h2>Externalizing Code</h2>
-<p>First, we address the <em>clarity</em> of the code,
-so that you can diff files and meaningfully keep track of changes.</p>
-<p>You’ll remember that the HTML file includes entire JavaScript libraries,
-minified and embedded within them.
-What we’re going to do is <em>externalize</em> those libraries
-so the code and the content live in separate places.</p>
+<p>As we’ve seen, your HTML file includes entire libraries of JS &amp; CSS code in it:
+code that bloats the file,
+code that won’t appreciably change from one version to the next,
+code that you couldn’t read even if you wanted to, because it’s minified.</p>
+<p>So the first thing to do is to <em>split that code out
+into its own JavaScript and CSS files</em>.
+What’s left in the HTML file will then be <em>actual content</em>.
+It will be small enough to diff and meaningful to diff.
+And if the libraries change, you can track that separately.</p>
+<p>Let’s get to it.</p>
 <p>At the end of the <em>YAML</em> at the top of your file
 is a line that tells <code>knitr</code> how to output results:</p>
 <pre class="yaml"><code>output: html_document</code></pre>
-<p>We need to add to that so that <code>knitr</code> no longer tries to keep everything
+<p>We need to change that so that <code>knitr</code> no longer tries to keep everything
 in the same document:</p>
 <pre class="yaml"><code>output:
   html_document:
     self_contained: false</code></pre>
-<p>The difference is dramatic.
-Suddenly the HTML file is only 7 kB in size (down 99%!):</p>
+<p>When we do, and re-knit, the change is striking.
+Suddenly the HTML file is only 7 kB (down 99%!):</p>
 <p><img src="15-shrunk-html.png" /></p>
-<p>All of that content has been moved to a separate folder called <code>report_files</code>.
-In a way, this is a wonderful thing.
-If you look at the <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a0e6044e03ad78a171448de58ba96eaa8f8ed22f">diff from this commit</a> in my GitHub repository,
-it’s now far more readable.
-Each library file shows up separately, and you can identify it easily
-by the filename:</p>
+<p>It’s smaller because all the code has been moved to a separate folder,
+a folder called <code>report_files</code>.
+This folder is normal; it’s what you get when you save a page off the internet,
+as we saw above.</p>
+<p>Not only is the HTML file smaller,
+but the git diff is now a lot more readable.
+In the <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a0e6044e03ad78a171448de58ba96eaa8f8ed22f">diff from this commit</a> in GitHub, for example,
+each library file shows up separately,
+and you can identify each one by filename
+without looking at the contents:</p>
 <p><img src="16-jquery-diff.png" /></p>
-<p>Personally I find this newfound clarity and readability refreshing.
-I encourage you to check out <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/a0e6044e03ad78a171448de58ba96eaa8f8ed22f/report.html">how clean the new HTML is</a>,
-either in my repo or on your own.</p>
-<p>But on the other hand, we’ve worsened the filesize bloat more than four-fold.
+<p>And the HTML file itself is much more readable.
+I encourage you to check it out,
+either by viewing the source on own HTML file
+or <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/a0e6044e03ad78a171448de58ba96eaa8f8ed22f/report.html">checking my repo</a>.</p>
+<p>There is one significant downside, though.
+While the files are cleaner, smaller, and easier to diff,
+we’ve increased the overall filesize more than 4x.
 The new <code>report_files</code> folder takes up 4.3 megs!</p>
 <p><img src="17-report-files-size.png" /></p>
+<p>Where does this size come from?</p>
 <p>In our case, 3.7 of those megabytes come from <a href="https://getbootstrap.com/">the Bootstrap library</a>,
 which bills itself as “the most popular HTML, CSS, and JS library in the world.”
 Basically, it makes our content look pretty.</p>
@@ -908,28 +920,34 @@ you’ll want to pare down.</p>
 </div>
 <div id="using-content-delivery-networks-cdns" class="section level2">
 <h2>Using Content Delivery Networks (CDNs)</h2>
-<p>At this point you might have a question:</p>
+<p>Putting aside the filesize issue for just a moment,
+at this point you might have a question:</p>
 <blockquote>
-<p>If Boostrap is the most popular HTML, CSS, and JS library in the world,
-all these people can’t be hosting Bootstrap separately, can they?
+<p>If Boostrap is the most popular
+HTML, CSS, and JS library in the world—obviously use by a lot of people—all
+these people can’t be hosting Bootstrap separately, can they?
 There’s got to be a way to point to a common location.</p>
 </blockquote>
 <p>If you have that question (as I did), you would be right!
 And the way it’s done is called a Content Delivery Network, or CDN.</p>
-<p>You can see an example of this on <a href="https://getbootstrap.com/">Bootstrap’s site</a>:</p>
+<p>You can see it, for example, on <a href="https://getbootstrap.com/">Bootstrap’s site</a>:</p>
 <p><img src="19-bootstrap-cdn.png" /></p>
-<p>The idea is simply to refer to these at the top of your page,
+<p>Bootstrap is providing URLs for common locations
+where they host the library for everyone.
+Developers can then point to these URLs at the top of their HTML code,
 much like you’d include <code>library(lubridate)</code> at the top of an R script.</p>
-<div id="getting-started" class="section level3">
-<h3>Getting Started</h3>
-<p>Currently, your file does something similar.
-It includes a reference to the Bootstrap library (along with other resources)—</p>
+<div id="getting-started-with-cdns" class="section level3">
+<h3>Getting Started with CDNs</h3>
+<p>Currently, your file does something similar, not quite the same;
+it doesn’t use CDNs.
+It does point to Bootstrap and other libraries at the top—</p>
 <p><img src="20-local-library-references.png" /></p>
-<p>—but the references are <em>local</em>, pointing to files in the <code>report_files</code> folder.
-What we need, then, is to <em>replace</em> those references
-with references to the Bootstrap CDN.
-And of course we’ll go for not just Bootstrap, but as many of them as possible.</p>
-<p>We’ll do this in three steps:</p>
+<p>—but the library references are <em>local</em>,
+pointing to files in the <code>report_files</code> folder.
+What we want, then, is to <em>replace</em> those references with CDNs.</p>
+<p>Then we can delete the local versions we no longer need, and—back to
+the problem we were solving—we’ll have reduced the overall filesize.</p>
+<p>So again:</p>
 <ol style="list-style-type: decimal">
 <li>First we find all the libraries we’re referencing,
 and see which ones have CDNs we can use.</li>

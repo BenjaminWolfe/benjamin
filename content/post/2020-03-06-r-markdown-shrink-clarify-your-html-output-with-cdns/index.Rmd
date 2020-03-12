@@ -116,10 +116,10 @@ We all know that images increase filesize.
 But it's actually the scripts and styling
 that account for most of the difference:
 
-| original filesize | if we take out the...   | the new size is... | so it accounted for... |
-| ------------- | ----------------- | ------------ | ---------------------- |
-| 713 kB        | image             | 630 kB       | 83 kB                  |
-| 713 kB        | scripts + styling | 93 kB        | 620 kB!                |
+| original filesize | if we take out the... | the new size is... | so it accounted for... |
+| ----------------- | --------------------- | ------------------ | ---------------------- |
+| 713 kB            | image                 | 630 kB             | 83 kB                  |
+| 713 kB            | scripts + styling     | 93 kB              | 620 kB!                |
 
 ### Transparency
 
@@ -284,13 +284,18 @@ As mentioned above we'll walk through 3 steps:
 
 ## Externalizing Code
 
-First, we address the _clarity_ of the code,
-so that you can diff files and meaningfully keep track of changes.
+As we've seen, your HTML file includes entire libraries of JS & CSS code in it:
+code that bloats the file,
+code that won't appreciably change from one version to the next,
+code that you couldn't read even if you wanted to, because it's minified.
 
-You'll remember that the HTML file includes entire JavaScript libraries,
-minified and embedded within them.
-What we're going to do is _externalize_ those libraries
-so the code and the content live in separate places.
+So the first thing to do is to _split that code out
+into its own JavaScript and CSS files_.
+What's left in the HTML file will then be _actual content_.
+It will be small enough to diff and meaningful to diff.
+And if the libraries change, you can track that separately.
+
+Let's get to it.
 
 At the end of the _YAML_ at the top of your file
 is a line that tells `knitr` how to output results:
@@ -299,7 +304,7 @@ is a line that tells `knitr` how to output results:
 output: html_document
 ```
 
-We need to add to that so that `knitr` no longer tries to keep everything
+We need to change that so that `knitr` no longer tries to keep everything
 in the same document:
 
 ```yaml
@@ -308,28 +313,38 @@ output:
     self_contained: false
 ```
 
-The difference is dramatic.
-Suddenly the HTML file is only 7 kB in size (down 99%!):
+When we do, and re-knit, the change is striking.
+Suddenly the HTML file is only 7 kB (down 99%!):
 
 ![](15-shrunk-html.png)
 
-All of that content has been moved to a separate folder called `report_files`.
-In a way, this is a wonderful thing.
-If you look at the [diff from this commit][8] in my GitHub repository,
-it's now far more readable.
-Each library file shows up separately, and you can identify it easily
-by the filename:
+It's smaller because all the code has been moved to a separate folder,
+a folder called `report_files`.
+This folder is normal; it's what you get when you save a page off the internet,
+as we saw above.
+
+Not only is the HTML file smaller,
+but the git diff is now a lot more readable.
+In the [diff from this commit][8] in GitHub, for example,
+each library file shows up separately,
+and you can identify each one by filename
+without looking at the contents:
 
 ![](16-jquery-diff.png)
 
-Personally I find this newfound clarity and readability refreshing.
-I encourage you to check out [how clean the new HTML is][9],
-either in my repo or on your own.
+And the HTML file itself is much more readable.
+I encourage you to check it out,
+either by viewing the source on own HTML file
+or [checking my repo][9].
 
-But on the other hand, we've worsened the filesize bloat more than four-fold.
+There is one significant downside, though.
+While the files are cleaner, smaller, and easier to diff,
+we've increased the overall filesize more than 4x.
 The new `report_files` folder takes up 4.3 megs!
 
 ![](17-report-files-size.png)
+
+Where does this size come from?
 
 In our case, 3.7 of those megabytes come from [the Bootstrap library][10],
 which bills itself as "the most popular HTML, CSS, and JS library in the world."
@@ -348,35 +363,42 @@ you'll want to pare down.
 
 ## Using Content Delivery Networks (CDNs)
 
-At this point you might have a question:
+Putting aside the filesize issue for just a moment,
+at this point you might have a question:
 
-> If Boostrap is the most popular HTML, CSS, and JS library in the world,
-all these people can't be hosting Bootstrap separately, can they?
+> If Boostrap is the most popular
+HTML, CSS, and JS library in the world—obviously use by a lot of people—all
+these people can't be hosting Bootstrap separately, can they?
 There's got to be a way to point to a common location.
 
 If you have that question (as I did), you would be right!
 And the way it's done is called a Content Delivery Network, or CDN.
 
-You can see an example of this on [Bootstrap's site][10]:
+You can see it, for example, on [Bootstrap's site][10]:
 
 ![](19-bootstrap-cdn.png)
 
-The idea is simply to refer to these at the top of your page,
+Bootstrap is providing URLs for common locations
+where they host the library for everyone.
+Developers can then point to these URLs at the top of their HTML code,
 much like you'd include `library(lubridate)` at the top of an R script.
 
-### Getting Started
+### Getting Started with CDNs
 
-Currently, your file does something similar.
-It includes a reference to the Bootstrap library (along with other resources)—
+Currently, your file does something similar, not quite the same;
+it doesn't use CDNs.
+It does point to Bootstrap and other libraries at the top—
 
 ![](20-local-library-references.png)
 
-—but the references are _local_, pointing to files in the `report_files` folder.
-What we need, then, is to _replace_ those references
-with references to the Bootstrap CDN.
-And of course we'll go for not just Bootstrap, but as many of them as possible.
+—but the library references are _local_,
+pointing to files in the `report_files` folder.
+What we want, then, is to _replace_ those references with CDNs.
 
-We'll do this in three steps:
+Then we can delete the local versions we no longer need, and—back to
+the problem we were solving—we'll have reduced the overall filesize.
+
+So again:
 
 1. First we find all the libraries we're referencing,
    and see which ones have CDNs we can use.
