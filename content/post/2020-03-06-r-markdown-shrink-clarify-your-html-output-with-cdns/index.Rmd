@@ -118,8 +118,8 @@ that account for most of the difference:
 
 | original filesize | if we take out the... | the new size is... | so it accounted for... |
 | ----------------- | --------------------- | ------------------ | ---------------------- |
-| 713 kB            | image                 | 630 kB             | 83 kB                  |
-| 713 kB            | scripts + styling     | 93 kB              | 620 kB!                |
+| 713kB             | image                 | 630kB              | 83kB                   |
+| 713kB             | scripts + styling     | 93kB               | 620kB!                 |
 
 ### Transparency
 
@@ -269,7 +269,7 @@ And now the HTML is super pretty!
 I include this example to show that with every change
 to pretty up your report, add widgets or improve the styling,
 you're going to continue adding minified JS or CSS and increasing the filesize.
-In this case, we're now up to 916 kilobytes, another increase of 203 kB!
+In this case, we're now up to 916 kilobytes, another increase of 203kB!
 
 ![](14-size-with-dt.png)
 
@@ -314,7 +314,7 @@ output:
 ```
 
 When we do, and re-knit, the change is striking.
-Suddenly the HTML file is only 7 kB (down 99%!):
+Suddenly the HTML file is only 7kB (down 99%!):
 
 ![](15-shrunk-html.png)
 
@@ -385,40 +385,39 @@ much like you'd include `library(lubridate)` at the top of an R script.
 
 ### Getting Started with CDNs
 
-Currently, your file does something similar, not quite the same;
+Currently, your file does something similar, though not quite the same;
 it doesn't use CDNs.
-It does point to Bootstrap and other libraries at the top—
+It points to Bootstrap and other libraries at the top—
 
 ![](20-local-library-references.png)
 
 —but the library references are _local_,
 pointing to files in the `report_files` folder.
-What we want, then, is to _replace_ those references with CDNs.
+What we want is to replace those references with CDNs.
 
-Then we can delete the local versions we no longer need, and—back to
-the problem we were solving—we'll have reduced the overall filesize.
+Once we replace the local references,
+we can delete the local files.
+And then voilà!
+We've reduced the overall filesize.
 
-So again:
+So to preview the next few sections:
 
-1. First we find all the libraries we're referencing,
-   and see which ones have CDNs we can use.
-1. Then we swap the local references to CDNs
-   and remove the files that are no longer necessary.
-1. Lastly we'll automate the whole thing,
-   so that every time we check in changes to our repository
-   after knitting a report to HTML,
-   all of this happens automatically.
+1. First we'll [round up all the libraries we're referencing](#rounding-up-libraries),
+   and see which ones have CDNs.
+1. Then we'll [swap the references and remove the local files](#removing-local-files).
+1. Then we'll [script those steps in R](#have-a-script-do-the-work).
+1. Lastly we'll [automate the script](#have-git-run-the-script)
+   and forget about it.
+   Every time we check in changes, git will run the script automatically.
 
 ### Rounding Up Libraries
 
-This step might be different for your scenario.
-Maybe you're using HTML widgets, or maybe you're not using Bootstrap.
-I go through the process first because some of the code may be exactly the same,
-and second so you can follow it for your own report.
+First we round up the libraries our HTML file uses.
+Other HTML files may use different libraries,
+but this process should be the same, and is easy.
 
-So what are all the libraries we're using?
-As you saw in the most recent screenshot,
-this is what we're looking at:
+What are all the libraries we're using?
+As we've seen, they're listed near the top of the HTML page:
 
 ```html
 <script src="report_files/jquery-1.12.4/jquery.min.js"></script>
@@ -439,17 +438,19 @@ this is what we're looking at:
 <script src="report_files/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 ```
 
-Let's notice a few things about what we're looking at:
+Let's notice a few patterns here:
 
-* Each of these is either a _link_ (for a CSS file)
+* Each line is either a _link_ (for a CSS file)
   or a _script_ (for JavaScript).
-* The part we want to change is in quotes after `href=` or `src=`.
-* Each time it starts with `report_files/`,
-  since that's where all the local libraries are stored.
-* Each of them has [semantic versioning][11] (or _semver_): generally x.y.z,
-  where x is the major version, y the minor version, and z the current patch.
+* The part we want is in quotes after `href=` (for links)
+  or `src=` (for scripts).
+* Each reference starts with `report_files/`,
+  since that's where the libraries are stored.
+* Each library is _versioned_, with numbers like `x.y` or `x.y.z`.
+  (This is called [semantic versioning][11]:
+  `x` is the major version, `y` the minor version, and `z` the current patch.)
 
-With that in mind, let's write it a little more cleanly:
+With those patterns in mind, let's write this again:
 
 ```{r libraries, echo=F}
 libraries <- tribble(
@@ -473,18 +474,18 @@ libraries <- tribble(
 )
 
 libraries %>% 
-  knitr::kable(col.names = c("Filepath w/in report_files", "Version")) %>% 
+  knitr::kable(col.names = c("Simplified Filepath", "Version")) %>% 
   row_spec(c(1:5, 7:8, 12, 14), color = "black", background = "#c2ffca")
 ```
 
-I was able to find CDNs for the 9 _green_ rows,
+Now I was able to find CDNs for the 9 _green_ rows,
 simply by googling _[name of library] [version] CDN_ for each one.
 
 ![](21-google-jquery.png)
 
-Here, in order, are the ones I found.
-While I tried to match the versioning,
-if it was close sometimes I took what I could get.
+Here, in order, are the URLs I found.
+I tried to match the versioning,
+but if it was close I just used what I found.
 
 ```{r CDNs, echo=F}
 cdns <- tribble(
@@ -503,10 +504,10 @@ cdns %>%
   knitr::kable(col.names = c("CDN", "Version Googled", "Version Found"))
 ```
 
-### Removing Them
+### Removing Local Files
 
 To be clear, the next step is very straightforward.
-We simply have to replace the strings that look like this—
+We simply replace strings that look like this—
 
 ```
 report_files/bootstrap-3.3.5/css/bootstrap.min.css
@@ -519,33 +520,35 @@ https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css
 ```
 
 Then, since the file `report_files/bootstrap-3.3.5/css/bootstrap.min.css`
-is no longer needed, we can delete it from `report_files`.
+is no longer needed (for example), we can delete it.
 
-We're going to do these steps manually first, and then try scripting them.
+We'll follow these steps manually once through before scripting them.
 
-#### Manual Example
+#### Manual Steps
 
-So first open `report.html` in your favorite text editor:
+Start by opening `report.html` in a text editor:
 
 ![](22-open-report-html.png)
 
-Then delete the href:
+In the text editor, delete everything from `report_files/` to
+`bootstrap.min.css`—
 
 ![](23-delete-href.png)
 
-This is a great opportunity to take a look behind the scenes.
+—and for just a moment, try leaving it as a blank string.
+This is a great chance to see what Bootstrap actually _does_.
+
 Remember what the report looked like before you deleted that href:
 
 ![](24-with-bootstrap.png)
 
-If you save the report right now, with the href deleted out,
-and open it in Chrome, it looks like this instead:
+If you save the report right now,
+and open it in Chrome, instead it looks like this:
 
 ![](25-without-bootstrap.png)
 
-Seeing this helps you understand what Bootstrap was doing for our report,
-and it also helps verify when we fix it.
-Now copy-paste in the URL of the CDN—
+Now that you've seen what you're missing without `bootstrap`,
+copy-paste in the URL of the CDN—
 
 ![](26-copy-paste-cdn.png)
 
@@ -555,8 +558,8 @@ The CDN worked.
 
 ![](24-with-bootstrap.png)
 
-Since the CDN worked, we no longer need the file
-`report_files/bootstrap-3.3.5/css/bootstrap.min.css` and we can delete it.
+And since the CDN worked, we can delete the file
+`report_files/bootstrap-3.3.5/css/bootstrap.min.css`.
 
 ![](26-delete-bootstrap.png)
 
@@ -568,7 +571,8 @@ In cooking-show style, I'll simply pull the completed pie from the oven
 and show you what it looks like.
 
 This is the section right under the title in the [HTML file][12].
-You can copy-paste them into your file if you're following along at home.
+You can just copy-paste them into your file
+if you don't want to go line by line.
 
 ```html
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -590,13 +594,20 @@ You can copy-paste them into your file if you're following along at home.
 <script src="report_files/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 ```
 
-#### Deleting Files
+#### Pruning More Aggressively
 
 Now, in the previous section after we deleted `bootstrap.min.css`,
-we only deleted _that one file_, but we left the rest standing.
-But we don't have to be that careful.
+we only deleted _that one file_.
+But Bootstrap includes a lot of files.
+Even just the `css` folder has at least 40!
 
-You'll notice there are just 7 local references left in `report_files`:
+![](39-rest-of-bootstrap.png)
+
+But we don't have to be that surgical.
+The local Bootstrap library isn't referred to at all anymore,
+so we can delete the whole folder.
+
+In fact, at this point there are just 7 local references left in `report_files`:
 
 * `navigation-1.1/tabsets.js`
 * `htmlwidgets-1.5.1/htmlwidgets.js`
@@ -607,8 +618,8 @@ You'll notice there are just 7 local references left in `report_files`:
 * `crosstalk-1.0.0/js/crosstalk.min.js`
 
 Why not just keep those files and delete the rest?
-You can do this manually any way you want to,
-but it's easiest for me to consolidate the important files to a temp directory,
+
+For example, simply consolidate these files to a temp directory,
 
 ![](27-temp-dir.png)
 
@@ -620,27 +631,29 @@ and then move the important files back.
 
 ![](29-moving-them-back.png)
 
-Please notice along with the important files
-I also kept the folder `figure-html`,
-since that's where our plot lives!
-Whatever script we write will have to find that as well.
+One more thing to note!
+
+In these last screenshots, I also held onto the folder `figure-html`;
+that's where our plot lives!
+
+Just remember that whatever script we write
+will have to solve for `figure-html` as well.
 
 ### Pause: What We've Accomplished
 
-I want to take a moment to celebrate our successes.
-First, if you open your HTML file in Chrome, you'll find that everything works.
-We've replaced the local references with CDNs,
-and we truly no longer needed the local files!
+Before moving on, let's take a moment to celebrate our successes.
+First, if you open your HTML file in Chrome,
+you'll see that _everything works_.
+We truly no longer needed the local files!
 
-Second, the `report_files` folder is now only 435 kB:
-90% smaller than the original folder,
-and less than half the size of the original file
-before we split out the libraries.
+Second, the `report_files` folder is now only _435kB_:
+90% smaller than the earlier `report_files` folder,
+and less than half the size of the HTML file we started with.
 
 ![](30-shrunk-folder.png)
 
 If you don't care to script or automate the process,
-feel free to skip down to _Zip Your Files_ and call it good!
+feel free to skip down to [Zip Your Files](#zip-your-files) and call it good!
 
 ## Have a Script Do the Work
 
@@ -657,6 +670,14 @@ If you're impatient and want to skip to the end, go for it!
 ### Swapping in CDNs
 
 First we'll do some setup work that should be fairly self-explanatory.
+
+For this next section, if you're not familiar with the `here` package,
+I recommend [Jenny Bryan][13]'s ode,
+"[I love the here package. Here's why.][14]"
+
+Or just set `html_file` to wherever `report.html` lives—e.g.
+`/Users/benjamin/report.html`—but
+without the `.html` file extension.
 
 ```{r first_pass, eval=F}
 library(tidyverse)
@@ -700,14 +721,9 @@ dependency_dir <- "report_files"
 page_contents <- read_lines(fullpath)
 ```
 
-Note: If you're not familiar with the `here` package,
-I highly recommend [Jenny Bryan][13]'s ode,
-"[I love the here package. Here's why.][14]"
-In this case `html_file` should be wherever `report.html` lives
-(e.g. `/Users/benjamin/Documents/report.html`),
-but without the `.html` file extension.
-
 Now let's make the replacements.
+Here [purrr::reduce2][15] is the workhorse;
+you'll see a deeper explanation below.
 
 ```{r replacements, eval=F}
 # the actual strings we're replacing always start with report_files/
@@ -728,8 +744,8 @@ page_contents <-
 write_lines(page_contents, fullpath)
 ```
 
-Here [purrr::reduce2][15] is the work horse.
-It runs through our replacements iteratively, as if we'd written it like this:
+[purrr::reduce2][15] runs through our replacements iteratively,
+as if we'd written it like this:
 
 ```{r replace2, eval=F}
 page_contents <-
@@ -745,12 +761,24 @@ page_contents <-
 And we use `write_lines` from the `readr` package (loaded with the `tidyverse`)
 to write the contents back to the HTML file.
 
-### Removing Files
+### Listing Files to Delete
 
 Now that we've swapped local references for CDNs,
 we can go about deleting files.
-First we'll want to decide what we need to keep,
-and this function will do that for us:
+
+[As described above](#removing-local-files),
+we'll do that by first deciding which files to _keep_,
+and then deleting the rest.
+
+To decide which files to keep,
+we'll loop through the contents of the file
+and capture any remaining references with the [regular expression][32]
+`report_files/([^\"]+)`:
+
+* the string `report_files/`,
+* followed by [anything but quotes][34] `[^\"]`,
+* [one or more times][35] `+`.
+* We use a [capture group][33] `()` to get just the part after `report_files/`.
 
 ```{r get_remaining, eval=F}
 get_remaining <- function(page_contents) {
@@ -762,18 +790,17 @@ get_remaining <- function(page_contents) {
 }
 ```
 
-Here remember what you're looking for is `report_files`,
-followed by a slash `/`, followed by a partial filepath.
-This function defines that partial filepath by the regular expression `[^\"]+`,
-which is one way to say "any character but a quotation mark, one or more times."
-For more on regular expressions and how I used them here,
+For more on regular expressions
 see the [stringr documentation][16], especially the page on [str_match][17].
+Or see https://www.regular-expressions.info/ for a full tutorial.
 
-To actually delete the files,
-I turn to the [fs package][18].
+### Deleting Files
+
+To actually delete the files
+we'll use the [fs package][18].
 It has intuitively named, vectorized functions like
 
-* [path][19] to construct a filepath,
+* [path][19] to construct filepaths,
 * [dir_ls][20] to list the files in a directory, and
 * [file_delete][21] to delete files.
 
@@ -794,11 +821,15 @@ remove_these <-
 file_delete(remove_these)
 ```
 
-### Looping
+### Looping through Multiple Reports
 
-Now let's say you might have more than one HTML files—not just `report.html`.
-You could wrap everything we just did in a function,
-and run that function for all the relevant files in a particular directory.
+Now let's say we have more than one HTML file—not just `report.html`.
+Let's say they're all in one directory, including subfolders.
+Can we handle them all at once?
+
+Sure we can!
+We wrap the code above in a function,
+and run that function for all the reports.
 
 Let's call the function `cdnify`:
 
@@ -909,11 +940,15 @@ walk(
 
 ## Have Git Run the Script
 
-Now that we've scripted the whole process,
-I'd prefer not to have to think about it at all.
+We've now scripted the whole process.
+The very _best_ solution, though,
+would include automating the script so we never had to think about it again.
+If all our reports were in a git repository, for example—if that
+were the folder our script used—then maybe
+git could run the script with each commit.
 
-We can accomplish that goal by creating what's called a [git hook][23].
-Git hooks are bash scripts that run when you do things in git;
+And that's exactly what we can do using a feature called [git hooks][23].
+_Git hooks_ are bash scripts that run when you do things in git;
 you can write hooks that run automatically before a commit,
 before you rebase, or before you push changes, for example.
 In this case, we can tell the bash script where to find our R script,
@@ -1162,3 +1197,7 @@ and easily understand what's changed.
 [29]: https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/pre-commit
 [30]: https://github.com/BenjaminWolfe/knitr-cdn-demo/commits/master
 [31]: https://mathiasbynens.be/demo/jquery-size
+[32]: https://www.regular-expressions.info/
+[33]: https://www.regular-expressions.info/brackets.html
+[34]: https://www.regular-expressions.info/charclass.html
+[35]: https://www.regular-expressions.info/repeat.html
