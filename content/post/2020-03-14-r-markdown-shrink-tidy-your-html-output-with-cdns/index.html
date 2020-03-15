@@ -1,0 +1,1217 @@
+---
+title: "R Markdown: Shrink & Tidy Your HTML Output with CDNs"
+author: Benjamin Wolfe
+date: '2020-03-14'
+slug: []
+categories: []
+tags:
+  - R Markdown
+  - HTML
+  - Reproducibility
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-03-15T09:26:00-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 3
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#the-simplicity-of-knitrs-html-output">The Simplicity of Knitr’s HTML Output</a><ul>
+<li><a href="#example-setup">Example Setup</a></li>
+</ul></li>
+<li><a href="#the-costs-of-simplicity-file-size-transparency">The Costs of Simplicity: File Size &amp; Transparency</a><ul>
+<li><a href="#file-size">File Size</a></li>
+<li><a href="#transparency">Transparency</a></li>
+</ul></li>
+<li><a href="#practical-consequences-diffing-files">Practical Consequences: Diffing Files</a></li>
+<li><a href="#intermission">Intermission!</a><ul>
+<li><a href="#adding-the-dt-library">Adding the DT Library</a></li>
+</ul></li>
+<li><a href="#externalizing-code">Externalizing Code</a></li>
+<li><a href="#using-content-delivery-networks-cdns">Using Content Delivery Networks (CDNs)</a><ul>
+<li><a href="#getting-started-with-cdns">Getting Started with CDNs</a></li>
+<li><a href="#rounding-up-libraries">Rounding Up Libraries</a></li>
+<li><a href="#removing-local-files">Removing Local Files</a></li>
+<li><a href="#pause-what-weve-accomplished">Pause: What We’ve Accomplished</a></li>
+</ul></li>
+<li><a href="#zip-your-files">Zip Your Files</a></li>
+<li><a href="#have-a-script-do-the-work">Have a Script Do the Work</a><ul>
+<li><a href="#swapping-in-cdns">Swapping in CDNs</a></li>
+<li><a href="#listing-files-to-delete">Listing Files to Delete</a></li>
+<li><a href="#deleting-files">Deleting Files</a></li>
+<li><a href="#looping-through-multiple-reports">Looping through Multiple Reports</a></li>
+</ul></li>
+<li><a href="#have-git-run-the-script">Have Git Run the Script</a><ul>
+<li><a href="#writing-a-bash-script">Writing a Bash Script</a></li>
+<li><a href="#passing-an-argument-to-the-r-script">Passing an Argument to the R Script</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#logging-messaging">Logging / Messaging</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="the-simplicity-of-knitrs-html-output" class="section level2">
+<h2>The Simplicity of Knitr’s HTML Output</h2>
+<p>Have you ever noticed that when you save a page from the internet,
+you get an HTML page <em>plus</em> an extra folder of supporting files?</p>
+<p>For example, right-click on my website and click “Save As…,”</p>
+<p><img src="37-save-blog.png" /></p>
+<p>and this is what you get:</p>
+<p><img src="38-saved-blog.png" /></p>
+<p>But when you when you render an <a href="https://rmarkdown.rstudio.com/">R Markdown</a> file as HTML,
+instead it comes out as a single HTML file, with no folder of supporting files?</p>
+<p>If you haven’t noticed this difference, or you don’t know what I mean,
+we’ll walk through a <a href="https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html">minimal reproducible example</a> below
+to better understand it.</p>
+<p>This simplicity makes your output very easy to share with stakeholders.
+But it has its drawbacks, and we’ll use the same example
+later in the post to see those as well.
+Then we’ll spend time exploring ways around those drawbacks.</p>
+<p>Since you might not be at your laptop to actually run this example,
+you can also find it in a separate <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo">GitHub repository</a>.
+You can follow the repository <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commits/master">commit by commit</a>
+as we explore <code>knitr</code>’s simplicity, the down sides of that simplicity,
+and what can be done about those down sides.
+To <a href="https://en.wikipedia.org/wiki/Cut_to_the_chase">cut to the chase</a>,
+you can just look at my <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/cdnify.R">cdnify.R</a> and <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/pre-commit">pre-commit</a> scripts there.</p>
+<p>This upcoming section is covered by the <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a553b780b1bfd37daa1b05e6ec48e022d7850d4f">third</a> and <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/7b79bc5bd333e12e5146953b646aff364f827eef">fourth commits</a>.</p>
+<div id="example-setup" class="section level3">
+<h3>Example Setup</h3>
+<p>In RStudio, from the <em>New File</em> menu at the top left, choose <em>R Markdown…</em>.</p>
+<p><img src="01-menu-r-markdown.png" /></p>
+<p>In the dialog box, feel free to add a title. Then select <em>HTML</em> and hit <em>OK</em>.</p>
+<p><img src="02-dialog-html.png" /></p>
+<p>Save the new file (I called it <code>Report.Rmd</code>) and then “knit” it,
+either using the <em>knit</em> button at top or by hitting <em>Control+Shift_K</em>
+(<em>Command+Shift+K</em> on a Mac).</p>
+<p><img src="03-knit-document.png" /></p>
+<p>What you’ll get is a single file called something like <code>report.html</code>.
+Open it up to see a beautiful HTML version of the Rmd file you started with.
+This file is all you need to send to a stakeholder
+for them to open and read your work.</p>
+<p><img src="04-initial-html.png" /></p>
+</div>
+</div>
+<div id="the-costs-of-simplicity-file-size-transparency" class="section level2">
+<h2>The Costs of Simplicity: File Size &amp; Transparency</h2>
+<p>Unfortunately, this simplicity comes with two costs.</p>
+<div id="file-size" class="section level3">
+<h3>File Size</h3>
+<p>The first cost is <em>file size</em>.
+If you look at your report itself, you’ll see that it’s quite small:
+less than 1kB.</p>
+<p><img src="05-r-markdown-filesize.png" /></p>
+<p>But the HTML file is <em>more than 700kB</em>.</p>
+<p><img src="06-initial-html-filesize.png" /></p>
+<p>So what changed?
+It’s obviously not that HTML is 700x longer than markdown for the same text.</p>
+<p>Two things changed:</p>
+<ol style="list-style-type: decimal">
+<li>There’s now an embedded image (the plot).</li>
+<li>There are <em>scripts</em> and <em>styling</em> embedded in the file as well
+(JavaScript &amp; CSS content).</li>
+</ol>
+<p>We all know that images increase filesize.
+But it’s actually the scripts and styling
+that account for most of the difference:</p>
+<table>
+<thead>
+<tr class="header">
+<th>original filesize</th>
+<th>if we take out the…</th>
+<th>the new size is…</th>
+<th>so it accounted for…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>713kB</td>
+<td>image</td>
+<td>630kB</td>
+<td>83kB</td>
+</tr>
+<tr class="even">
+<td>713kB</td>
+<td>scripts + styling</td>
+<td>93kB</td>
+<td>620kB!</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="transparency" class="section level3">
+<h3>Transparency</h3>
+<p>The second cost of putting everything in one easy-to-share HTML file
+is <em>transparency</em>.</p>
+<p>To see this cost, let’s peel back the curtain a little on the HTML file.
+If you’re viewing the report in the RStudio viewer,
+go to the top left and click <em>Open in Browser</em>:</p>
+<p><img src="07-open-in-browser.png" /></p>
+<p>Then with the report open in your browser of choice,
+right-click on the report and click <em>View Page Source</em>:</p>
+<p><img src="08-view-page-source.png" /></p>
+<p>As you browse the page source, just under the title you’ll see
+what’s called <em>minified code</em>.</p>
+<p><img src="09-minified-jquery.png" /></p>
+<p>Let’s talk through minified code for a moment.</p>
+<div id="minified-javascript-css" class="section level4">
+<h4>Minified JavaScript &amp; CSS</h4>
+<p>This small web page relies on a number of <em>JavaScript and CSS libraries</em>.
+One of them, the one depicted here, is a JS library called <em>jQuery</em>.</p>
+<p>Usually, when code—in any language—relies on a library,
+you simply refer to it at the top of the page with one line.
+For example, if you have an R script that relies on the <code>lubridate</code> package,
+you might include a line like this at the top of your script:</p>
+<pre class="r"><code>library(lubridate)</code></pre>
+<p>Then throughout your script, R knows what to do
+when you use functions from the <code>lubridate</code> package.</p>
+<p>But for that line to work, whoever’s running your code
+has to have <code>lubridate</code> installed on their computer.
+So in the case of our HTML report—which uses jQuery
+much like we might use <code>lubridate</code>—where would the library be installed?</p>
+<p>To simplify all of that, and keep everything in one file,
+<em>literally all of jQuery is included in report.html</em>.</p>
+<p>But libraries are big, of course; <a href="https://mathiasbynens.be/demo/jquery-size">jQuery itself is 250kB</a>.
+So we often use what’s called a <a href="https://en.wikipedia.org/wiki/Minification_(programming)">minified</a> version of the library.
+White space, new lines, and comments are stripped out,
+and variable names are as short as possible.
+It’s not meant to be readable; it’s meant to save filespace.</p>
+</div>
+<div id="images" class="section level4">
+<h4>Images</h4>
+<p>Likewise, images are included <em>within the text of the HTML document</em>,
+encoded as text.
+To see this, scroll down in the source to where you’d expect to see the picture:</p>
+<p><img src="10-image-as-text.png" /></p>
+<p>The picture is a png file, but it’s encoded as a long (83k characters!),
+otherwise meaningless string.</p>
+</div>
+</div>
+</div>
+<div id="practical-consequences-diffing-files" class="section level2">
+<h2>Practical Consequences: Diffing Files</h2>
+<p>All of this has consequences for your workflow,
+perhaps the biggest of which is that you can’t diff files.</p>
+<p>If you don’t use git much for version control,
+or you don’t follow the terminology,
+<em>diffing files</em> just means comparing files (or contrasting them)
+to look for <em>differences</em>.
+Diffing files is good for answering questions like
+“What changed since the last time I ran this?”
+or “What have I accomplished since my last commit?”
+It’s what you see when you pull up a git UI to see what’s changed.</p>
+<p>The problem is that most interfaces won’t diff large files automatically,
+and some won’t diff them at all.
+This is what GitHub Desktop shows when I try to diff the HTML we just created:</p>
+<p><img src="11-diff-too-large.png" /></p>
+<p>Of course you can click <em>Show Diff</em>.
+But even when you <em>can</em> diff the files, all the gobbledeegook—both minified code
+and text-encoded images—makes it harder to make sense of the changes.</p>
+</div>
+<div id="intermission" class="section level2">
+<h2>Intermission!</h2>
+<p>In a moment we’ll walk through 3 tips to tidy up your HTML output
+and reduce your file size while keeping things easy to share.</p>
+<p>But before we do that I’d like to make just one change to our report.
+(If you’re following along in GitHub, see <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/fb3c31288afce993a5599f09a55fd0223a77ec97">this commit</a>.)
+You can skip this section if you like.
+All we’re doing is making the dataset summary section a little prettier.</p>
+<div id="adding-the-dt-library" class="section level3">
+<h3>Adding the DT Library</h3>
+<p>Here’s what the dataset summary looks like right now:</p>
+<p><img src="12-summary-cars.png" /></p>
+<p>It’s functional and informative in the aggregate, though a little plain.
+But let’s say our client wants to be able to browse the actual data,
+and let’s say they like things to look a little prettier.</p>
+<p>For that we use the <code>DT</code> library, which takes just 3 lines of code.
+First make sure you’ve installed it:</p>
+<pre class="r"><code>install.packages(&quot;DT&quot;)</code></pre>
+<p>Then add a <code>library</code> call to the <code>setup</code> code chunk in your report:</p>
+<pre><code>```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(DT) # add this line
+```</code></pre>
+<p>And finally change the <code>cars</code> code chunk from this—</p>
+<pre><code>```{r cars}
+summary(cars)
+```</code></pre>
+<p>—to this:</p>
+<pre><code>```{r cars}
+datatable(cars)
+```</code></pre>
+<p>And now the HTML is super pretty!</p>
+<p><img src="13-dt-cars.png" /></p>
+<p>I include this example to show that with every change
+to pretty up your report, add widgets or improve the styling,
+you’re going to continue adding minified JS or CSS and increasing the filesize.
+In this case, we’re now up to 916 kilobytes, another increase of 203kB!</p>
+<p><img src="14-size-with-dt.png" /></p>
+<p>And now with that taken care of, we turn to the solution.
+As mentioned above we’ll walk through 3 steps:</p>
+<table>
+<thead>
+<tr class="header">
+<th>step (see below)</th>
+<th>solves…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#externalizing-code">code externalization</a></td>
+<td>transparency</td>
+</tr>
+<tr class="even">
+<td><a href="#using-content-delivery-networks-cdns">content delivery networks (CDNs)</a></td>
+<td>file size</td>
+</tr>
+<tr class="odd">
+<td><a href="#zip-your-files">file compression (.zip)</a></td>
+<td>ease of use</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="externalizing-code" class="section level2">
+<h2>Externalizing Code</h2>
+<p>As we’ve seen, your HTML file includes entire libraries of JS &amp; CSS code in it:
+code that bloats the file,
+code that won’t appreciably change from one version to the next,
+code that you couldn’t read even if you wanted to, because it’s minified.</p>
+<p>So the first thing to do is to <em>split that code out
+into its own JavaScript and CSS files</em>.
+What’s left in the HTML file will then be <em>actual content</em>.
+It will be small enough to diff and meaningful to diff.
+And if the libraries change, you can track that separately.</p>
+<p>Let’s get to it.</p>
+<p>At the end of the <em>YAML</em> at the top of your file
+is a line that tells <code>knitr</code> how to output results:</p>
+<pre class="yaml"><code>output: html_document</code></pre>
+<p>We need to change that so that <code>knitr</code> no longer tries to keep everything
+in the same document:</p>
+<pre class="yaml"><code>output:
+  html_document:
+    self_contained: false</code></pre>
+<p>When we do, and re-knit, the change is striking.
+Suddenly the HTML file is only 7kB (down 99%!):</p>
+<p><img src="15-shrunk-html.png" /></p>
+<p>It’s smaller because all the code has been moved to a separate folder,
+a folder called <code>report_files</code>.
+This folder is normal; it’s what you get when you save a page off the internet,
+as we saw above.</p>
+<p>Not only is the HTML file smaller,
+but the git diff is now a lot more readable.
+In the <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/commit/a0e6044e03ad78a171448de58ba96eaa8f8ed22f">diff from this commit</a> in GitHub, for example,
+each library file shows up separately,
+and you can identify each one by filename
+without looking at the contents:</p>
+<p><img src="16-jquery-diff.png" /></p>
+<p>And the HTML file itself is much more readable.
+I encourage you to check it out,
+either by viewing the source on own HTML file
+or <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/a0e6044e03ad78a171448de58ba96eaa8f8ed22f/report.html">checking my repo</a>.</p>
+<p>There is one significant downside, though.
+While the files are cleaner, smaller, and easier to diff,
+we’ve increased the overall filesize more than 4x.
+The new <code>report_files</code> folder takes up 4.3 megs!</p>
+<p><img src="17-report-files-size.png" /></p>
+<p>Where does this size come from?</p>
+<p>In our case, 3.7 of those megabytes come from <a href="https://getbootstrap.com/">the Bootstrap library</a>,
+which bills itself as “the most popular HTML, CSS, and JS library in the world.”
+Basically, it makes our content look pretty.</p>
+<p><img src="18-bootstrap-filesize.png" /></p>
+<p>Now, filesize may not be an issue for you.
+If you host your files on a web server or shared file system,
+you might just send links.
+Sending links is usually the best way to share content anyway.</p>
+<p>But if you have to send attachments,
+or if you send links but your shared space has storage restrictions,
+you’ll want to pare down.</p>
+</div>
+<div id="using-content-delivery-networks-cdns" class="section level2">
+<h2>Using Content Delivery Networks (CDNs)</h2>
+<p>Putting aside the filesize issue for just a moment,
+at this point you might have a question:</p>
+<blockquote>
+<p>If Boostrap is the most popular
+HTML, CSS, and JS library in the world—obviously use by a lot of people—all
+these people can’t be hosting Bootstrap separately, can they?
+There’s got to be a way to point to a common location.</p>
+</blockquote>
+<p>If you have that question (as I did), you would be right!
+And the way it’s done is called a Content Delivery Network, or CDN.</p>
+<p>You can see it, for example, on <a href="https://getbootstrap.com/">Bootstrap’s site</a>:</p>
+<p><img src="19-bootstrap-cdn.png" /></p>
+<p>Bootstrap is providing URLs for common locations
+where they host the library for everyone.
+Developers can then point to these URLs at the top of their HTML code,
+much like you’d include <code>library(lubridate)</code> at the top of an R script.</p>
+<div id="getting-started-with-cdns" class="section level3">
+<h3>Getting Started with CDNs</h3>
+<p>Currently, your file does something similar, though not quite the same;
+it doesn’t use CDNs.
+It points to Bootstrap and other libraries at the top—</p>
+<p><img src="20-local-library-references.png" /></p>
+<p>—but the library references are <em>local</em>,
+pointing to files in the <code>report_files</code> folder.
+What we want is to replace those references with CDNs.</p>
+<p>Once we replace the local references,
+we can delete the local files.
+And then voilà!
+We’ve reduced the overall filesize.</p>
+<p>So to preview the next few sections:</p>
+<ol style="list-style-type: decimal">
+<li>First we’ll <a href="#rounding-up-libraries">round up all the libraries we’re referencing</a>,
+and see which ones have CDNs.</li>
+<li>Then we’ll <a href="#removing-local-files">swap the references and remove the local files</a>.</li>
+<li>Then we’ll <a href="#have-a-script-do-the-work">script those steps in R</a>.</li>
+<li>Lastly we’ll <a href="#have-git-run-the-script">automate the script</a>
+and forget about it.
+Every time we check in changes, git will run the script automatically.</li>
+</ol>
+</div>
+<div id="rounding-up-libraries" class="section level3">
+<h3>Rounding Up Libraries</h3>
+<p>First we round up the libraries our HTML file uses.
+Other HTML files may use different libraries,
+but this process should be the same, and is easy.</p>
+<p>What are all the libraries we’re using?
+As we’ve seen, they’re listed near the top of the HTML page:</p>
+<pre class="html"><code>&lt;script src=&quot;report_files/jquery-1.12.4/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;report_files/bootstrap-3.3.5/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;script src=&quot;report_files/bootstrap-3.3.5/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;report_files/bootstrap-3.3.5/shim/html5shiv.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;report_files/bootstrap-3.3.5/shim/respond.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;report_files/navigation-1.1/tabsets.js&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;report_files/highlightjs-9.12.0/default.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;script src=&quot;report_files/highlightjs-9.12.0/highlight.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;report_files/htmlwidgets-1.5.1/htmlwidgets.js&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;report_files/datatables-css-0.0.0/datatables-crosstalk.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;script src=&quot;report_files/datatables-binding-0.11/datatables.js&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;report_files/dt-core-1.10.19/css/jquery.dataTables.min.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;link href=&quot;report_files/dt-core-1.10.19/css/jquery.dataTables.extra.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;script src=&quot;report_files/dt-core-1.10.19/js/jquery.dataTables.min.js&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;report_files/crosstalk-1.0.0/css/crosstalk.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;script src=&quot;report_files/crosstalk-1.0.0/js/crosstalk.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>Let’s notice a few patterns here:</p>
+<ul>
+<li>Each line is either a <em>link</em> (for a CSS file)
+or a <em>script</em> (for JavaScript).</li>
+<li>The part we want is in quotes after <code>href=</code> (for links)
+or <code>src=</code> (for scripts).</li>
+<li>Each reference starts with <code>report_files/</code>,
+since that’s where the libraries are stored.</li>
+<li>Each library is <em>versioned</em>, with numbers like <code>x.y</code> or <code>x.y.z</code>.
+(This is called <a href="https://semver.org/">semantic versioning</a>:
+<code>x</code> is the major version, <code>y</code> the minor version, and <code>z</code> the current patch.)</li>
+</ul>
+<p>With those patterns in mind, let’s write this again:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Simplified Filepath
+</th>
+<th style="text-align:left;">
+Version
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+jquery-x.y.z/jquery.min.js
+</td>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+1.12.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+bootstrap-x.y.z/css/bootstrap.min.css
+</td>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+3.3.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+bootstrap-x.y.z/js/bootstrap.min.js
+</td>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+3.3.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+bootstrap-x.y.z/shim/html5shiv.min.js
+</td>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+3.3.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+bootstrap-x.y.z/shim/respond.min.js
+</td>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+3.3.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+navigation-x.y/tabsets.js
+</td>
+<td style="text-align:left;">
+1.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+highlightjs-x.y.z/default.css
+</td>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+9.12.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+highlightjs-x.y.z/highlight.js
+</td>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+9.12.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+htmlwidgets-x.y.z/htmlwidgets.js
+</td>
+<td style="text-align:left;">
+1.5.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+datatables-css-x.y.z/datatables-crosstalk.css
+</td>
+<td style="text-align:left;">
+0.0.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+datatables-binding-x.y/datatables.js
+</td>
+<td style="text-align:left;">
+0.11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+dt-core-x.y.z/css/jquery.dataTables.min.css
+</td>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+1.10.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dt-core-x.y.z/css/jquery.dataTables.extra.css
+</td>
+<td style="text-align:left;">
+1.10.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+dt-core-x.y.z/js/jquery.dataTables.min.js
+</td>
+<td style="text-align:left;color: black !important;background-color: #c2ffca !important;">
+1.10.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+crosstalk-x.y.z/css/crosstalk.css
+</td>
+<td style="text-align:left;">
+1.0.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+crosstalk-x.y.z/js/crosstalk.min.js
+</td>
+<td style="text-align:left;">
+1.0.0
+</td>
+</tr>
+</tbody>
+</table>
+<p>Now I was able to find CDNs for the 9 <em>green</em> rows,
+simply by googling <em>[name of library] [version] CDN</em> for each one.</p>
+<p><img src="21-google-jquery.png" /></p>
+<p>Here, in order, are the URLs I found.
+I tried to match the versioning,
+but if it was close I just used what I found.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+CDN
+</th>
+<th style="text-align:left;">
+Version Googled
+</th>
+<th style="text-align:left;">
+Version Found
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://code.jquery.com/jquery-1.12.4.min.js" class="uri">https://code.jquery.com/jquery-1.12.4.min.js</a>
+</td>
+<td style="text-align:left;">
+1.12.4
+</td>
+<td style="text-align:left;">
+1.12.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" class="uri">https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css</a>
+</td>
+<td style="text-align:left;">
+3.3.5
+</td>
+<td style="text-align:left;">
+3.3.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" class="uri">https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js</a>
+</td>
+<td style="text-align:left;">
+3.3.5
+</td>
+<td style="text-align:left;">
+3.3.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js" class="uri">https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js</a>
+</td>
+<td style="text-align:left;">
+3.3.5
+</td>
+<td style="text-align:left;">
+3.7.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://oss.maxcdn.com/respond/1.4.2/respond.min.js" class="uri">https://oss.maxcdn.com/respond/1.4.2/respond.min.js</a>
+</td>
+<td style="text-align:left;">
+3.3.5
+</td>
+<td style="text-align:left;">
+1.4.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/default.min.css" class="uri">https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/default.min.css</a>
+</td>
+<td style="text-align:left;">
+9.12.0
+</td>
+<td style="text-align:left;">
+9.18.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js" class="uri">https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js</a>
+</td>
+<td style="text-align:left;">
+9.12.0
+</td>
+<td style="text-align:left;">
+9.18.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" class="uri">https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css</a>
+</td>
+<td style="text-align:left;">
+1.10.19
+</td>
+<td style="text-align:left;">
+1.10.20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<a href="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" class="uri">https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js</a>
+</td>
+<td style="text-align:left;">
+1.10.19
+</td>
+<td style="text-align:left;">
+1.10.20
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="removing-local-files" class="section level3">
+<h3>Removing Local Files</h3>
+<p>To be clear, the next step is very straightforward.
+We simply replace strings that look like this—</p>
+<pre><code>report_files/bootstrap-3.3.5/css/bootstrap.min.css</code></pre>
+<p>—with ones that look like this:</p>
+<pre><code>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css</code></pre>
+<p>Then, since the file <code>report_files/bootstrap-3.3.5/css/bootstrap.min.css</code>
+is no longer needed (for example), we can delete it.</p>
+<p>We’ll follow these steps manually once through before scripting them.</p>
+<div id="manual-steps" class="section level4">
+<h4>Manual Steps</h4>
+<p>Start by opening <code>report.html</code> in a text editor:</p>
+<p><img src="22-open-report-html.png" /></p>
+<p>In the text editor, delete everything from <code>report_files/</code> to
+<code>bootstrap.min.css</code>—</p>
+<p><img src="23-delete-href.png" /></p>
+<p>—and for just a moment, try leaving it as a blank string.
+This is a great chance to see what Bootstrap actually <em>does</em>.</p>
+<p>Remember what the report looked like before you deleted that href:</p>
+<p><img src="24-with-bootstrap.png" /></p>
+<p>If you save the report right now,
+and open it in Chrome, instead it looks like this:</p>
+<p><img src="25-without-bootstrap.png" /></p>
+<p>Now that you’ve seen what you’re missing without <code>bootstrap</code>,
+copy-paste in the URL of the CDN—</p>
+<p><img src="26-copy-paste-cdn.png" /></p>
+<p>—and save and open in Chrome again.
+Everything’s back to normal!
+The CDN worked.</p>
+<p><img src="24-with-bootstrap.png" /></p>
+<p>And since the CDN worked, we can delete the file
+<code>report_files/bootstrap-3.3.5/css/bootstrap.min.css</code>.</p>
+<p><img src="26-delete-bootstrap.png" /></p>
+<p>You can even refresh the page in Chrome now, and you’ll see it still works
+without the local file.</p>
+<p>So now, since that worked, it’s time to take care of the rest of the references!
+In cooking-show style, I’ll simply pull the completed pie from the oven
+and show you what it looks like.</p>
+<p>This is the section right under the title in the <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/740b1de33fdd6f2ef09b21661afe022789c865af/report.html">HTML file</a>.
+You can just copy-paste them into your file
+if you don’t want to go line by line.</p>
+<pre class="html"><code>&lt;script src=&quot;https://code.jquery.com/jquery-1.12.4.min.js&quot;&gt;&lt;/script&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+&lt;link href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://oss.maxcdn.com/respond/1.4.2/respond.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;report_files/navigation-1.1/tabsets.js&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/default.min.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;report_files/htmlwidgets-1.5.1/htmlwidgets.js&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;report_files/datatables-css-0.0.0/datatables-crosstalk.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;script src=&quot;report_files/datatables-binding-0.11/datatables.js&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;link href=&quot;report_files/dt-core-1.10.19/css/jquery.dataTables.extra.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;script src=&quot;https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js&quot;&gt;&lt;/script&gt;
+&lt;link href=&quot;report_files/crosstalk-1.0.0/css/crosstalk.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;script src=&quot;report_files/crosstalk-1.0.0/js/crosstalk.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+</div>
+<div id="pruning-more-aggressively" class="section level4">
+<h4>Pruning More Aggressively</h4>
+<p>Now, in the previous section after we deleted <code>bootstrap.min.css</code>,
+we only deleted <em>that one file</em>.
+But Bootstrap includes a lot of files.
+Even just the <code>css</code> folder has at least 40!</p>
+<p><img src="39-rest-of-bootstrap.png" /></p>
+<p>But we don’t have to be that surgical.
+The local Bootstrap library isn’t referred to at all anymore,
+so we can delete the whole folder.</p>
+<p>In fact, at this point there are just 7 local references left in <code>report_files</code>:</p>
+<ul>
+<li><code>navigation-1.1/tabsets.js</code></li>
+<li><code>htmlwidgets-1.5.1/htmlwidgets.js</code></li>
+<li><code>datatables-css-0.0.0/datatables-crosstalk.css</code></li>
+<li><code>datatables-binding-0.11/datatables.js</code></li>
+<li><code>dt-core-1.10.19/css/jquery.dataTables.extra.css</code></li>
+<li><code>crosstalk-1.0.0/css/crosstalk.css</code></li>
+<li><code>crosstalk-1.0.0/js/crosstalk.min.js</code></li>
+</ul>
+<p>Why not just keep those files and delete the rest?</p>
+<p>For example, simply consolidate these files to a temp directory,</p>
+<p><img src="27-temp-dir.png" /></p>
+<p>delete the rest,</p>
+<p><img src="28-deleting-the-rest.png" /></p>
+<p>and then move the important files back.</p>
+<p><img src="29-moving-them-back.png" /></p>
+<p>One more thing to note!</p>
+<p>In these last screenshots, I also held onto the folder <code>figure-html</code>;
+that’s where our plot lives!</p>
+<p>Just remember that whatever script we write
+will have to solve for <code>figure-html</code> as well.</p>
+</div>
+</div>
+<div id="pause-what-weve-accomplished" class="section level3">
+<h3>Pause: What We’ve Accomplished</h3>
+<p>Before moving on, let’s take a moment to celebrate our successes.
+First, if you open your HTML file in Chrome,
+you’ll see that <em>everything works</em>.
+We truly no longer needed the local files!</p>
+<p>Second, the <code>report_files</code> folder is now only <em>435kB</em>:
+90% smaller than the earlier <code>report_files</code> folder,
+and less than half the size of the HTML file we started with.</p>
+<p><img src="30-shrunk-folder.png" /></p>
+</div>
+</div>
+<div id="zip-your-files" class="section level2">
+<h2>Zip Your Files</h2>
+<p>In a moment we’ll script and automate what we just did.
+But in the end, this method still leaves you with a <em>folder</em> of files to share.
+That’s a minor frustration in email-heavy settings.</p>
+<p>The simple fix is to compress both the report and the report files
+into a single zip folder.</p>
+<p><img src="35-zip-files.png" /></p>
+<p>In this case, the final zipped size was a meager 80 kilobytes:
+less than a tenth the size of the HTML file we started with!</p>
+<p><img src="36-final-zipped-size.png" /></p>
+<p>You may still use R in a context
+where stakeholders either can’t or won’t open a zip file
+to click through on the single HTML file inside it.
+Unfortunately, I don’t have a solution for that. 🤷</p>
+</div>
+<div id="have-a-script-do-the-work" class="section level2">
+<h2>Have a Script Do the Work</h2>
+<p>Now comes the time when we ask ourselves:</p>
+<blockquote>
+<p>This seems pretty straightforward. Do you think we can do it in a script?</p>
+</blockquote>
+<p>And the answer is, of course we can! This is R.
+There’s got to be a way to do it.</p>
+<p>To slow things down, I’m going to write it piece by piece.
+If you’re impatient and want to skip to the end, go for it!</p>
+<div id="swapping-in-cdns" class="section level3">
+<h3>Swapping in CDNs</h3>
+<p>First we’ll do some setup work that should be fairly self-explanatory.</p>
+<p>For this next section, if you’re not familiar with the <code>here</code> package,
+I recommend <a href="https://twitter.com/JennyBryan">Jenny Bryan</a>’s ode,
+“<a href="https://github.com/jennybc/here_here">I love the here package. Here’s why.</a>”</p>
+<p>Or just set <code>html_file</code> to wherever <code>report.html</code> lives—e.g.
+<code>/Users/benjamin/report.html</code>—but
+without the <code>.html</code> file extension.</p>
+<pre class="r"><code>library(tidyverse)
+library(here)
+
+# make a tibble of references to be replaced
+references &lt;- tibble(
+  local_file = c(
+    &quot;jquery-1.12.4/jquery.min.js&quot;,
+    &quot;bootstrap-3.3.5/css/bootstrap.min.css&quot;,
+    &quot;bootstrap-3.3.5/js/bootstrap.min.js&quot;,
+    &quot;bootstrap-3.3.5/shim/html5shiv.min.js&quot;,
+    &quot;bootstrap-3.3.5/shim/respond.min.js&quot;,
+    &quot;highlightjs-9.12.0/default.css&quot;,
+    &quot;highlightjs-9.12.0/highlight.js&quot;,
+    &quot;dt-core-1.10.19/css/jquery.dataTables.min.css&quot;,
+    &quot;dt-core-1.10.19/js/jquery.dataTables.min.js&quot;
+  ),
+  cdn_url = c(
+    &quot;https://code.jquery.com/jquery-1.12.4.min.js&quot;,
+    &quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css&quot;,
+    &quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js&quot;,
+    &quot;https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js&quot;,
+    &quot;https://oss.maxcdn.com/respond/1.4.2/respond.min.js&quot;,
+    &quot;https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/default.min.css&quot;,
+    &quot;https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js&quot;,
+    &quot;https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css&quot;,
+    &quot;https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js&quot;
+  )
+)
+
+# set the filepath information
+html_file &lt;- here(&quot;report&quot;)              # filepath without the extension
+fullpath  &lt;- paste0(html_file, &quot;.html&quot;)  # actual name of HTML file
+dir_path  &lt;- paste0(html_file, &quot;_files&quot;) # directory of local libraries
+
+# also just the name of the directory will come in handy
+dependency_dir &lt;- &quot;report_files&quot;
+
+# grab the page contents
+page_contents &lt;- read_lines(fullpath)</code></pre>
+<p>Now let’s make the replacements.
+Here <a href="https://purrr.tidyverse.org/reference/reduce.html">purrr::reduce2</a> is the workhorse;
+you’ll see a deeper explanation below.</p>
+<pre class="r"><code># the actual strings we&#39;re replacing always start with report_files/
+references &lt;-
+  mutate(
+    references,
+    local_file = paste(dependency_dir, local_file, sep = &quot;/&quot;)
+  )
+
+page_contents &lt;- 
+  reduce2(
+    .x = references$local_file,
+    .y = references$cdn_url,
+    .f = str_replace,
+    .init = page_contents
+  )
+
+write_lines(page_contents, fullpath)</code></pre>
+<p><a href="https://purrr.tidyverse.org/reference/reduce.html">purrr::reduce2</a> runs through our replacements iteratively,
+as if we’d written it like this:</p>
+<pre class="r"><code>page_contents &lt;-
+  page_contents %&gt;% 
+  str_replace(references$local_file[1], references$cdn_url[1]) %&gt;% 
+  str_replace(references$local_file[2], references$cdn_url[2]) %&gt;% 
+  str_replace(references$local_file[3], references$cdn_url[3]) %&gt;% 
+  str_replace(references$local_file[4], references$cdn_url[4]) %&gt;% </code></pre>
+<p>…and so on down the line.</p>
+<p>And we use <code>write_lines</code> from the <code>readr</code> package (loaded with the <code>tidyverse</code>)
+to write the contents back to the HTML file.</p>
+</div>
+<div id="listing-files-to-delete" class="section level3">
+<h3>Listing Files to Delete</h3>
+<p>Now that we’ve swapped local references for CDNs,
+we can go about deleting files.</p>
+<p><a href="#removing-local-files">As described above</a>,
+we’ll do that by first deciding which files to <em>keep</em>,
+and then deleting the rest.</p>
+<p>To decide which files to keep,
+we’ll loop through the contents of the file
+and capture any remaining references with the <a href="https://www.regular-expressions.info/">regular expression</a>
+<code>report_files/([^\&quot;]+)</code>:</p>
+<ul>
+<li>the string <code>report_files/</code>,</li>
+<li>followed by <a href="https://www.regular-expressions.info/charclass.html">anything but quotes</a> <code>[^\&quot;]</code>,</li>
+<li><a href="https://www.regular-expressions.info/repeat.html">one or more times</a> <code>+</code>.</li>
+<li>We use a <a href="https://www.regular-expressions.info/brackets.html">capture group</a> <code>()</code> to get just the part after <code>report_files/</code>.</li>
+</ul>
+<pre class="r"><code>get_remaining &lt;- function(page_contents) {
+  pattern &lt;- paste0(dependency_dir, &quot;/([^\&quot;]+)&quot;)          # pattern to watch for
+  remaining_lines &lt;- str_which(page_contents, pattern)    # what lines have it?
+  if (!length(remaining_lines)) return(NA_character_)     # none? return NA.
+  
+  str_match(page_contents[remaining_lines], pattern)[, 2] # return matches
+}</code></pre>
+<p>For more on regular expressions
+see the <a href="https://stringr.tidyverse.org/articles/regular-expressions.html">stringr documentation</a>, especially the page on <a href="https://stringr.tidyverse.org/reference/str_match.html">str_match</a>.
+Or see <a href="https://www.regular-expressions.info/" class="uri">https://www.regular-expressions.info/</a> for a full tutorial.</p>
+</div>
+<div id="deleting-files" class="section level3">
+<h3>Deleting Files</h3>
+<p>To actually delete the files
+we’ll use the <a href="https://fs.r-lib.org/">fs package</a>.
+It has intuitively named, vectorized functions like</p>
+<ul>
+<li><a href="https://fs.r-lib.org/reference/path.html">path</a> to construct filepaths,</li>
+<li><a href="https://fs.r-lib.org/reference/dir_ls.html">dir_ls</a> to list the files in a directory, and</li>
+<li><a href="https://fs.r-lib.org/reference/delete.html">file_delete</a> to delete files.</li>
+</ul>
+<pre class="r"><code>library(fs)
+
+# keep the files still explicitly named in the HTML
+keep_these &lt;- 
+  path(dir_path, get_remaining(page_contents))
+
+# remove everything else in the report_files folder
+remove_these &lt;- 
+  setdiff(
+    dir_ls(dir_path, recurse = TRUE, type = &quot;file&quot;),
+    keep_these
+  )
+
+file_delete(remove_these)</code></pre>
+</div>
+<div id="looping-through-multiple-reports" class="section level3">
+<h3>Looping through Multiple Reports</h3>
+<p>Now let’s say we have more than one HTML file—not just <code>report.html</code>.
+Let’s say they’re all in the same folder (or subfolders of it).
+Can we handle the whole folder at once?</p>
+<p>Sure we can!
+We wrap the code above in a function,
+and run that function for all the reports.</p>
+<p>This will be particularly useful when we get to automating the script.
+If the folder we use is a git repository, for example,
+we can tell git to tidy up and shrink all its HTML files before every commit.</p>
+<p>Let’s call the function we create <code>cdnify</code>:</p>
+<pre class="r"><code>library(tidyverse)
+library(here)
+library(fs)
+
+# make a tibble of references to be replaced
+references &lt;- tibble(
+  local_file = c(
+    &quot;jquery-1.12.4/jquery.min.js&quot;,
+    &quot;bootstrap-3.3.5/css/bootstrap.min.css&quot;,
+    &quot;bootstrap-3.3.5/js/bootstrap.min.js&quot;,
+    &quot;bootstrap-3.3.5/shim/html5shiv.min.js&quot;,
+    &quot;bootstrap-3.3.5/shim/respond.min.js&quot;,
+    &quot;highlightjs-9.12.0/default.css&quot;,
+    &quot;highlightjs-9.12.0/highlight.js&quot;,
+    &quot;dt-core-1.10.19/css/jquery.dataTables.min.css&quot;,
+    &quot;dt-core-1.10.19/js/jquery.dataTables.min.js&quot;
+  ),
+  cdn_url = c(
+    &quot;https://code.jquery.com/jquery-1.12.4.min.js&quot;,
+    &quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css&quot;,
+    &quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js&quot;,
+    &quot;https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js&quot;,
+    &quot;https://oss.maxcdn.com/respond/1.4.2/respond.min.js&quot;,
+    &quot;https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/default.min.css&quot;,
+    &quot;https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js&quot;,
+    &quot;https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css&quot;,
+    &quot;https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js&quot;
+  )
+)
+
+cdnify &lt;- function(html_file) {
+  # set the filepath information
+  fullpath &lt;- paste0(html_file, &quot;.html&quot;)  # actual name of HTML file
+  dir_path &lt;- paste0(html_file, &quot;_files&quot;) # directory of local libraries
+  
+  # also just the name of the directory will come in handy
+  dependency_dir &lt;- path_file(dir_path)
+  
+  # grab the page contents
+  page_contents &lt;- read_lines(fullpath)
+  
+  # the actual strings we&#39;re replacing always start with report_files/
+  references &lt;-
+    mutate(
+      references,
+      local_file = paste(dependency_dir, local_file, sep = &quot;/&quot;)
+    )
+  
+  page_contents &lt;- 
+    reduce2(
+      .x = references$local_file,
+      .y = references$cdn_url,
+      .f = str_replace,
+      .init = page_contents
+    )
+  
+  write_lines(page_contents, fullpath)
+  
+  get_remaining &lt;- function(page_contents) {
+    pattern &lt;- paste0(dependency_dir, &quot;/([^\&quot;]+)&quot;)          # pattern to watch for
+    remaining_lines &lt;- str_which(page_contents, pattern)    # what lines have it?
+    if (!length(remaining_lines)) return(NA_character_)     # none? return NA.
+    
+    str_match(page_contents[remaining_lines], pattern)[, 2] # return matches
+  }
+  
+  # keep the files still explicitly named in the HTML
+  keep_these &lt;- 
+    path(dir_path, get_remaining(page_contents))
+  
+  # remove everything else in the report_files folder
+  remove_these &lt;- 
+    setdiff(
+      dir_ls(dir_path, recurse = TRUE, type = &quot;file&quot;),
+      keep_these
+    )
+  
+  file_delete(remove_these)
+}</code></pre>
+<p>Now <a href="https://purrr.tidyverse.org/reference/map.html">purrr::walk</a> will do the heavy lifting,
+applying <code>cdnify</code> to the relevant files.</p>
+<pre class="r"><code>current_dir &lt;- here() # or whatever directory
+
+# list all the HTML files anywhere in current_dir (but w/o the html extension)
+pages &lt;- 
+  current_dir %&gt;% 
+  dir_ls(recurse = T, regexp = &quot;\\.html&quot;) %&gt;% 
+  str_replace(&quot;\\.html$&quot;, &quot;&quot;)
+
+# HTML files are only relevant if they come from an R Markdown file,
+# and if they have a folder of local dependencies
+are_from_markdown &lt;- file_exists(paste0(pages, &quot;.Rmd&quot;))
+have_dependencies &lt;- dir_exists(paste0(pages, &quot;_files&quot;))
+
+walk(
+  pages[are_from_markdown &amp; have_dependencies],
+  cdnify
+)</code></pre>
+</div>
+</div>
+<div id="have-git-run-the-script" class="section level2">
+<h2>Have Git Run the Script</h2>
+<p>Now that we’ve written a script to “cdnify” all the HTML reports in a folder,
+how can we automate the process?
+Ideally we wouldn’t have to run this script every time we render a report.</p>
+<p>We can automate it using a feature called <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">git hooks</a>.
+<em>Git hooks</em> are bash scripts that run after specific events in git;
+you can write hooks that run automatically before a commit,
+before you rebase, or before you push changes, for example.</p>
+<p>In this case, we’ll tell the bash script where to find our R script,
+and where to find the R interpreter to run it.
+Then once we’ve set it in motion, we never have to think about our script again!</p>
+<p>(If you’re not yet using git, I highly recommend it.
+There are some great resources out there to learn,
+including Jenny Bryan &amp; Jim Hester’s <a href="https://happygitwithr.com/">Happy Git and GitHub for the useR</a>.)</p>
+<p>Githooks live in a hidden directory.
+So if you use a GUI to view folders—like Windows Explorer,
+or Finder on a Mac—make sure you can view hidden files first.
+(That’s in the View menu on Windows,
+or Command-Shift-Period in Finder on a Mac.)</p>
+<p>Then in your folder,
+go to <code>.git</code> → <code>hooks</code> → <code>pre-commit.sample</code>.
+Make a copy of <code>pre-commit.sample</code>, and rename it to just <code>pre-commit</code>.</p>
+<p><img src="31-pre-commit.png" /></p>
+<p>In this folder, incidentally,
+are sample githook scripts for all the possible events you can “hook”:</p>
+<ul>
+<li>before you commit changes…</li>
+<li>before you push commits…</li>
+<li>before you rebase rebase…</li>
+<li>I count 11 different options!</li>
+</ul>
+<p>We’re running our script before every commit (“pre-commit”)
+because otherwise all those libraries we failed to take out
+will live on in your commit history, even if you delete them later.</p>
+<div id="writing-a-bash-script" class="section level3">
+<h3>Writing a Bash Script</h3>
+<p>Now I don’t really know bash, but that’s what Google is for.
+This is one way to write the script:</p>
+<pre class="bash"><code>#!/bin/sh
+# check these variables (using forward slashes instead of backslashes):
+R_SCRIPT=&quot;/usr/local/bin/Rscript&quot; # the location of Rscript on your computer
+CDN_SCRIPT=&quot;cdnify.R&quot;             # the location of the R script in the repo
+
+# find the local REPO directory
+HOOKS_DIR=&quot;$( cd &quot;$( dirname &quot;${BASH_SOURCE[0]}&quot; )&quot; &amp;&amp; pwd )&quot;
+GIT_DIR=&quot;$(dirname &quot;$HOOKS_DIR&quot;)&quot;
+REPO=&quot;$(dirname &quot;$GIT_DIR&quot;)&quot;
+
+# switch to CDNs
+&quot;$R_SCRIPT&quot; &quot;$REPO/$CDN_SCRIPT&quot; &quot;$REPO&quot;
+
+# stage updated files
+git add -u
+
+exit 0</code></pre>
+<p>When I wrote this, I was using a company-issued Windows laptop
+that had <code>Rscript.exe</code> in a non-standard location.
+You likely have <code>Rscript</code> on <a href="https://astrobiomike.github.io/bash/modifying_your_path">your PATH</a>
+and can simplify accordingly.</p>
+<p>In the next section,</p>
+<ul>
+<li><code>HOOKS_DIR</code> is the folder the script is in:
+<code>.../your_repository/.git/hooks</code>.</li>
+<li><code>GIT_DIR</code> is its parent directory, <code>.../your_repository/.git</code>.</li>
+<li>And <code>REPO</code> is the filepath of your repository.</li>
+</ul>
+<p>So this line—</p>
+<pre class="bash"><code>&quot;$R_SCRIPT&quot; &quot;$REPO/$CDN_SCRIPT&quot; &quot;$REPO&quot;</code></pre>
+<p>—translates to something (in my case) like this:</p>
+<pre class="bash"><code>&quot;/usr/local/bin/Rscript&quot; &quot;/Users/benjamin/Documents/GitHub/knitr-cdn-demo/cdnify.R&quot; &quot;/Users/benjamin/Documents/GitHub/knitr-cdn-demo&quot;</code></pre>
+<p>What it’s saying is,</p>
+<ul>
+<li>use the R interpreter—found at <code>/usr/local/bin/Rscript</code>—</li>
+<li>to run our R script—found at <code>.../knitr-cdn-demo/cdnify.R</code>—</li>
+<li>and pass the script the location of the repo: <code>.../knitr-cdn-demo</code>.</li>
+</ul>
+<p>We’ll tell the R script what to <em>do</em> with that string in the next section.</p>
+<p>Now the second to last line of the script—</p>
+<pre class="bash"><code>git add -u</code></pre>
+<p>—is critical. Without it, the script would swap the library references,
+delete all the right files,
+and follow through with your original commit—<em>without staging its changes!</em></p>
+<p><code>git add -u</code> ensures the changes stick.
+But this line also has an important side effect, so beware:
+<em>Any changes to your repo will be staged and committed,
+even if you never staged them yourself.</em></p>
+</div>
+<div id="passing-an-argument-to-the-r-script" class="section level3">
+<h3>Passing an Argument to the R Script</h3>
+<p>We just said that this line—</p>
+<pre class="bash"><code>&quot;/usr/local/bin/Rscript&quot; &quot;/Users/benjamin/Documents/GitHub/knitr-cdn-demo/cdnify.R&quot; &quot;/Users/benjamin/Documents/GitHub/knitr-cdn-demo&quot;</code></pre>
+<p>—passes the repository’s location to the R script.
+We also need to tell the script what to do with it.</p>
+<p>For that we use the <a href="https://www.r-bloggers.com/passing-arguments-to-an-r-script-from-command-lines/">commandArgs</a> function.
+If you pass arguments to an R script from the command line,
+<code>commandArgs()</code> returns a vector of those arguments.</p>
+<p><code>commandArgs()</code> can go near the bottom of our script,
+just before we call <code>cdnify()</code>,
+when we tell the script which folder to use.
+If we replace this—</p>
+<pre class="r"><code>current_dir &lt;- here()</code></pre>
+<p>—with a line like this—</p>
+<pre class="r"><code>current_dir &lt;- as.character(commandArgs(trailingOnly = T)[1])</code></pre>
+<p>—our script will always automatically run on the git repository folder.</p>
+<p>And that’s great,
+but sometimes we’ll still want to run the script ourselves, right?
+To have the code automatically differentiate between contexts (git or manual),
+we can use the <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/interactive.html">interactive</a> function:</p>
+<pre class="r"><code>current_dir &lt;- 
+  if (interactive()) {
+    here()
+  } else {
+    as.character(commandArgs(trailingOnly = T)[1])
+  }</code></pre>
+</div>
+<div id="troubleshooting" class="section level3">
+<h3>Troubleshooting</h3>
+<p>Before git is able to run the githook,
+your OS may need to know the file is <em>executable</em>.
+If that’s the case you’ll get something like the yellow error message here:</p>
+<p><img src="32-not-executable.png" /></p>
+<p>The answer is to run this simple line from the terminal:</p>
+<pre class="bash"><code>chmod +x .git/hooks/pre-commit</code></pre>
+<p><code>chmod</code> is an abbreviation of “change mode,”
+and the <code>+x</code> means “make it executable.”
+It’s not rocket science; it’s just (again) good Googling.</p>
+<p>Then your file should be clearly different from the sample githook files
+(though the exact way that’s shown will vary from OS to OS):</p>
+<p><img src="33-executable.png" /></p>
+</div>
+<div id="logging-messaging" class="section level3">
+<h3>Logging / Messaging</h3>
+<p>Lastly, either for our future selves or for someone else using the script,
+troubleshooting is always easier when you have good <em>messaging</em>.
+For the full version of the script with thorough messaging,
+please see <a href="https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/cdnify.R">cdnify.R on GitHub</a>.</p>
+<p>This is what your terminal output looks like when you run it.
+This is the output when <code>report.html</code> hasn’t changed
+and there’s nothing to remove.
+It’s even more verbose when there’ve been changes!</p>
+<p><img src="34-logging.png" /></p>
+<p>If you do check out the enhanced script,
+here’s a quick preview of the differences you’ll see in it:</p>
+<ul>
+<li>I don’t load the whole tidyverse, only the specific packages I use.</li>
+<li>I provide a lot of messaging
+around which of those packages loaded successfully.</li>
+<li>If they don’t load, I attempt to install them, and I message that fact, too.</li>
+<li>I spend time capturing which version of each library was found in the file.</li>
+<li>The code is also more flexible, capturing any version of the libraries.
+If the user’s R ecosystem upgrades to new library versions,
+I want the code to work but also message it.</li>
+</ul>
+</div>
+</div>
