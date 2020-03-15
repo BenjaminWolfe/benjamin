@@ -1,7 +1,7 @@
 ---
 authors:
 - admin
-bio: Lorem ipsum (bio placeholder).
+bio: Benjamin Wolfe is an R lover and Python learner. He loves writing, if he can ever finish a blog post.
 email: benjamin.e.wolfe@gmail.com
 interests:
 - R & package development
