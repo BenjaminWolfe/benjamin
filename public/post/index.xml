@@ -40,6 +40,7 @@
 &lt;li&gt;&lt;a href=&#34;#removing-local-files&#34;&gt;Removing Local Files&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#pause-what-weve-accomplished&#34;&gt;Pause: What We’ve Accomplished&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#zip-your-files&#34;&gt;Zip Your Files&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#have-a-script-do-the-work&#34;&gt;Have a Script Do the Work&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#swapping-in-cdns&#34;&gt;Swapping in CDNs&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#listing-files-to-delete&#34;&gt;Listing Files to Delete&lt;/a&gt;&lt;/li&gt;
@@ -48,11 +49,10 @@
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#have-git-run-the-script&#34;&gt;Have Git Run the Script&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#writing-a-bash-script&#34;&gt;Writing a Bash Script&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#tweaking-the-r-script&#34;&gt;Tweaking the R Script&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#passing-an-argument-to-the-r-script&#34;&gt;Passing an Argument to the R Script&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#troubleshooting&#34;&gt;Troubleshooting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#logging&#34;&gt;Logging&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#logging-messaging&#34;&gt;Logging / Messaging&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#zip-your-files&#34;&gt;Zip Your Files&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 
@@ -781,9 +781,23 @@ We truly no longer needed the local files!&lt;/p&gt;
 90% smaller than the earlier &lt;code&gt;report_files&lt;/code&gt; folder,
 and less than half the size of the HTML file we started with.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;30-shrunk-folder.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;If you don’t care to script or automate the process,
-feel free to skip down to &lt;a href=&#34;#zip-your-files&#34;&gt;Zip Your Files&lt;/a&gt; and call it good!&lt;/p&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;zip-your-files&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Zip Your Files&lt;/h2&gt;
+&lt;p&gt;In a moment we’ll script and automate what we just did.
+But in the end, this method still leaves you with a &lt;em&gt;folder&lt;/em&gt; of files to share.
+That’s a minor frustration in email-heavy settings.&lt;/p&gt;
+&lt;p&gt;The simple fix is to compress both the report and the report files
+into a single zip folder.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;35-zip-files.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In this case, the final zipped size was a meager 80 kilobytes:
+less than a tenth the size of the HTML file we started with!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;36-final-zipped-size.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;You may still use R in a context
+where stakeholders either can’t or won’t open a zip file
+to click through on the single HTML file inside it.
+Unfortunately, I don’t have a solution for that. 🤷&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;have-a-script-do-the-work&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Have a Script Do the Work&lt;/h2&gt;
@@ -930,12 +944,15 @@ file_delete(remove_these)&lt;/code&gt;&lt;/pre&gt;
 &lt;div id=&#34;looping-through-multiple-reports&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Looping through Multiple Reports&lt;/h3&gt;
 &lt;p&gt;Now let’s say we have more than one HTML file—not just &lt;code&gt;report.html&lt;/code&gt;.
-Let’s say they’re all in one directory, including subfolders.
-Can we handle them all at once?&lt;/p&gt;
+Let’s say they’re all in the same folder (or subfolders of it).
+Can we handle the whole folder at once?&lt;/p&gt;
 &lt;p&gt;Sure we can!
 We wrap the code above in a function,
 and run that function for all the reports.&lt;/p&gt;
-&lt;p&gt;Let’s call the function &lt;code&gt;cdnify&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;This will be particularly useful when we get to automating the script.
+If the folder we use is a git repository, for example,
+we can tell git to tidy up and shrink all its HTML files before every commit.&lt;/p&gt;
+&lt;p&gt;Let’s call the function we create &lt;code&gt;cdnify&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
 library(here)
 library(fs)
@@ -1038,39 +1055,43 @@ walk(
 &lt;/div&gt;
 &lt;div id=&#34;have-git-run-the-script&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Have Git Run the Script&lt;/h2&gt;
-&lt;p&gt;We’ve now scripted the whole process.
-The very &lt;em&gt;best&lt;/em&gt; solution, though,
-would include automating the script so we never had to think about it again.
-If all our reports were in a git repository, for example—if that
-were the folder our script used—then maybe
-git could run the script with each commit.&lt;/p&gt;
-&lt;p&gt;And that’s exactly what we can do using a feature called &lt;a href=&#34;https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks&#34;&gt;git hooks&lt;/a&gt;.
-&lt;em&gt;Git hooks&lt;/em&gt; are bash scripts that run when you do things in git;
+&lt;p&gt;Now that we’ve written a script to “cdnify” all the HTML reports in a folder,
+how can we automate the process?
+Ideally we wouldn’t have to run this script every time we render a report.&lt;/p&gt;
+&lt;p&gt;We can automate it using a feature called &lt;a href=&#34;https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks&#34;&gt;git hooks&lt;/a&gt;.
+&lt;em&gt;Git hooks&lt;/em&gt; are bash scripts that run after specific events in git;
 you can write hooks that run automatically before a commit,
-before you rebase, or before you push changes, for example.
-In this case, we can tell the bash script where to find our R script,
-and where to find the R interpreter.
+before you rebase, or before you push changes, for example.&lt;/p&gt;
+&lt;p&gt;In this case, we’ll tell the bash script where to find our R script,
+and where to find the R interpreter to run it.
 Then once we’ve set it in motion, we never have to think about our script again!&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;(Aside: It’s possible you’re not using git at all.
-Many R users, data scientists, and coders in general highly recommend it!
-If you’re starting from the ground up,
-you can take advantage of some great resources,
-like Jenny Bryan and Jim Hester’s &lt;a href=&#34;https://happygitwithr.com/&#34;&gt;Happy Git and GitHub for the useR&lt;/a&gt;.
-If you feel reasonably comfortable with git, read on!)&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;To make our git hook, you first need to make sure you’re seeing hidden files.
-On a Mac you can do that by pressing Command-Shift-Period in Finder.
-Then in the folder you’re in,
+&lt;p&gt;(If you’re not yet using git, I highly recommend it.
+There are some great resources out there to learn,
+including Jenny Bryan &amp;amp; Jim Hester’s &lt;a href=&#34;https://happygitwithr.com/&#34;&gt;Happy Git and GitHub for the useR&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;Githooks live in a hidden directory.
+So if you use a GUI to view folders—like Windows Explorer,
+or Finder on a Mac—make sure you can view hidden files first.
+(That’s in the View menu on Windows,
+or Command-Shift-Period in Finder on a Mac.)&lt;/p&gt;
+&lt;p&gt;Then in your folder,
 go to &lt;code&gt;.git&lt;/code&gt; → &lt;code&gt;hooks&lt;/code&gt; → &lt;code&gt;pre-commit.sample&lt;/code&gt;.
-Make a copy of &lt;code&gt;pre-commit.sample&lt;/code&gt;, and delete the &lt;code&gt;.sample&lt;/code&gt; part.&lt;/p&gt;
+Make a copy of &lt;code&gt;pre-commit.sample&lt;/code&gt;, and rename it to just &lt;code&gt;pre-commit&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;31-pre-commit.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Here you see concretely all the git events that you can “hook” with a git hook.
-&lt;code&gt;pre-commit&lt;/code&gt; is only one option.
-But it’s important we run the script to remove local files “pre-commit,”
-because otherwise those libraries will live on in your commit history,
-bloating the repository forever.&lt;/p&gt;
+&lt;p&gt;In this folder, incidentally,
+are sample githook scripts for all the possible events you can “hook”:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;before you commit changes…&lt;/li&gt;
+&lt;li&gt;before you push commits…&lt;/li&gt;
+&lt;li&gt;before you rebase rebase…&lt;/li&gt;
+&lt;li&gt;I count 11 different options!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We’re running our script before every commit (“pre-commit”)
+because otherwise all those libraries we failed to take out
+will live on in your commit history, even if you delete them later.&lt;/p&gt;
 &lt;div id=&#34;writing-a-bash-script&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Writing a Bash Script&lt;/h3&gt;
-&lt;p&gt;Now I don’t actually know bash well, but that’s what Google is for:&lt;/p&gt;
+&lt;p&gt;Now I don’t really know bash, but that’s what Google is for.
+This is one way to write the script:&lt;/p&gt;
 &lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;#!/bin/sh
 # check these variables (using forward slashes instead of backslashes):
 R_SCRIPT=&amp;quot;/usr/local/bin/Rscript&amp;quot; # the location of Rscript on your computer
@@ -1088,55 +1109,57 @@ REPO=&amp;quot;$(dirname &amp;quot;$GIT_DIR&amp;quot;)&amp;quot;
 git add -u
 
 exit 0&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Let’s walk through a few parts of that script:&lt;/p&gt;
+&lt;p&gt;When I wrote this, I was using a company-issued Windows laptop
+that had &lt;code&gt;Rscript.exe&lt;/code&gt; in a non-standard location.
+You likely have &lt;code&gt;Rscript&lt;/code&gt; on &lt;a href=&#34;https://astrobiomike.github.io/bash/modifying_your_path&#34;&gt;your PATH&lt;/a&gt;
+and can simplify accordingly.&lt;/p&gt;
+&lt;p&gt;In the next section,&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;HOOKS_DIR&lt;/code&gt; is the location of &lt;code&gt;your_repository/.git/hooks&lt;/code&gt;,
-where the &lt;code&gt;pre-commit&lt;/code&gt; script lives.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;GIT_DIR&lt;/code&gt; is the location of &lt;code&gt;your_repository/.git&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;REPO&lt;/code&gt; is the location of your repository.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;HOOKS_DIR&lt;/code&gt; is the folder the script is in:
+&lt;code&gt;.../your_repository/.git/hooks&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GIT_DIR&lt;/code&gt; is its parent directory, &lt;code&gt;.../your_repository/.git&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;And &lt;code&gt;REPO&lt;/code&gt; is the filepath of your repository.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;So this line—&lt;/p&gt;
 &lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;&amp;quot;$R_SCRIPT&amp;quot; &amp;quot;$REPO/$CDN_SCRIPT&amp;quot; &amp;quot;$REPO&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;—translates to something like this:&lt;/p&gt;
+&lt;p&gt;—translates to something (in my case) like this:&lt;/p&gt;
 &lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;&amp;quot;/usr/local/bin/Rscript&amp;quot; &amp;quot;/Users/benjamin/Documents/GitHub/knitr-cdn-demo/cdnify.R&amp;quot; &amp;quot;/Users/benjamin/Documents/GitHub/knitr-cdn-demo&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;It’s saying to run the R interpreter
-on your cdnify.R script,
-and pass the path of the repo to that script.
-I’ll add that for many people,
-&lt;code&gt;/usr/local/bin&lt;/code&gt; is on something called your PATH,
-and you can get away with skipping it:&lt;/p&gt;
-&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;R_SCRIPT=&amp;quot;Rscript&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now, unfortunately this script will do exactly what we tell it to do,
-not what we want it to do.
-So if we leave it there,
-it will make the appropriate changes and follow through with your commit…
-&lt;em&gt;without staging the new changes!&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;This is why we add &lt;code&gt;git add -u&lt;/code&gt; at the end, to ensure the changes stick.
-But beware that this line also has an important side effect:
-&lt;strong&gt;Any changes to your repo will be staged and committed,
-even if you hadn’t staged them yourself.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;There could be a way to do this differently—maybe have R
-return a list of files to stage,
-to be more surgical about it—but that lies
-beyond my current bash scripting abilities.&lt;/p&gt;
+&lt;p&gt;What it’s saying is,&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;use the R interpreter—found at &lt;code&gt;/usr/local/bin/Rscript&lt;/code&gt;—&lt;/li&gt;
+&lt;li&gt;to run our R script—found at &lt;code&gt;.../knitr-cdn-demo/cdnify.R&lt;/code&gt;—&lt;/li&gt;
+&lt;li&gt;and pass the script the location of the repo: &lt;code&gt;.../knitr-cdn-demo&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We’ll tell the R script what to &lt;em&gt;do&lt;/em&gt; with that string in the next section.&lt;/p&gt;
+&lt;p&gt;Now the second to last line of the script—&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git add -u&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;—is critical. Without it, the script would swap the library references,
+delete all the right files,
+and follow through with your original commit—&lt;em&gt;without staging its changes!&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;git add -u&lt;/code&gt; ensures the changes stick.
+But this line also has an important side effect, so beware:
+&lt;em&gt;Any changes to your repo will be staged and committed,
+even if you never staged them yourself.&lt;/em&gt;&lt;/p&gt;
 &lt;/div&gt;
-&lt;div id=&#34;tweaking-the-r-script&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Tweaking the R Script&lt;/h3&gt;
+&lt;div id=&#34;passing-an-argument-to-the-r-script&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Passing an Argument to the R Script&lt;/h3&gt;
 &lt;p&gt;We just said that this line—&lt;/p&gt;
 &lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;&amp;quot;/usr/local/bin/Rscript&amp;quot; &amp;quot;/Users/benjamin/Documents/GitHub/knitr-cdn-demo/cdnify.R&amp;quot; &amp;quot;/Users/benjamin/Documents/GitHub/knitr-cdn-demo&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;—passes the location of the repository to the R script.
+&lt;p&gt;—passes the repository’s location to the R script.
 We also need to tell the script what to do with it.&lt;/p&gt;
-&lt;p&gt;To pull command-line arguments into an R script,
-we use the &lt;a href=&#34;https://www.r-bloggers.com/passing-arguments-to-an-r-script-from-command-lines/&#34;&gt;commandArgs&lt;/a&gt; function.
-&lt;code&gt;commandArgs()&lt;/code&gt; returns a vector of the arguments you passed to the script.
-&lt;code&gt;commandArgs()[1]&lt;/code&gt; will return just the first argument;
-&lt;code&gt;as.character(commandArgs()[1])&lt;/code&gt; ensures it’s passed in as a character string.&lt;/p&gt;
-&lt;p&gt;So we could replace this line near the bottom of our script—&lt;/p&gt;
+&lt;p&gt;For that we use the &lt;a href=&#34;https://www.r-bloggers.com/passing-arguments-to-an-r-script-from-command-lines/&#34;&gt;commandArgs&lt;/a&gt; function.
+If you pass arguments to an R script from the command line,
+&lt;code&gt;commandArgs()&lt;/code&gt; returns a vector of those arguments.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;commandArgs()&lt;/code&gt; can go near the bottom of our script,
+just before we call &lt;code&gt;cdnify()&lt;/code&gt;,
+when we tell the script which folder to use.
+If we replace this—&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;current_dir &amp;lt;- here()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;—with this one—&lt;/p&gt;
+&lt;p&gt;—with a line like this—&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;current_dir &amp;lt;- as.character(commandArgs(trailingOnly = T)[1])&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;—and our script would always automatically run on the git repository.&lt;/p&gt;
-&lt;p&gt;But sometimes we’ll still want to run the script on its own, right?
+&lt;p&gt;—our script will always automatically run on the git repository folder.&lt;/p&gt;
+&lt;p&gt;And that’s great,
+but sometimes we’ll still want to run the script ourselves, right?
 To have the code automatically differentiate between contexts (git or manual),
 we can use the &lt;a href=&#34;https://stat.ethz.ch/R-manual/R-devel/library/base/html/interactive.html&#34;&gt;interactive&lt;/a&gt; function:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;current_dir &amp;lt;- 
@@ -1149,64 +1172,42 @@ we can use the &lt;a href=&#34;https://stat.ethz.ch/R-manual/R-devel/library/bas
 &lt;div id=&#34;troubleshooting&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Troubleshooting&lt;/h3&gt;
 &lt;p&gt;Before git is able to run the githook,
-sometimes your OS needs to know that it’s &lt;em&gt;executable&lt;/em&gt;.
-If that happens you might get something like the yellow error message here:&lt;/p&gt;
+your OS may need to know the file is &lt;em&gt;executable&lt;/em&gt;.
+If that’s the case you’ll get something like the yellow error message here:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;32-not-executable.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;The answer is to run this simple line from the command line:&lt;/p&gt;
+&lt;p&gt;The answer is to run this simple line from the terminal:&lt;/p&gt;
 &lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;chmod +x .git/hooks/pre-commit&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;code&gt;chmod&lt;/code&gt; is an abbreviation of “change mode,”
 and the &lt;code&gt;+x&lt;/code&gt; means “make it executable.”
-It’s not rocket science, just (again) good Googling.&lt;/p&gt;
+It’s not rocket science; it’s just (again) good Googling.&lt;/p&gt;
 &lt;p&gt;Then your file should be clearly different from the sample githook files
 (though the exact way that’s shown will vary from OS to OS):&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;33-executable.png&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
-&lt;div id=&#34;logging&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Logging&lt;/h3&gt;
-&lt;p&gt;Lastly, we want to make sure that troubleshooting is easier in the future.
-One way to do that is to add logging, or at least messaging.
-For the full version of the script with thorough logging,
+&lt;div id=&#34;logging-messaging&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Logging / Messaging&lt;/h3&gt;
+&lt;p&gt;Lastly, either for our future selves or for someone else using the script,
+troubleshooting is always easier when you have good &lt;em&gt;messaging&lt;/em&gt;.
+For the full version of the script with thorough messaging,
 please see &lt;a href=&#34;https://github.com/BenjaminWolfe/knitr-cdn-demo/blob/master/cdnify.R&#34;&gt;cdnify.R on GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;This is what your terminal output looks like when you run it,
-even when you haven’t re-knit any HTML files, so there’s nothing to remove:&lt;/p&gt;
+&lt;p&gt;This is what your terminal output looks like when you run it.
+This is the output when &lt;code&gt;report.html&lt;/code&gt; hasn’t changed
+and there’s nothing to remove.
+It’s even more verbose when there’ve been changes!&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;34-logging.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Here’s a quick preview of the changes you’ll see in the enhanced script:&lt;/p&gt;
+&lt;p&gt;If you do check out the enhanced script,
+here’s a quick preview of the differences you’ll see in it:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;I don’t load the whole tidyverse, only the specific packages I use.&lt;/li&gt;
-&lt;li&gt;I start with a whole elaborate function to provide messaging around packages.
-Much of this is about troubleshooting,
-so I’m sure to message which if any packages failed as well.
-If a package fails to load I actually attempt to install it from CRAN,
-and then try to load it again.&lt;/li&gt;
-&lt;li&gt;I spend time capturing which version of each library was found in the file,
-again for troubleshooting.
-If &lt;code&gt;knitr&lt;/code&gt; suddenly upgrades its default versions of Bootstrap or jQuery,
-I just want to be able to notice that.
-The code is also more flexible, so that the newer version would get picked up.&lt;/li&gt;
-&lt;li&gt;Timestamps and actions are explicitly spelled out.
-If anything &lt;em&gt;is&lt;/em&gt; changed, you’ll see exactly what,
-including which version was removed and what URL was used to replace it.&lt;/li&gt;
+&lt;li&gt;I provide a lot of messaging
+around which of those packages loaded successfully.&lt;/li&gt;
+&lt;li&gt;If they don’t load, I attempt to install them, and I message that fact, too.&lt;/li&gt;
+&lt;li&gt;I spend time capturing which version of each library was found in the file.&lt;/li&gt;
+&lt;li&gt;The code is also more flexible, capturing any version of the libraries.
+If the user’s R ecosystem upgrades to new library versions,
+I want the code to work but also message it.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&#34;zip-your-files&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Zip Your Files&lt;/h2&gt;
-&lt;p&gt;In the end, this method does leave you with a &lt;em&gt;folder&lt;/em&gt; of files to share,
-rather than a simple HTML file.
-You can still send them easily by zipping both the report and the report files
-into a single zip folder.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;35-zip-files.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;In this case, the final zipped size was a meager 80 kilobytes:
-less than a tenth the size of the original uncompressed HTML file.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;36-final-zipped-size.png&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;You may still work in a context
-where your stakeholders either can’t or won’t open a zip file
-and click through on the single HTML file inside it.
-Unfortunately, I don’t have a solution for that problem.&lt;/p&gt;
-&lt;p&gt;But what we have solved can still be quite useful:
-Your report now takes a tenth of the size it once did,
-and perhaps more importantly you’re able to diff your output files
-and easily understand what’s changed.&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>
