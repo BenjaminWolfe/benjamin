@@ -19,7 +19,7 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2020-03-14T22:15:20-05:00</lastmod>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
   </url>
   
   <url>
@@ -28,28 +28,48 @@
   </url>
   
   <url>
-    <loc>/tags/html/</loc>
-    <lastmod>2020-03-14T22:15:20-05:00</lastmod>
+    <loc>/post/2020-03-15-muso-a-proposal/</loc>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/r-markdown/</loc>
-    <lastmod>2020-03-14T22:15:20-05:00</lastmod>
+    <loc>/tags/r/</loc>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/2020-03-14-r-markdown-shrink-tidy-your-html-output-with-cdns/</loc>
-    <lastmod>2020-03-14T22:15:20-05:00</lastmod>
+    <loc>/tags/r-packages/</loc>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/reproducibility/</loc>
-    <lastmod>2020-03-14T22:15:20-05:00</lastmod>
+    <loc>/tags/recreation/</loc>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/</loc>
-    <lastmod>2020-03-14T22:15:20-05:00</lastmod>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/html/</loc>
+    <lastmod>2020-03-15T09:29:39-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/r-markdown/</loc>
+    <lastmod>2020-03-15T09:29:39-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/2020-03-14-r-markdown-shrink-tidy-your-html-output-with-cdns/</loc>
+    <lastmod>2020-03-15T09:29:39-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/reproducibility/</loc>
+    <lastmod>2020-03-15T09:29:39-05:00</lastmod>
   </url>
   
   <url>

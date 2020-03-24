@@ -79,6 +79,168 @@
     </item>
     
     <item>
+      <title>Muso: A Proposal</title>
+      <link>/post/2020-03-15-muso-a-proposal/</link>
+      <pubDate>Sun, 15 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>/post/2020-03-15-muso-a-proposal/</guid>
+      <description>
+
+
+&lt;p&gt;While editing this post, see the &lt;a href=&#34;https://docs.google.com/forms/d/1Azw1fQuTQZ8Zj6OTi7pIYWxN14xb0Yn4XeTA8Blbjik/edit&#34;&gt;form itself&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To do: add &lt;a href=&#34;https://www.jepusto.com/code-folding-with-blogdown-academic/&#34;&gt;code folding&lt;/a&gt;!&lt;/p&gt;
+&lt;p&gt;First we read the data in.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+
+responses &amp;lt;- read_csv(&amp;quot;survey-responses.csv&amp;quot;)
+questions &amp;lt;- tibble(
+  id = 1:ncol(responses),
+  label = c(
+    &amp;quot;timestamp&amp;quot;,
+    &amp;quot;intro_r_while_coding&amp;quot;,
+    &amp;quot;intro_music_while_coding&amp;quot;,
+    &amp;quot;intro_new_music_affinity&amp;quot;,
+    &amp;quot;intro_shares_music&amp;quot;,
+    &amp;quot;music_playlist&amp;quot;,
+    &amp;quot;music_radio&amp;quot;,
+    &amp;quot;music_one_song&amp;quot;,
+    &amp;quot;music_random&amp;quot;,
+    &amp;quot;intro_remote&amp;quot;,
+    &amp;quot;features_collaborative&amp;quot;,
+    &amp;quot;features_use_r&amp;quot;,
+    &amp;quot;features_use_twitter&amp;quot;,
+    &amp;quot;features_edit_playlist&amp;quot;,
+    &amp;quot;features_tidy_data&amp;quot;,
+    &amp;quot;features_share_data&amp;quot;,
+    &amp;quot;features_save_project&amp;quot;,
+    &amp;quot;features_code_bots&amp;quot;,
+    &amp;quot;features_hear_bots&amp;quot;,
+    &amp;quot;features_shiny_app&amp;quot;,
+    &amp;quot;priorities_import&amp;quot;,
+    &amp;quot;priorities_export&amp;quot;,
+    &amp;quot;streaming_which_services&amp;quot;,
+    &amp;quot;streaming_preference_strength&amp;quot;,
+    &amp;quot;streaming_preferred_service&amp;quot;,
+    &amp;quot;streaming_conflict_resolution&amp;quot;,
+    &amp;quot;priorities_conflict_resolution&amp;quot;,
+    &amp;quot;streaming_comments&amp;quot;,
+    &amp;quot;authentication_yes&amp;quot;,
+    &amp;quot;authentication_no&amp;quot;,
+    &amp;quot;authentication_comments&amp;quot;,
+    &amp;quot;overall_help&amp;quot;,
+    &amp;quot;overall_comments&amp;quot;
+  ),
+  text = colnames(responses)
+)
+colnames(responses) &amp;lt;- questions$label&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Looks like all the timestamps are in US Eastern Time:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(lubridate)
+
+responses %&amp;gt;% 
+  mutate(tz = str_extract(timestamp, &amp;quot;(?&amp;lt;=\\s)\\S+$&amp;quot;)) %&amp;gt;% 
+  count(tz)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 2
+##   tz        n
+##   &amp;lt;chr&amp;gt; &amp;lt;int&amp;gt;
+## 1 EST      42&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;responses &amp;lt;- 
+  responses %&amp;gt;% 
+  mutate(timestamp = ymd_hms(timestamp, tz = &amp;quot;US/Eastern&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s look at the other fields.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(scales)
+library(glue)
+library(ggtext)
+
+questions &amp;lt;- 
+  questions %&amp;gt;% 
+  mutate(
+    n = map_int(label, ~sum(!is.na(responses[.]))),
+    title = str_extract(text, &amp;quot;^.*\\?&amp;quot;)
+  )
+
+questions$title[1]   &amp;lt;- &amp;quot;Timestamp&amp;quot;
+questions$title[6:9] &amp;lt;- str_extract(questions$text[6:9], &amp;quot;(?&amp;lt;=\\[).*(?=\\])&amp;quot;)
+questions$title[31]  &amp;lt;- str_extract(questions$text[31], &amp;quot;^3\\.[^\\.]*\\.&amp;quot;)
+
+responses %&amp;gt;% 
+  count(intro_r_while_coding) %&amp;gt;% 
+  mutate(
+    intro_r_while_coding = intro_r_while_coding %&amp;gt;% 
+      factor(levels = 1:5) %&amp;gt;% 
+      recode(
+        `1` = &amp;quot;1\nnever&amp;quot;,
+        `5` = &amp;quot;5\nalmost always&amp;quot;
+      ),
+    share = n / sum(n)
+  ) %&amp;gt;% 
+  ggplot() +
+  aes(
+    x = intro_r_while_coding,
+    y = share,
+    label = glue(&amp;quot;{percent(share)}&amp;lt;br&amp;gt;*n={n}*&amp;quot;)
+  ) +
+  geom_bar(stat = &amp;quot;identity&amp;quot;) +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), &amp;quot;pt&amp;quot;)
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent,
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[2], 70)) +
+  labs(caption = glue(&amp;quot;{questions$n[2]} responses&amp;quot;)) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;responses %&amp;gt;% 
+  count(intro_music_while_coding) %&amp;gt;% 
+  mutate(
+    intro_music_while_coding = intro_music_while_coding %&amp;gt;% 
+      factor(levels = 1:5) %&amp;gt;% 
+      recode(
+        `1` = &amp;quot;1\nnever&amp;quot;,
+        `5` = &amp;quot;5\nalmost always&amp;quot;
+      ),
+    share = n / sum(n)
+  ) %&amp;gt;% 
+  ggplot() +
+  aes(
+    x = intro_music_while_coding,
+    y = share,
+    label = glue(&amp;quot;{percent(share)}&amp;lt;br&amp;gt;*n={n}*&amp;quot;)
+  ) +
+  geom_bar(stat = &amp;quot;identity&amp;quot;) +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), &amp;quot;pt&amp;quot;)
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent,
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[3], 70)) +
+  labs(caption = glue(&amp;quot;{questions$n[3]} responses&amp;quot;)) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>R Markdown: Shrink &amp; Tidy Your HTML Output with CDNs</title>
       <link>/post/2020-03-14-r-markdown-shrink-tidy-your-html-output-with-cdns/</link>
       <pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>

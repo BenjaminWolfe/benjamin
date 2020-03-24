@@ -1,0 +1,175 @@
+---
+title: 'Muso: A Proposal'
+author: Benjamin Wolfe
+date: '2020-03-15'
+slug: []
+categories: []
+tags:
+  - Recreation
+  - R
+  - R Packages
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-03-15T15:53:01-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+<p>While editing this post, see the <a href="https://docs.google.com/forms/d/1Azw1fQuTQZ8Zj6OTi7pIYWxN14xb0Yn4XeTA8Blbjik/edit">form itself</a>.</p>
+<p>To do: add <a href="https://www.jepusto.com/code-folding-with-blogdown-academic/">code folding</a>!</p>
+<p>First we read the data in.</p>
+<pre class="r"><code>library(tidyverse)
+
+responses &lt;- read_csv(&quot;survey-responses.csv&quot;)
+questions &lt;- tibble(
+  id = 1:ncol(responses),
+  label = c(
+    &quot;timestamp&quot;,
+    &quot;intro_r_while_coding&quot;,
+    &quot;intro_music_while_coding&quot;,
+    &quot;intro_new_music_affinity&quot;,
+    &quot;intro_shares_music&quot;,
+    &quot;music_playlist&quot;,
+    &quot;music_radio&quot;,
+    &quot;music_one_song&quot;,
+    &quot;music_random&quot;,
+    &quot;intro_remote&quot;,
+    &quot;features_collaborative&quot;,
+    &quot;features_use_r&quot;,
+    &quot;features_use_twitter&quot;,
+    &quot;features_edit_playlist&quot;,
+    &quot;features_tidy_data&quot;,
+    &quot;features_share_data&quot;,
+    &quot;features_save_project&quot;,
+    &quot;features_code_bots&quot;,
+    &quot;features_hear_bots&quot;,
+    &quot;features_shiny_app&quot;,
+    &quot;priorities_import&quot;,
+    &quot;priorities_export&quot;,
+    &quot;streaming_which_services&quot;,
+    &quot;streaming_preference_strength&quot;,
+    &quot;streaming_preferred_service&quot;,
+    &quot;streaming_conflict_resolution&quot;,
+    &quot;priorities_conflict_resolution&quot;,
+    &quot;streaming_comments&quot;,
+    &quot;authentication_yes&quot;,
+    &quot;authentication_no&quot;,
+    &quot;authentication_comments&quot;,
+    &quot;overall_help&quot;,
+    &quot;overall_comments&quot;
+  ),
+  text = colnames(responses)
+)
+colnames(responses) &lt;- questions$label</code></pre>
+<p>Looks like all the timestamps are in US Eastern Time:</p>
+<pre class="r"><code>library(lubridate)
+
+responses %&gt;% 
+  mutate(tz = str_extract(timestamp, &quot;(?&lt;=\\s)\\S+$&quot;)) %&gt;% 
+  count(tz)</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##   tz        n
+##   &lt;chr&gt; &lt;int&gt;
+## 1 EST      42</code></pre>
+<pre class="r"><code>responses &lt;- 
+  responses %&gt;% 
+  mutate(timestamp = ymd_hms(timestamp, tz = &quot;US/Eastern&quot;))</code></pre>
+<p>Let’s look at the other fields.</p>
+<pre class="r"><code>library(scales)
+library(glue)
+library(ggtext)
+
+questions &lt;- 
+  questions %&gt;% 
+  mutate(
+    n = map_int(label, ~sum(!is.na(responses[.]))),
+    title = str_extract(text, &quot;^.*\\?&quot;)
+  )
+
+questions$title[1]   &lt;- &quot;Timestamp&quot;
+questions$title[6:9] &lt;- str_extract(questions$text[6:9], &quot;(?&lt;=\\[).*(?=\\])&quot;)
+questions$title[31]  &lt;- str_extract(questions$text[31], &quot;^3\\.[^\\.]*\\.&quot;)
+
+responses %&gt;% 
+  count(intro_r_while_coding) %&gt;% 
+  mutate(
+    intro_r_while_coding = intro_r_while_coding %&gt;% 
+      factor(levels = 1:5) %&gt;% 
+      recode(
+        `1` = &quot;1\nnever&quot;,
+        `5` = &quot;5\nalmost always&quot;
+      ),
+    share = n / sum(n)
+  ) %&gt;% 
+  ggplot() +
+  aes(
+    x = intro_r_while_coding,
+    y = share,
+    label = glue(&quot;{percent(share)}&lt;br&gt;*n={n}*&quot;)
+  ) +
+  geom_bar(stat = &quot;identity&quot;) +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), &quot;pt&quot;)
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent,
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[2], 70)) +
+  labs(caption = glue(&quot;{questions$n[2]} responses&quot;)) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )</code></pre>
+<p><img src="/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>responses %&gt;% 
+  count(intro_music_while_coding) %&gt;% 
+  mutate(
+    intro_music_while_coding = intro_music_while_coding %&gt;% 
+      factor(levels = 1:5) %&gt;% 
+      recode(
+        `1` = &quot;1\nnever&quot;,
+        `5` = &quot;5\nalmost always&quot;
+      ),
+    share = n / sum(n)
+  ) %&gt;% 
+  ggplot() +
+  aes(
+    x = intro_music_while_coding,
+    y = share,
+    label = glue(&quot;{percent(share)}&lt;br&gt;*n={n}*&quot;)
+  ) +
+  geom_bar(stat = &quot;identity&quot;) +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), &quot;pt&quot;)
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent,
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[3], 70)) +
+  labs(caption = glue(&quot;{questions$n[3]} responses&quot;)) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )</code></pre>
+<p><img src="/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>

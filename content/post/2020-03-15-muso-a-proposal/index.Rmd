@@ -1,0 +1,187 @@
+---
+title: 'Muso: A Proposal'
+author: Benjamin Wolfe
+date: '2020-03-15'
+slug: []
+categories: []
+tags:
+  - Recreation
+  - R
+  - R Packages
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-03-15T15:53:01-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+While editing this post, see the [form itself][1].
+
+To do: add [code folding][2]!
+
+First we read the data in.
+
+```{r message=F}
+library(tidyverse)
+
+responses <- read_csv("survey-responses.csv")
+questions <- tibble(
+  id = 1:ncol(responses),
+  label = c(
+    "timestamp",
+    "intro_r_while_coding",
+    "intro_music_while_coding",
+    "intro_new_music_affinity",
+    "intro_shares_music",
+    "music_playlist",
+    "music_radio",
+    "music_one_song",
+    "music_random",
+    "intro_remote",
+    "features_collaborative",
+    "features_use_r",
+    "features_use_twitter",
+    "features_edit_playlist",
+    "features_tidy_data",
+    "features_share_data",
+    "features_save_project",
+    "features_code_bots",
+    "features_hear_bots",
+    "features_shiny_app",
+    "priorities_import",
+    "priorities_export",
+    "streaming_which_services",
+    "streaming_preference_strength",
+    "streaming_preferred_service",
+    "streaming_conflict_resolution",
+    "priorities_conflict_resolution",
+    "streaming_comments",
+    "authentication_yes",
+    "authentication_no",
+    "authentication_comments",
+    "overall_help",
+    "overall_comments"
+  ),
+  text = colnames(responses)
+)
+colnames(responses) <- questions$label
+```
+
+Looks like all the timestamps are in US Eastern Time:
+
+```{r timestamps, message=F}
+library(lubridate)
+
+responses %>% 
+  mutate(tz = str_extract(timestamp, "(?<=\\s)\\S+$")) %>% 
+  count(tz)
+
+responses <- 
+  responses %>% 
+  mutate(timestamp = ymd_hms(timestamp, tz = "US/Eastern"))
+```
+
+Let's look at the other fields.
+
+```{r, message=F}
+library(scales)
+library(glue)
+library(ggtext)
+
+questions <- 
+  questions %>% 
+  mutate(
+    n = map_int(label, ~sum(!is.na(responses[.]))),
+    title = str_extract(text, "^.*\\?")
+  )
+
+questions$title[1]   <- "Timestamp"
+questions$title[6:9] <- str_extract(questions$text[6:9], "(?<=\\[).*(?=\\])")
+questions$title[31]  <- str_extract(questions$text[31], "^3\\.[^\\.]*\\.")
+
+responses %>% 
+  count(intro_r_while_coding) %>% 
+  mutate(
+    intro_r_while_coding = intro_r_while_coding %>% 
+      factor(levels = 1:5) %>% 
+      recode(
+        `1` = "1\nnever",
+        `5` = "5\nalmost always"
+      ),
+    share = n / sum(n)
+  ) %>% 
+  ggplot() +
+  aes(
+    x = intro_r_while_coding,
+    y = share,
+    label = glue("{percent(share)}<br>*n={n}*")
+  ) +
+  geom_bar(stat = "identity") +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), "pt")
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent,
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[2], 70)) +
+  labs(caption = glue("{questions$n[2]} responses")) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+
+```{r}
+responses %>% 
+  count(intro_music_while_coding) %>% 
+  mutate(
+    intro_music_while_coding = intro_music_while_coding %>% 
+      factor(levels = 1:5) %>% 
+      recode(
+        `1` = "1\nnever",
+        `5` = "5\nalmost always"
+      ),
+    share = n / sum(n)
+  ) %>% 
+  ggplot() +
+  aes(
+    x = intro_music_while_coding,
+    y = share,
+    label = glue("{percent(share)}<br>*n={n}*")
+  ) +
+  geom_bar(stat = "identity") +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), "pt")
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent,
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[3], 70)) +
+  labs(caption = glue("{questions$n[3]} responses")) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+
+[1]: https://docs.google.com/forms/d/1Azw1fQuTQZ8Zj6OTi7pIYWxN14xb0Yn4XeTA8Blbjik/edit
+[2]: https://www.jepusto.com/code-folding-with-blogdown-academic/
