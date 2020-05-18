@@ -106,6 +106,7 @@ questions$title[31]  <- str_extract(questions$text[31], "^3\\.[^\\.]*\\.")
 
 responses %>% 
   count(intro_r_while_coding) %>% 
+  filter(!is.na(intro_r_while_coding)) %>% 
   mutate(
     intro_r_while_coding = intro_r_while_coding %>% 
       factor(levels = 1:5) %>% 
@@ -132,7 +133,7 @@ responses %>%
   ) +
   scale_x_discrete(drop = FALSE) +
   scale_y_continuous(
-    labels = percent,
+    labels = percent_format(1),
     expand = expansion(mult = c(0, .15))
   ) +
   ggtitle(str_wrap(questions$title[2], 70)) +
@@ -146,6 +147,7 @@ responses %>%
 ```{r}
 responses %>% 
   count(intro_music_while_coding) %>% 
+  filter(!is.na(intro_music_while_coding)) %>% 
   mutate(
     intro_music_while_coding = intro_music_while_coding %>% 
       factor(levels = 1:5) %>% 
@@ -172,7 +174,7 @@ responses %>%
   ) +
   scale_x_discrete(drop = FALSE) +
   scale_y_continuous(
-    labels = percent,
+    labels = percent_format(1),
     expand = expansion(mult = c(0, .15))
   ) +
   ggtitle(str_wrap(questions$title[3], 70)) +
@@ -183,5 +185,90 @@ responses %>%
   )
 ```
 
+```{r}
+responses %>% 
+  count(intro_new_music_affinity) %>% 
+  filter(!is.na(intro_new_music_affinity)) %>% 
+  mutate(
+    intro_new_music_affinity = intro_new_music_affinity %>% 
+      factor(levels = 1:5) %>% 
+      recode(
+        `1` = "1\nactively dislike",
+        `5` = "5\nlove it"
+      ),
+    share = n / sum(n)
+  ) %>% 
+  ggplot() +
+  aes(
+    x = intro_new_music_affinity,
+    y = share,
+    label = glue("{percent(share)}<br>*n={n}*")
+  ) +
+  geom_bar(stat = "identity") +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), "pt")
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent_format(1),
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[4], 70)) +
+  labs(caption = glue("{questions$n[4]} responses")) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+
+```{r}
+responses %>% 
+  count(intro_shares_music) %>% 
+  filter(!is.na(intro_shares_music)) %>% 
+  mutate(
+    intro_shares_music = intro_shares_music %>% 
+      factor(
+        levels = c(
+          "never",
+          "rarely",
+          "sometimes",
+          "often",
+          "all the time"
+        )
+      ),
+    share = n / sum(n)
+  ) %>% 
+  ggplot() +
+  aes(
+    x = intro_shares_music,
+    y = share,
+    label = glue("{percent(share)}<br>*n={n}*")
+  ) +
+  geom_bar(stat = "identity") +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), "pt")
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent_format(1),
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[5], 70)) +
+  labs(caption = glue("{questions$n[5]} responses")) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
 [1]: https://docs.google.com/forms/d/1Azw1fQuTQZ8Zj6OTi7pIYWxN14xb0Yn4XeTA8Blbjik/edit
 [2]: https://www.jepusto.com/code-folding-with-blogdown-academic/
