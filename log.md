@@ -16,7 +16,7 @@
 ## Netlify
 
 * Already had a site up and running (still boilerplate, never used).
-* Changed the site settings to deploy the master branch of this repo.
+* Changed the site settings to deploy the main branch of this repo.
   Left the build command as `hugo` & the directory to be published as `public`.
 * Then yes, realized my nagging suspicion was right;
   I had not yet built the site in the first place.
@@ -102,7 +102,7 @@ I know GAB actually recommended making a new branch for each post,
 but I thought I'd keep it simple.
 
 You'll find the ability to create a new branch at the top of GitHub
-where it says _Branch: Master_.
+where it says _Branch: Main_.
 Click on that and you'll notice the text box says "Find or create a branch...."
 Simply type the name of the branch, hit Enter, and you're done!
 
