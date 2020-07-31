@@ -28,10 +28,13 @@
   
     
   
-  <meta name="description" content="Data Scientist">
+  <meta name="description" content="This is a draft post! Good lord please don’t read it.
+Note to self… maybe make the examples have 4 scripts with toy code in them, with 3 functions, so I can split them into 2 folders in the Python part.
+When you’re coding in #rstats and you want to modularize your code, there are roughly two ways to do it:
+ one way when for scripts, and another for writing packages.">
 
   
-  <link rel="alternate" hreflang="en-us" href="/project/">
+  <link rel="alternate" hreflang="en-us" href="/post/2020-05-18-python-modules-from-r/">
 
   
 
@@ -210,14 +213,12 @@
 
 
   
-  <link rel="alternate" href="/project/index.xml" type="application/rss+xml" title="Benjamin E. Wolfe">
-  
 
   <link rel="manifest" href="/index.webmanifest">
   <link rel="icon" type="image/png" href="/images/icon_huc310c2ff5884672a6e2da612b5919d5b_322282_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_huc310c2ff5884672a6e2da612b5919d5b_322282_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/project/">
+  <link rel="canonical" href="/post/2020-05-18-python-modules-from-r/">
 
   
   
@@ -233,18 +234,68 @@
   <meta property="twitter:creator" content="@BenjaminWolfe">
   
   <meta property="og:site_name" content="Benjamin E. Wolfe">
-  <meta property="og:url" content="/project/">
-  <meta property="og:title" content="Projects | Benjamin E. Wolfe">
-  <meta property="og:description" content="Data Scientist"><meta property="og:image" content="/img/benjamin.jpeg">
+  <meta property="og:url" content="/post/2020-05-18-python-modules-from-r/">
+  <meta property="og:title" content="Python Modules from R | Benjamin E. Wolfe">
+  <meta property="og:description" content="This is a draft post! Good lord please don’t read it.
+Note to self… maybe make the examples have 4 scripts with toy code in them, with 3 functions, so I can split them into 2 folders in the Python part.
+When you’re coding in #rstats and you want to modularize your code, there are roughly two ways to do it:
+ one way when for scripts, and another for writing packages."><meta property="og:image" content="/img/benjamin.jpeg">
   <meta property="twitter:image" content="/img/benjamin.jpeg"><meta property="og:locale" content="en-us">
   
-    <meta property="og:updated_time" content="2016-04-27T00:00:00&#43;00:00">
+    
+      <meta property="article:published_time" content="2020-05-18T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2020-05-18T12:39:33-05:00">
   
 
   
 
 
+    
 
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/2020-05-18-python-modules-from-r/"
+  },
+  "headline": "Python Modules from R",
+  
+  "datePublished": "2020-05-18T00:00:00Z",
+  "dateModified": "2020-05-18T12:39:33-05:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Benjamin E. Wolfe"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Benjamin E. Wolfe",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img//"
+    }
+  },
+  "description": "This is a draft post! Good lord please don’t read it.\nNote to self… maybe make the examples have 4 scripts with toy code in them, with 3 functions, so I can split them into 2 folders in the Python part.\nWhen you’re coding in #rstats and you want to modularize your code, there are roughly two ways to do it:\n one way when for scripts, and another for writing packages."
+}
+</script>
+
+  
 
   
 
@@ -252,10 +303,13 @@
   
 
 
+  
 
 
 
-  <title>Projects | Benjamin E. Wolfe</title>
+
+
+  <title>Python Modules from R | Benjamin E. Wolfe</title>
 
 </head>
 
@@ -467,72 +521,413 @@
 </nav>
 
 
-  
-
-
-
-
-
-
-
-
-
-
-
+  <article class="article">
 
   
 
+
+
+
+
+
+
+
+
+
+
+
+  
+
   
   
+  
+<div class="article-container pt-3">
+  <h1>Python Modules from R</h1>
+
+  
+
   
     
-  
-<div class="universal-wrapper pt-3">
-  <h1>Projects</h1>
+
+
+<div class="article-metadata">
 
   
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    2020-05-18
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    4 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 </div>
 
 
 
-<div class="universal-wrapper">
-  
+  <div class="article-container">
 
-  
-  
+    <div class="article-style">
+      
+
+
+<p>This is a draft post! Good lord please don’t read it.</p>
+<p>Note to self… maybe make the examples have 4 scripts with toy code in them,
+with 3 functions,
+so I can split them into 2 folders in the Python part.</p>
+<p>When you’re coding in #rstats and you want to modularize your code,
+there are roughly two ways to do it:</p>
+<ul>
+<li>one way when for scripts,</li>
+<li>and another for writing packages.</li>
+</ul>
+<p>The way you do it for scripts is usually the first way most of us learn.
+Say you have a project, and it lives in a folder called <code>my_r_project</code>.
+In that project, you have 3 scripts,
+<code>script_1.R</code>, <code>script_2.R</code>, and <code>script_3.R</code>,
+and you’re starting to notice that they tend to use the same two functions,
+<code>hello()</code> and <code>world()</code>.</p>
+<p>BLA BLA BLA process tell reader that you move them both into <code>fave_functions.R</code>
+and then you replace them in <code>script_1.R</code>, <code>script_2.R</code>, and <code>script_3.R</code> with</p>
+<pre class="r"><code>source(&quot;fave_functions.R&quot;)</code></pre>
+<p>And then those functions are available in the rest of it.
+(Maybe note that it’s available right there in the global environment,
+shows up in the upper right of RStudio.)</p>
+<p>If you’re writing a package, it feels a little different…
+you have your package directory…
+and then in that you have a folder called <code>R</code> where all your code lives…
+and you follow Hadley’s advice:</p>
+<blockquote>
+<p>While you’re free to arrange functions into files as you wish,
+the two extremes are bad: don’t put all functions into one file
+and don’t put each function into its own separate file.
+(It’s OK if some files only contain one function,
+particularly if the function is large or has a lot of documentation.).
+File names should be meaningful and end in .R.</p>
+</blockquote>
+<p>From here: <a href="http://r-pkgs.had.co.nz/r.html" class="uri">http://r-pkgs.had.co.nz/r.html</a></p>
+<p>And then you follow the rest of the advice in all the microtutorials on this,
+and then you get to do the really cool thing of using <code>library(fave_functions)</code>
+and using them in your code.</p>
+<p>Of course, they now don’t show up in the global environment in the upper right,
+but you <em>can</em> just write <code>hello()</code> and it’ll work.</p>
+<p>And even if you don’t use <code>library(fave_functions)</code>, you can also use <code>fave_functions::hello()</code>.</p>
+<p>BLA BLA BLA</p>
+<p>Cool thing is they’re just the same in Python.</p>
+<p>You can put <code>fave_functions.py</code> in the same folder where you are
+and then use <code>import fave_functions</code> and you’re good.</p>
+<p>Difference here though is that you still have to say <code>fave_functions.hello()</code>,
+which is why most people would use <code>import fave_functions as ff</code>
+and then just say <code>ff.hello()</code>.</p>
+<p>And then, for packages, it’s like this…
+You make your package folder, called <code>fave_functions</code>
+and then in it you can have any number of python files with functions in them.
+And you use a file called <code>__init__.py</code> that looks like this:</p>
+<pre><code>from file1 import (fun1, fun2)
+from file2 import (fun3)</code></pre>
+<p>And then in your code you do the same thing,
+<code>import fave_functions as ff</code>.</p>
+<p>So how does Python know where to look for this folder?
+After all, in R you just use <code>install.packages()</code> and download it.
+Well R itself, you may have noticed (and if you haven’t you will at some point),
+has its own install directory.
+It varies by OS, but on a Mac for example it’s <code>...</code></p>
+<p>And R only knows to look <em>there</em> because it’s on a variable called <code>.libPaths()</code>.
+You can run that and see exactly where R looks for packages.
+If the package is there, R will find it!
+If it’s not, then it won’t.</p>
+<p>It’s very much the same with Python.
+Python just doesn’t distinguish so sharply between packages and plain old files.
+So it <em>first</em> looks in the directory you’re in.
+And it <em>then</em> starts scanning through the autoexec path.
+It’s helpful to set that yourself by looking at {insert documentation here}.</p>
+<p>So that’s all there is to know!</p>
+<ul>
+<li>Python isn’t that different from R in this regard.</li>
+<li>Python treats plain files and packages very similarly.</li>
+<li>Python also still makes you qualify your references.</li>
+<li>Bonus: Modularizing code isn’t that different even in R
+whether you’re just writing scripts or developing a package.</li>
+</ul>
+<p>FWIW maybe note that it’s kind of cool to use pd.DataFrame etc.
+It makes it really clear where everything’s coming from.</p>
+<p>Also remember the file in R where it says what all the imports are?</p>
+
+    </div>
+
     
-    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
     
       
       
-    
-    <div>
-      <h2><a href="http://example.org" target="_blank" rel="noopener">External Project</a></h2>
-      <div class="article-style">
+      
         
-          An example of linking directly to an external project website using `external_link`.
-        
-      </div>
-    </div>
-  
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/2020-05-18-python-modules-from-r/&amp;text=Python%20Modules%20from%20R" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
     
-    
-    
-    <div>
-      <h2><a href="/project/internal-project/" >Internal Project</a></h2>
-      <div class="article-style">
+      
+      
+      
         
-          An example of using the in-built project page.
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/2020-05-18-python-modules-from-r/&amp;t=Python%20Modules%20from%20R" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
         
-      </div>
-    </div>
-  
-
-  
-
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Python%20Modules%20from%20R&amp;body=/post/2020-05-18-python-modules-from-r/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/2020-05-18-python-modules-from-r/&amp;title=Python%20Modules%20from%20R" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Python%20Modules%20from%20R%20/post/2020-05-18-python-modules-from-r/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/2020-05-18-python-modules-from-r/&amp;title=Python%20Modules%20from%20R" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      <img class="avatar mr-3 avatar-circle" src="https://s.gravatar.com/avatar/112cf97b6c0270e4065b37d4f0984012?s=200')" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/">Benjamin E. Wolfe</a></h5>
+      <h6 class="card-subtitle">Data Scientist</h6>
+      <p class="card-text">Benjamin Wolfe is an R lover and Python learner. He loves writing, if he can ever finish a blog post.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/BenjaminWolfe" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/BenjaminWolfe/benjamin" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/BenjaminWolfe" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/files/resume.pdf" >
+        <i class="fas fa-cv"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
 
       
 

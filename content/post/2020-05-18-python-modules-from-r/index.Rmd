@@ -1,0 +1,126 @@
+---
+title: Python Modules from R
+author: Benjamin Wolfe
+date: '2020-05-18'
+slug: []
+categories: []
+tags: []
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-05-18T12:39:33-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+draft: true
+---
+
+This is a draft post! Good lord please don't read it.
+
+Note to self… maybe make the examples have 4 scripts with toy code in them,
+with 3 functions,
+so I can split them into 2 folders in the Python part.
+
+When you're coding in #rstats and you want to modularize your code,
+there are roughly two ways to do it:
+
+* one way when for scripts,
+* and another for writing packages.
+
+The way you do it for scripts is usually the first way most of us learn.
+Say you have a project, and it lives in a folder called `my_r_project`.
+In that project, you have 3 scripts,
+`script_1.R`, `script_2.R`, and `script_3.R`,
+and you're starting to notice that they tend to use the same two functions,
+`hello()` and `world()`.
+
+BLA BLA BLA process tell reader that you move them both into `fave_functions.R`
+and then you replace them in `script_1.R`, `script_2.R`, and `script_3.R` with
+
+```r
+source("fave_functions.R")
+```
+
+And then those functions are available in the rest of it.
+(Maybe note that it's available right there in the global environment,
+shows up in the upper right of RStudio.)
+
+If you're writing a package, it feels a little different…
+you have your package directory…
+and then in that you have a folder called `R` where all your code lives…
+and you follow Hadley's advice:
+
+> While you’re free to arrange functions into files as you wish,
+> the two extremes are bad: don’t put all functions into one file
+> and don’t put each function into its own separate file.
+> (It’s OK if some files only contain one function,
+> particularly if the function is large or has a lot of documentation.).
+> File names should be meaningful and end in .R.
+
+From here: http://r-pkgs.had.co.nz/r.html
+
+And then you follow the rest of the advice in all the microtutorials on this,
+and then you get to do the really cool thing of using `library(fave_functions)`
+and using them in your code.
+
+Of course, they now don't show up in the global environment in the upper right,
+but you _can_ just write `hello()` and it'll work.
+
+And even if you don't use `library(fave_functions)`, you can also use `fave_functions::hello()`.
+
+BLA BLA BLA
+
+Cool thing is they're just the same in Python.
+
+You can put `fave_functions.py` in the same folder where you are
+and then use `import fave_functions` and you're good.
+
+Difference here though is that you still have to say `fave_functions.hello()`,
+which is why most people would use `import fave_functions as ff`
+and then just say `ff.hello()`.
+
+And then, for packages, it's like this…
+You make your package folder, called `fave_functions`
+and then in it you can have any number of python files with functions in them.
+And you use a file called `__init__.py` that looks like this:
+
+```
+from file1 import (fun1, fun2)
+from file2 import (fun3)
+```
+
+And then in your code you do the same thing,
+`import fave_functions as ff`.
+
+So how does Python know where to look for this folder?
+After all, in R you just use `install.packages()` and download it.
+Well R itself, you may have noticed (and if you haven't you will at some point),
+has its own install directory.
+It varies by OS, but on a Mac for example it's `...`
+
+And R only knows to look _there_ because it's on a variable called `.libPaths()`.
+You can run that and see exactly where R looks for packages.
+If the package is there, R will find it!
+If it's not, then it won't.
+
+It's very much the same with Python.
+Python just doesn't distinguish so sharply between packages and plain old files.
+So it _first_ looks in the directory you're in.
+And it _then_ starts scanning through the autoexec path.
+It's helpful to set that yourself by looking at {insert documentation here}.
+
+So that's all there is to know!
+
+* Python isn't that different from R in this regard.
+* Python treats plain files and packages very similarly.
+* Python also still makes you qualify your references.
+* Bonus: Modularizing code isn't that different even in R
+  whether you're just writing scripts or developing a package.
+
+FWIW maybe note that it's kind of cool to use pd.DataFrame etc.
+It makes it really clear where everything's coming from.
+
+Also remember the file in R where it says what all the imports are?
