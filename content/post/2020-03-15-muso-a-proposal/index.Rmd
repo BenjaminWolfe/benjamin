@@ -18,7 +18,10 @@ image:
   focal_point: ''
   preview_only: no
 projects: []
+draft: true
 ---
+
+This post is a draft! Good lord please don't read it.
 
 While editing this post, see the [form itself][1].
 
@@ -270,5 +273,6 @@ responses %>%
     axis.ticks = element_blank()
   )
 ```
+
 [1]: https://docs.google.com/forms/d/1Azw1fQuTQZ8Zj6OTi7pIYWxN14xb0Yn4XeTA8Blbjik/edit
 [2]: https://www.jepusto.com/code-folding-with-blogdown-academic/

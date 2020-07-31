@@ -28,10 +28,11 @@
   
     
   
-  <meta name="description" content="While editing this post, see the form itself.
+  <meta name="description" content="This post is a draft! Good lord please don’t read it.
+While editing this post, see the form itself.
 To do: add code folding!
 First we read the data in.
-library(tidyverse) responses &lt;- read_csv(&quot;survey-responses.csv&quot;) questions &lt;- tibble( id = 1:ncol(responses), label = c( &quot;timestamp&quot;, &quot;intro_r_while_coding&quot;, &quot;intro_music_while_coding&quot;, &quot;intro_new_music_affinity&quot;, &quot;intro_shares_music&quot;, &quot;music_playlist&quot;, &quot;music_radio&quot;, &quot;music_one_song&quot;, &quot;music_random&quot;, &quot;intro_remote&quot;, &quot;features_collaborative&quot;, &quot;features_use_r&quot;, &quot;features_use_twitter&quot;, &quot;features_edit_playlist&quot;, &quot;features_tidy_data&quot;, &quot;features_share_data&quot;, &quot;features_save_project&quot;, &quot;features_code_bots&quot;, &quot;features_hear_bots&quot;, &quot;features_shiny_app&quot;, &quot;priorities_import&quot;, &quot;priorities_export&quot;, &quot;streaming_which_services&quot;, &quot;streaming_preference_strength&quot;, &quot;streaming_preferred_service&quot;, &quot;streaming_conflict_resolution&quot;, &quot;priorities_conflict_resolution&quot;, &quot;streaming_comments&quot;, &quot;authentication_yes&quot;, &quot;authentication_no&quot;, &quot;authentication_comments&quot;, &quot;overall_help&quot;, &quot;overall_comments&quot; ), text = colnames(responses) ) colnames(responses) &lt;- questions$label Looks like all the timestamps are in US Eastern Time:">
+library(tidyverse) ## Warning: package &#39;ggplot2&#39; was built under R version 4.0.2 ## Warning: package &#39;tibble&#39; was built under R version 4.0.2 responses &lt;- read_csv(&quot;survey-responses.csv&quot;) questions &lt;- tibble( id = 1:ncol(responses), label = c( &quot;timestamp&quot;, &quot;intro_r_while_coding&quot;, &quot;intro_music_while_coding&quot;, &quot;intro_new_music_affinity&quot;, &quot;intro_shares_music&quot;, &quot;music_playlist&quot;, &quot;music_radio&quot;, &quot;music_one_song&quot;, &quot;music_random&quot;, &quot;intro_remote&quot;, &quot;features_collaborative&quot;, &quot;features_use_r&quot;, &quot;features_use_twitter&quot;, &quot;features_edit_playlist&quot;, &quot;features_tidy_data&quot;, &quot;features_share_data&quot;, &quot;features_save_project&quot;, &quot;features_code_bots&quot;, &quot;features_hear_bots&quot;, &quot;features_shiny_app&quot;, &quot;priorities_import&quot;, &quot;priorities_export&quot;, &quot;streaming_which_services&quot;, &quot;streaming_preference_strength&quot;, &quot;streaming_preferred_service&quot;, &quot;streaming_conflict_resolution&quot;, &quot;priorities_conflict_resolution&quot;, &quot;streaming_comments&quot;, &quot;authentication_yes&quot;, &quot;authentication_no&quot;, &quot;authentication_comments&quot;, &quot;overall_help&quot;, &quot;overall_comments&quot; ), text = colnames(responses) ) colnames(responses) &lt;- questions$label Looks like all the timestamps are in US Eastern Time:">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/2020-03-15-muso-a-proposal/">
@@ -236,16 +237,17 @@ library(tidyverse) responses &lt;- read_csv(&quot;survey-responses.csv&quot;) qu
   <meta property="og:site_name" content="Benjamin E. Wolfe">
   <meta property="og:url" content="/post/2020-03-15-muso-a-proposal/">
   <meta property="og:title" content="Muso: A Proposal | Benjamin E. Wolfe">
-  <meta property="og:description" content="While editing this post, see the form itself.
+  <meta property="og:description" content="This post is a draft! Good lord please don’t read it.
+While editing this post, see the form itself.
 To do: add code folding!
 First we read the data in.
-library(tidyverse) responses &lt;- read_csv(&quot;survey-responses.csv&quot;) questions &lt;- tibble( id = 1:ncol(responses), label = c( &quot;timestamp&quot;, &quot;intro_r_while_coding&quot;, &quot;intro_music_while_coding&quot;, &quot;intro_new_music_affinity&quot;, &quot;intro_shares_music&quot;, &quot;music_playlist&quot;, &quot;music_radio&quot;, &quot;music_one_song&quot;, &quot;music_random&quot;, &quot;intro_remote&quot;, &quot;features_collaborative&quot;, &quot;features_use_r&quot;, &quot;features_use_twitter&quot;, &quot;features_edit_playlist&quot;, &quot;features_tidy_data&quot;, &quot;features_share_data&quot;, &quot;features_save_project&quot;, &quot;features_code_bots&quot;, &quot;features_hear_bots&quot;, &quot;features_shiny_app&quot;, &quot;priorities_import&quot;, &quot;priorities_export&quot;, &quot;streaming_which_services&quot;, &quot;streaming_preference_strength&quot;, &quot;streaming_preferred_service&quot;, &quot;streaming_conflict_resolution&quot;, &quot;priorities_conflict_resolution&quot;, &quot;streaming_comments&quot;, &quot;authentication_yes&quot;, &quot;authentication_no&quot;, &quot;authentication_comments&quot;, &quot;overall_help&quot;, &quot;overall_comments&quot; ), text = colnames(responses) ) colnames(responses) &lt;- questions$label Looks like all the timestamps are in US Eastern Time:"><meta property="og:image" content="/img/benjamin.jpeg">
+library(tidyverse) ## Warning: package &#39;ggplot2&#39; was built under R version 4.0.2 ## Warning: package &#39;tibble&#39; was built under R version 4.0.2 responses &lt;- read_csv(&quot;survey-responses.csv&quot;) questions &lt;- tibble( id = 1:ncol(responses), label = c( &quot;timestamp&quot;, &quot;intro_r_while_coding&quot;, &quot;intro_music_while_coding&quot;, &quot;intro_new_music_affinity&quot;, &quot;intro_shares_music&quot;, &quot;music_playlist&quot;, &quot;music_radio&quot;, &quot;music_one_song&quot;, &quot;music_random&quot;, &quot;intro_remote&quot;, &quot;features_collaborative&quot;, &quot;features_use_r&quot;, &quot;features_use_twitter&quot;, &quot;features_edit_playlist&quot;, &quot;features_tidy_data&quot;, &quot;features_share_data&quot;, &quot;features_save_project&quot;, &quot;features_code_bots&quot;, &quot;features_hear_bots&quot;, &quot;features_shiny_app&quot;, &quot;priorities_import&quot;, &quot;priorities_export&quot;, &quot;streaming_which_services&quot;, &quot;streaming_preference_strength&quot;, &quot;streaming_preferred_service&quot;, &quot;streaming_conflict_resolution&quot;, &quot;priorities_conflict_resolution&quot;, &quot;streaming_comments&quot;, &quot;authentication_yes&quot;, &quot;authentication_no&quot;, &quot;authentication_comments&quot;, &quot;overall_help&quot;, &quot;overall_comments&quot; ), text = colnames(responses) ) colnames(responses) &lt;- questions$label Looks like all the timestamps are in US Eastern Time:"><meta property="og:image" content="/img/benjamin.jpeg">
   <meta property="twitter:image" content="/img/benjamin.jpeg"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2020-03-15T00:00:00&#43;00:00">
     
-    <meta property="article:modified_time" content="2020-03-15T15:53:01-05:00">
+    <meta property="article:modified_time" content="2020-03-24T10:25:52-05:00">
   
 
   
@@ -276,7 +278,7 @@ library(tidyverse) responses &lt;- read_csv(&quot;survey-responses.csv&quot;) qu
   "headline": "Muso: A Proposal",
   
   "datePublished": "2020-03-15T00:00:00Z",
-  "dateModified": "2020-03-15T15:53:01-05:00",
+  "dateModified": "2020-03-24T10:25:52-05:00",
   
   "author": {
     "@type": "Person",
@@ -291,7 +293,7 @@ library(tidyverse) responses &lt;- read_csv(&quot;survey-responses.csv&quot;) qu
       "url": "img//"
     }
   },
-  "description": "While editing this post, see the form itself.\nTo do: add code folding!\nFirst we read the data in.\nlibrary(tidyverse) responses \u0026lt;- read_csv(\u0026quot;survey-responses.csv\u0026quot;) questions \u0026lt;- tibble( id = 1:ncol(responses), label = c( \u0026quot;timestamp\u0026quot;, \u0026quot;intro_r_while_coding\u0026quot;, \u0026quot;intro_music_while_coding\u0026quot;, \u0026quot;intro_new_music_affinity\u0026quot;, \u0026quot;intro_shares_music\u0026quot;, \u0026quot;music_playlist\u0026quot;, \u0026quot;music_radio\u0026quot;, \u0026quot;music_one_song\u0026quot;, \u0026quot;music_random\u0026quot;, \u0026quot;intro_remote\u0026quot;, \u0026quot;features_collaborative\u0026quot;, \u0026quot;features_use_r\u0026quot;, \u0026quot;features_use_twitter\u0026quot;, \u0026quot;features_edit_playlist\u0026quot;, \u0026quot;features_tidy_data\u0026quot;, \u0026quot;features_share_data\u0026quot;, \u0026quot;features_save_project\u0026quot;, \u0026quot;features_code_bots\u0026quot;, \u0026quot;features_hear_bots\u0026quot;, \u0026quot;features_shiny_app\u0026quot;, \u0026quot;priorities_import\u0026quot;, \u0026quot;priorities_export\u0026quot;, \u0026quot;streaming_which_services\u0026quot;, \u0026quot;streaming_preference_strength\u0026quot;, \u0026quot;streaming_preferred_service\u0026quot;, \u0026quot;streaming_conflict_resolution\u0026quot;, \u0026quot;priorities_conflict_resolution\u0026quot;, \u0026quot;streaming_comments\u0026quot;, \u0026quot;authentication_yes\u0026quot;, \u0026quot;authentication_no\u0026quot;, \u0026quot;authentication_comments\u0026quot;, \u0026quot;overall_help\u0026quot;, \u0026quot;overall_comments\u0026quot; ), text = colnames(responses) ) colnames(responses) \u0026lt;- questions$label Looks like all the timestamps are in US Eastern Time:"
+  "description": "This post is a draft! Good lord please don’t read it.\nWhile editing this post, see the form itself.\nTo do: add code folding!\nFirst we read the data in.\nlibrary(tidyverse) ## Warning: package \u0026#39;ggplot2\u0026#39; was built under R version 4.0.2 ## Warning: package \u0026#39;tibble\u0026#39; was built under R version 4.0.2 responses \u0026lt;- read_csv(\u0026quot;survey-responses.csv\u0026quot;) questions \u0026lt;- tibble( id = 1:ncol(responses), label = c( \u0026quot;timestamp\u0026quot;, \u0026quot;intro_r_while_coding\u0026quot;, \u0026quot;intro_music_while_coding\u0026quot;, \u0026quot;intro_new_music_affinity\u0026quot;, \u0026quot;intro_shares_music\u0026quot;, \u0026quot;music_playlist\u0026quot;, \u0026quot;music_radio\u0026quot;, \u0026quot;music_one_song\u0026quot;, \u0026quot;music_random\u0026quot;, \u0026quot;intro_remote\u0026quot;, \u0026quot;features_collaborative\u0026quot;, \u0026quot;features_use_r\u0026quot;, \u0026quot;features_use_twitter\u0026quot;, \u0026quot;features_edit_playlist\u0026quot;, \u0026quot;features_tidy_data\u0026quot;, \u0026quot;features_share_data\u0026quot;, \u0026quot;features_save_project\u0026quot;, \u0026quot;features_code_bots\u0026quot;, \u0026quot;features_hear_bots\u0026quot;, \u0026quot;features_shiny_app\u0026quot;, \u0026quot;priorities_import\u0026quot;, \u0026quot;priorities_export\u0026quot;, \u0026quot;streaming_which_services\u0026quot;, \u0026quot;streaming_preference_strength\u0026quot;, \u0026quot;streaming_preferred_service\u0026quot;, \u0026quot;streaming_conflict_resolution\u0026quot;, \u0026quot;priorities_conflict_resolution\u0026quot;, \u0026quot;streaming_comments\u0026quot;, \u0026quot;authentication_yes\u0026quot;, \u0026quot;authentication_no\u0026quot;, \u0026quot;authentication_comments\u0026quot;, \u0026quot;overall_help\u0026quot;, \u0026quot;overall_comments\u0026quot; ), text = colnames(responses) ) colnames(responses) \u0026lt;- questions$label Looks like all the timestamps are in US Eastern Time:"
 }
 </script>
 
@@ -563,7 +565,7 @@ library(tidyverse) responses &lt;- read_csv(&quot;survey-responses.csv&quot;) qu
           Last updated on
       
     
-    2020-03-15
+    2020-03-24
   </span>
   
 
@@ -572,7 +574,7 @@ library(tidyverse) responses &lt;- read_csv(&quot;survey-responses.csv&quot;) qu
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    2 min read
+    3 min read
   </span>
   
 
@@ -611,12 +613,14 @@ library(tidyverse) responses &lt;- read_csv(&quot;survey-responses.csv&quot;) qu
       
 
 
+<p>This post is a draft! Good lord please don’t read it.</p>
 <p>While editing this post, see the <a href="https://docs.google.com/forms/d/1Azw1fQuTQZ8Zj6OTi7pIYWxN14xb0Yn4XeTA8Blbjik/edit">form itself</a>.</p>
 <p>To do: add <a href="https://www.jepusto.com/code-folding-with-blogdown-academic/">code folding</a>!</p>
 <p>First we read the data in.</p>
-<pre class="r"><code>library(tidyverse)
-
-responses &lt;- read_csv(&quot;survey-responses.csv&quot;)
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>responses &lt;- read_csv(&quot;survey-responses.csv&quot;)
 questions &lt;- tibble(
   id = 1:ncol(responses),
   label = c(
@@ -658,9 +662,9 @@ questions &lt;- tibble(
 )
 colnames(responses) &lt;- questions$label</code></pre>
 <p>Looks like all the timestamps are in US Eastern Time:</p>
-<pre class="r"><code>library(lubridate)
-
-responses %&gt;% 
+<pre class="r"><code>library(lubridate)</code></pre>
+<pre><code>## Warning: package &#39;lubridate&#39; was built under R version 4.0.2</code></pre>
+<pre class="r"><code>responses %&gt;% 
   mutate(tz = str_extract(timestamp, &quot;(?&lt;=\\s)\\S+$&quot;)) %&gt;% 
   count(tz)</code></pre>
 <pre><code>## # A tibble: 1 x 2
@@ -688,6 +692,7 @@ questions$title[31]  &lt;- str_extract(questions$text[31], &quot;^3\\.[^\\.]*\\.
 
 responses %&gt;% 
   count(intro_r_while_coding) %&gt;% 
+  filter(!is.na(intro_r_while_coding)) %&gt;% 
   mutate(
     intro_r_while_coding = intro_r_while_coding %&gt;% 
       factor(levels = 1:5) %&gt;% 
@@ -714,7 +719,7 @@ responses %&gt;%
   ) +
   scale_x_discrete(drop = FALSE) +
   scale_y_continuous(
-    labels = percent,
+    labels = percent_format(1),
     expand = expansion(mult = c(0, .15))
   ) +
   ggtitle(str_wrap(questions$title[2], 70)) +
@@ -726,6 +731,7 @@ responses %&gt;%
 <p><img src="/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre class="r"><code>responses %&gt;% 
   count(intro_music_while_coding) %&gt;% 
+  filter(!is.na(intro_music_while_coding)) %&gt;% 
   mutate(
     intro_music_while_coding = intro_music_while_coding %&gt;% 
       factor(levels = 1:5) %&gt;% 
@@ -752,7 +758,7 @@ responses %&gt;%
   ) +
   scale_x_discrete(drop = FALSE) +
   scale_y_continuous(
-    labels = percent,
+    labels = percent_format(1),
     expand = expansion(mult = c(0, .15))
   ) +
   ggtitle(str_wrap(questions$title[3], 70)) +
@@ -762,6 +768,88 @@ responses %&gt;%
     axis.ticks = element_blank()
   )</code></pre>
 <p><img src="/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>responses %&gt;% 
+  count(intro_new_music_affinity) %&gt;% 
+  filter(!is.na(intro_new_music_affinity)) %&gt;% 
+  mutate(
+    intro_new_music_affinity = intro_new_music_affinity %&gt;% 
+      factor(levels = 1:5) %&gt;% 
+      recode(
+        `1` = &quot;1\nactively dislike&quot;,
+        `5` = &quot;5\nlove it&quot;
+      ),
+    share = n / sum(n)
+  ) %&gt;% 
+  ggplot() +
+  aes(
+    x = intro_new_music_affinity,
+    y = share,
+    label = glue(&quot;{percent(share)}&lt;br&gt;*n={n}*&quot;)
+  ) +
+  geom_bar(stat = &quot;identity&quot;) +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), &quot;pt&quot;)
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent_format(1),
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[4], 70)) +
+  labs(caption = glue(&quot;{questions$n[4]} responses&quot;)) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )</code></pre>
+<p><img src="/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>responses %&gt;% 
+  count(intro_shares_music) %&gt;% 
+  filter(!is.na(intro_shares_music)) %&gt;% 
+  mutate(
+    intro_shares_music = intro_shares_music %&gt;% 
+      factor(
+        levels = c(
+          &quot;never&quot;,
+          &quot;rarely&quot;,
+          &quot;sometimes&quot;,
+          &quot;often&quot;,
+          &quot;all the time&quot;
+        )
+      ),
+    share = n / sum(n)
+  ) %&gt;% 
+  ggplot() +
+  aes(
+    x = intro_shares_music,
+    y = share,
+    label = glue(&quot;{percent(share)}&lt;br&gt;*n={n}*&quot;)
+  ) +
+  geom_bar(stat = &quot;identity&quot;) +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), &quot;pt&quot;)
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent_format(1),
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[5], 70)) +
+  labs(caption = glue(&quot;{questions$n[5]} responses&quot;)) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )</code></pre>
+<p><img src="/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 
     </div>
 
@@ -1116,6 +1204,16 @@ responses %&gt;%
   
   <div class="container">
     <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
   
 
   <p class="powered-by">

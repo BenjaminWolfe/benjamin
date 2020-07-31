@@ -20,12 +20,14 @@
       <description>
 
 
+&lt;p&gt;This post is a draft! Good lord please don’t read it.&lt;/p&gt;
 &lt;p&gt;While editing this post, see the &lt;a href=&#34;https://docs.google.com/forms/d/1Azw1fQuTQZ8Zj6OTi7pIYWxN14xb0Yn4XeTA8Blbjik/edit&#34;&gt;form itself&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;To do: add &lt;a href=&#34;https://www.jepusto.com/code-folding-with-blogdown-academic/&#34;&gt;code folding&lt;/a&gt;!&lt;/p&gt;
 &lt;p&gt;First we read the data in.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
-
-responses &amp;lt;- read_csv(&amp;quot;survey-responses.csv&amp;quot;)
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: package &amp;#39;ggplot2&amp;#39; was built under R version 4.0.2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: package &amp;#39;tibble&amp;#39; was built under R version 4.0.2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;responses &amp;lt;- read_csv(&amp;quot;survey-responses.csv&amp;quot;)
 questions &amp;lt;- tibble(
   id = 1:ncol(responses),
   label = c(
@@ -67,9 +69,9 @@ questions &amp;lt;- tibble(
 )
 colnames(responses) &amp;lt;- questions$label&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Looks like all the timestamps are in US Eastern Time:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(lubridate)
-
-responses %&amp;gt;% 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(lubridate)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning: package &amp;#39;lubridate&amp;#39; was built under R version 4.0.2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;responses %&amp;gt;% 
   mutate(tz = str_extract(timestamp, &amp;quot;(?&amp;lt;=\\s)\\S+$&amp;quot;)) %&amp;gt;% 
   count(tz)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 2
@@ -97,6 +99,7 @@ questions$title[31]  &amp;lt;- str_extract(questions$text[31], &amp;quot;^3\\.[^
 
 responses %&amp;gt;% 
   count(intro_r_while_coding) %&amp;gt;% 
+  filter(!is.na(intro_r_while_coding)) %&amp;gt;% 
   mutate(
     intro_r_while_coding = intro_r_while_coding %&amp;gt;% 
       factor(levels = 1:5) %&amp;gt;% 
@@ -123,7 +126,7 @@ responses %&amp;gt;%
   ) +
   scale_x_discrete(drop = FALSE) +
   scale_y_continuous(
-    labels = percent,
+    labels = percent_format(1),
     expand = expansion(mult = c(0, .15))
   ) +
   ggtitle(str_wrap(questions$title[2], 70)) +
@@ -135,6 +138,7 @@ responses %&amp;gt;%
 &lt;p&gt;&lt;img src=&#34;/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;responses %&amp;gt;% 
   count(intro_music_while_coding) %&amp;gt;% 
+  filter(!is.na(intro_music_while_coding)) %&amp;gt;% 
   mutate(
     intro_music_while_coding = intro_music_while_coding %&amp;gt;% 
       factor(levels = 1:5) %&amp;gt;% 
@@ -161,7 +165,7 @@ responses %&amp;gt;%
   ) +
   scale_x_discrete(drop = FALSE) +
   scale_y_continuous(
-    labels = percent,
+    labels = percent_format(1),
     expand = expansion(mult = c(0, .15))
   ) +
   ggtitle(str_wrap(questions$title[3], 70)) +
@@ -171,6 +175,88 @@ responses %&amp;gt;%
     axis.ticks = element_blank()
   )&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;responses %&amp;gt;% 
+  count(intro_new_music_affinity) %&amp;gt;% 
+  filter(!is.na(intro_new_music_affinity)) %&amp;gt;% 
+  mutate(
+    intro_new_music_affinity = intro_new_music_affinity %&amp;gt;% 
+      factor(levels = 1:5) %&amp;gt;% 
+      recode(
+        `1` = &amp;quot;1\nactively dislike&amp;quot;,
+        `5` = &amp;quot;5\nlove it&amp;quot;
+      ),
+    share = n / sum(n)
+  ) %&amp;gt;% 
+  ggplot() +
+  aes(
+    x = intro_new_music_affinity,
+    y = share,
+    label = glue(&amp;quot;{percent(share)}&amp;lt;br&amp;gt;*n={n}*&amp;quot;)
+  ) +
+  geom_bar(stat = &amp;quot;identity&amp;quot;) +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), &amp;quot;pt&amp;quot;)
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent_format(1),
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[4], 70)) +
+  labs(caption = glue(&amp;quot;{questions$n[4]} responses&amp;quot;)) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;responses %&amp;gt;% 
+  count(intro_shares_music) %&amp;gt;% 
+  filter(!is.na(intro_shares_music)) %&amp;gt;% 
+  mutate(
+    intro_shares_music = intro_shares_music %&amp;gt;% 
+      factor(
+        levels = c(
+          &amp;quot;never&amp;quot;,
+          &amp;quot;rarely&amp;quot;,
+          &amp;quot;sometimes&amp;quot;,
+          &amp;quot;often&amp;quot;,
+          &amp;quot;all the time&amp;quot;
+        )
+      ),
+    share = n / sum(n)
+  ) %&amp;gt;% 
+  ggplot() +
+  aes(
+    x = intro_shares_music,
+    y = share,
+    label = glue(&amp;quot;{percent(share)}&amp;lt;br&amp;gt;*n={n}*&amp;quot;)
+  ) +
+  geom_bar(stat = &amp;quot;identity&amp;quot;) +
+  geom_richtext(
+    vjust = -.2,
+    size = 3,
+    lineheight = .75,
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), &amp;quot;pt&amp;quot;)
+  ) +
+  scale_x_discrete(drop = FALSE) +
+  scale_y_continuous(
+    labels = percent_format(1),
+    expand = expansion(mult = c(0, .15))
+  ) +
+  ggtitle(str_wrap(questions$title[5], 70)) +
+  labs(caption = glue(&amp;quot;{questions$n[5]} responses&amp;quot;)) +
+  theme(
+    axis.title = element_blank(),
+    axis.ticks = element_blank()
+  )&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 </description>
     </item>
     
