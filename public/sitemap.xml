@@ -19,7 +19,7 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2020-05-18T12:39:33-05:00</lastmod>
+    <lastmod>2020-07-31T11:27:06-05:00</lastmod>
   </url>
   
   <url>
@@ -29,7 +29,32 @@
   
   <url>
     <loc>/post/2020-05-18-python-modules-from-r/</loc>
-    <lastmod>2020-05-18T12:39:33-05:00</lastmod>
+    <lastmod>2020-07-31T11:27:06-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/2020-03-15-muso-a-proposal/</loc>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/r/</loc>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/r-packages/</loc>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/recreation/</loc>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-03-15T15:53:01-05:00</lastmod>
   </url>
   
   <url>
@@ -49,11 +74,6 @@
   
   <url>
     <loc>/tags/reproducibility/</loc>
-    <lastmod>2020-03-15T09:29:39-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2020-03-15T09:29:39-05:00</lastmod>
   </url>
   
