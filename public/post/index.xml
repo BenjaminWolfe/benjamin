@@ -13,6 +13,98 @@
     </image>
     
     <item>
+      <title>Python Modules from R</title>
+      <link>/post/2020-05-18-python-modules-from-r/</link>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      <guid>/post/2020-05-18-python-modules-from-r/</guid>
+      <description>
+
+
+&lt;p&gt;This is a draft post! Good lord please don’t read it.&lt;/p&gt;
+&lt;p&gt;Note to self… maybe make the examples have 4 scripts with toy code in them,
+with 3 functions,
+so I can split them into 2 folders in the Python part.&lt;/p&gt;
+&lt;p&gt;When you’re coding in #rstats and you want to modularize your code,
+there are roughly two ways to do it:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;one way when for scripts,&lt;/li&gt;
+&lt;li&gt;and another for writing packages.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The way you do it for scripts is usually the first way most of us learn.
+Say you have a project, and it lives in a folder called &lt;code&gt;my_r_project&lt;/code&gt;.
+In that project, you have 3 scripts,
+&lt;code&gt;script_1.R&lt;/code&gt;, &lt;code&gt;script_2.R&lt;/code&gt;, and &lt;code&gt;script_3.R&lt;/code&gt;,
+and you’re starting to notice that they tend to use the same two functions,
+&lt;code&gt;hello()&lt;/code&gt; and &lt;code&gt;world()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;BLA BLA BLA process tell reader that you move them both into &lt;code&gt;fave_functions.R&lt;/code&gt;
+and then you replace them in &lt;code&gt;script_1.R&lt;/code&gt;, &lt;code&gt;script_2.R&lt;/code&gt;, and &lt;code&gt;script_3.R&lt;/code&gt; with&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;source(&amp;quot;fave_functions.R&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then those functions are available in the rest of it.
+(Maybe note that it’s available right there in the global environment,
+shows up in the upper right of RStudio.)&lt;/p&gt;
+&lt;p&gt;If you’re writing a package, it feels a little different…
+you have your package directory…
+and then in that you have a folder called &lt;code&gt;R&lt;/code&gt; where all your code lives…
+and you follow Hadley’s advice:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;While you’re free to arrange functions into files as you wish,
+the two extremes are bad: don’t put all functions into one file
+and don’t put each function into its own separate file.
+(It’s OK if some files only contain one function,
+particularly if the function is large or has a lot of documentation.).
+File names should be meaningful and end in .R.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;From here: &lt;a href=&#34;http://r-pkgs.had.co.nz/r.html&#34; class=&#34;uri&#34;&gt;http://r-pkgs.had.co.nz/r.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;And then you follow the rest of the advice in all the microtutorials on this,
+and then you get to do the really cool thing of using &lt;code&gt;library(fave_functions)&lt;/code&gt;
+and using them in your code.&lt;/p&gt;
+&lt;p&gt;Of course, they now don’t show up in the global environment in the upper right,
+but you &lt;em&gt;can&lt;/em&gt; just write &lt;code&gt;hello()&lt;/code&gt; and it’ll work.&lt;/p&gt;
+&lt;p&gt;And even if you don’t use &lt;code&gt;library(fave_functions)&lt;/code&gt;, you can also use &lt;code&gt;fave_functions::hello()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;BLA BLA BLA&lt;/p&gt;
+&lt;p&gt;Cool thing is they’re just the same in Python.&lt;/p&gt;
+&lt;p&gt;You can put &lt;code&gt;fave_functions.py&lt;/code&gt; in the same folder where you are
+and then use &lt;code&gt;import fave_functions&lt;/code&gt; and you’re good.&lt;/p&gt;
+&lt;p&gt;Difference here though is that you still have to say &lt;code&gt;fave_functions.hello()&lt;/code&gt;,
+which is why most people would use &lt;code&gt;import fave_functions as ff&lt;/code&gt;
+and then just say &lt;code&gt;ff.hello()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;And then, for packages, it’s like this…
+You make your package folder, called &lt;code&gt;fave_functions&lt;/code&gt;
+and then in it you can have any number of python files with functions in them.
+And you use a file called &lt;code&gt;__init__.py&lt;/code&gt; that looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;from file1 import (fun1, fun2)
+from file2 import (fun3)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And then in your code you do the same thing,
+&lt;code&gt;import fave_functions as ff&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So how does Python know where to look for this folder?
+After all, in R you just use &lt;code&gt;install.packages()&lt;/code&gt; and download it.
+Well R itself, you may have noticed (and if you haven’t you will at some point),
+has its own install directory.
+It varies by OS, but on a Mac for example it’s &lt;code&gt;...&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;And R only knows to look &lt;em&gt;there&lt;/em&gt; because it’s on a variable called &lt;code&gt;.libPaths()&lt;/code&gt;.
+You can run that and see exactly where R looks for packages.
+If the package is there, R will find it!
+If it’s not, then it won’t.&lt;/p&gt;
+&lt;p&gt;It’s very much the same with Python.
+Python just doesn’t distinguish so sharply between packages and plain old files.
+So it &lt;em&gt;first&lt;/em&gt; looks in the directory you’re in.
+And it &lt;em&gt;then&lt;/em&gt; starts scanning through the autoexec path.
+It’s helpful to set that yourself by looking at {insert documentation here}.&lt;/p&gt;
+&lt;p&gt;So that’s all there is to know!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Python isn’t that different from R in this regard.&lt;/li&gt;
+&lt;li&gt;Python treats plain files and packages very similarly.&lt;/li&gt;
+&lt;li&gt;Python also still makes you qualify your references.&lt;/li&gt;
+&lt;li&gt;Bonus: Modularizing code isn’t that different even in R
+whether you’re just writing scripts or developing a package.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;FWIW maybe note that it’s kind of cool to use pd.DataFrame etc.
+It makes it really clear where everything’s coming from.&lt;/p&gt;
+&lt;p&gt;Also remember the file in R where it says what all the imports are?&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Muso: A Proposal</title>
       <link>/post/2020-03-15-muso-a-proposal/</link>
       <pubDate>Sun, 15 Mar 2020 00:00:00 +0000</pubDate>
