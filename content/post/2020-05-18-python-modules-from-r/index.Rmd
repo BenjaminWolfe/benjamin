@@ -69,15 +69,52 @@ __Make this sentence better; even use it as a practical and specific intro to th
 * The fact that there's `pip install`, and `conda install`, and virtual environments and everything,
   But at its very basic there's an `autoexec.pth` file,
   and python will look for files along that path.
-* The fact that import is sort of a hybrid between library and source.
-  See, when you run library package name,
+  __Maybe look into `conda`, `venv`, and `renv`?__
+* The fact that import is sort of a hybrid between `library` and `source`.
+  See, when you run `library(package_name)`,
   all it does is runs all the R files in a particular directory of that package.
   There are two things peculiar to this process, over that of sourcing scripts.
-  one is that package authors are very careful to write these files so that all they do is define functions.
-  
+  One is that package authors are very careful to write these files so that all they do is define functions.
+  The other is that when you `library` the file, those functions don't show up in the upper right panel of RStudio, the way they would if you `source`d the file.
+  They don't exist in what's called "the global environment."
+  Instead, they get their own "namespace," callable directly as `package_name::function()`.
+  And when you call `library(package_name)`, they just sit there magically in the background ready to be used.
+  (__Maybe relocate that sentence.__)
   For a very simple example, see the R directory of my signs package.
   It has only one R file, which has only two functions in it.
-  
+  If you source that file, it will define those two functions, and they'll sit in your global environment, showing up in the upper right panel of RStudio.
+  If instead you run `install.packages("signs")` and `library(signs)`,
+  it will _also_ define those two functions, running the same code,
+  but they'll exist in their own portioned-off world, their own namespace,
+  and they won't show up in your defined functions.
+* The fact that in R you can use double-colon notation without even attaching the package,
+  but I'm not sure that you can do that in Python.
+  __(Worth checking.)__
+* So in any case `import` then is actually just like `library`,
+  in that you're running the file and anything created in it now lives in its own namespace.
+* _But!_ you still have to refer to it by that namespace,
+  which is great for both avoiding conflicts and for readability.
+* But it's a little annoying, which is why you can also __alias__ a package,
+  with `import pandas as pd`, which is just like aliasing in SQL
+  (maybe show a SQL example with a simple join?).
+* If there's a particular function you use all the time from a module,
+  you can just import that function: `from itertools import repeat`.
+* And for that matter you can blow the lid off and say `from itertools import *`,
+  but that's widely advised against.
+  Interesting that this is essentially what you're doing in R when you run `library(tidyverse)`.
+  But the precision Python allows around imports makes it a bit muddy by contrast.
+* Here's where you say: but the super loosy goosy flexibility of `import`
+  is that even though you _feel_ like you're using a `library` statement,
+  you can also just run it on the file next door,
+  in the same directory, the way you would with `source`.
+* So how does Python know where to look for an `import`?
+  (See those notes.)
+
+Maybe do virtual environments and such as an addendum!
+
+I think I know how I'll write this! :boom:
+
+----
 
 Note to self… maybe make the examples have 4 scripts with toy code in them,
 with 3 functions,
