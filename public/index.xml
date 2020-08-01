@@ -188,13 +188,14 @@ parameters you’ve just added yourself.&lt;/li&gt;
 &lt;h3&gt;Post Header YAML&lt;/h3&gt;
 &lt;p&gt;Anything you put in the YAML headers of a file are accessible
 with &lt;code&gt;.page.Params.your_lowercase_yaml_parameter&lt;/code&gt;.
-The accessor is slightly different here—starting with &lt;code&gt;$p&lt;/code&gt; rather than &lt;code&gt;.p&lt;/code&gt;—only
-because &lt;code&gt;$page&lt;/code&gt; is defined as equal to &lt;code&gt;.page&lt;/code&gt; a few lines earlier.&lt;/p&gt;
+The accessor is slightly different in our code—it starts with &lt;code&gt;$p&lt;/code&gt;
+instead of &lt;code&gt;.p&lt;/code&gt;—only because &lt;code&gt;$page&lt;/code&gt; is defined as equal to &lt;code&gt;.page&lt;/code&gt;
+a few lines earlier.&lt;/p&gt;
 &lt;p&gt;This is where &lt;code&gt;$page.Params.source_extension&lt;/code&gt; comes from.
-Note that if you are sure you’ll always write &lt;code&gt;.Rmd&lt;/code&gt; files,
+Note that if you are sure you’ll always be writing &lt;code&gt;.Rmd&lt;/code&gt; files,
 you can hard-code this into the template!
-Then you can skip the parameter in your post headers.&lt;/p&gt;
-&lt;p&gt;Adding it to the YAML means the links will work for R Markdown,
+Then you can skip adding the parameter to your post headers.&lt;/p&gt;
+&lt;p&gt;Adding the parameter to the YAML means this same link can work for R Markdown,
 Jupyter Notebooks, or plain old markdown files.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;built-in-variables&#34; class=&#34;section level3&#34;&gt;

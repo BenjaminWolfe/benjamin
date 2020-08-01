@@ -241,7 +241,7 @@ This level of out-there transparency may or may not be what you want in your blo
     
       <meta property="article:published_time" content="2020-07-31T00:00:00&#43;00:00">
     
-    <meta property="article:modified_time" content="2020-07-31T23:17:57-05:00">
+    <meta property="article:modified_time" content="2020-07-31T23:39:24-05:00">
   
 
   
@@ -272,7 +272,7 @@ This level of out-there transparency may or may not be what you want in your blo
   "headline": "Hugo Academic Source Links",
   
   "datePublished": "2020-07-31T00:00:00Z",
-  "dateModified": "2020-07-31T23:17:57-05:00",
+  "dateModified": "2020-07-31T23:39:24-05:00",
   
   "author": {
     "@type": "Person",
@@ -718,13 +718,14 @@ parameters you’ve just added yourself.</li>
 <h3>Post Header YAML</h3>
 <p>Anything you put in the YAML headers of a file are accessible
 with <code>.page.Params.your_lowercase_yaml_parameter</code>.
-The accessor is slightly different here—starting with <code>$p</code> rather than <code>.p</code>—only
-because <code>$page</code> is defined as equal to <code>.page</code> a few lines earlier.</p>
+The accessor is slightly different in our code—it starts with <code>$p</code>
+instead of <code>.p</code>—only because <code>$page</code> is defined as equal to <code>.page</code>
+a few lines earlier.</p>
 <p>This is where <code>$page.Params.source_extension</code> comes from.
-Note that if you are sure you’ll always write <code>.Rmd</code> files,
+Note that if you are sure you’ll always be writing <code>.Rmd</code> files,
 you can hard-code this into the template!
-Then you can skip the parameter in your post headers.</p>
-<p>Adding it to the YAML means the links will work for R Markdown,
+Then you can skip adding the parameter to your post headers.</p>
+<p>Adding the parameter to the YAML means this same link can work for R Markdown,
 Jupyter Notebooks, or plain old markdown files.</p>
 </div>
 <div id="built-in-variables" class="section level3">

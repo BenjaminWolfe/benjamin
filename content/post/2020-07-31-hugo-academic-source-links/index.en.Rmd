@@ -135,15 +135,16 @@ with `site.Params.your_lowercase_toml_parameter`.
 
 Anything you put in the YAML headers of a file are accessible
 with `.page.Params.your_lowercase_yaml_parameter`.
-The accessor is slightly different here—starting with `$p` rather than `.p`—only
-because `$page` is defined as equal to `.page` a few lines earlier.
+The accessor is slightly different in our code—it starts with `$p`
+instead of `.p`—only because `$page` is defined as equal to `.page`
+a few lines earlier.
 
 This is where `$page.Params.source_extension` comes from.
-Note that if you are sure you'll always write `.Rmd` files,
+Note that if you are sure you'll always be writing `.Rmd` files,
 you can hard-code this into the template!
-Then you can skip the parameter in your post headers.
+Then you can skip adding the parameter to your post headers.
 
-Adding it to the YAML means the links will work for R Markdown,
+Adding the parameter to the YAML means this same link can work for R Markdown,
 Jupyter Notebooks, or plain old markdown files.
 
 ### Built-In Variables
