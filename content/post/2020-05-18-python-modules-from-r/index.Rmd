@@ -21,6 +21,64 @@ source_extension: ".Rmd"
 
 This is a draft post! Good lord please don't read it.
 
+one thing I consistently struggled with when first learning Python from R was,
+_“How the hell are the file structured?”_
+
+Specifically, at the top of each file you see these `import` statements:
+
+```python
+import pandas as pd
+from pathlib import Path
+```
+
+They're obviously similar to `library` statements in R—
+
+```r
+library(tidyverse)
+library(signs)
+```
+
+—but how similar are they?
+What are the differences?
+
+One apparent difference I saw, for example,
+was that you could `import` arbitrary files from the same folder as the one you were in.
+So is `import` more similar to a `source` statement in R?
+
+Another thing that piqued my interest is just how Python _finds_ these files.
+How does it know what you're talking about?
+This is important to everything from file organization to workflow to troubleshooting installation issues.
+I know how it works in R, for example:
+
+* To use `library`, you must have installed the package using one of our canonical methods:
+  `install.packages()`, or `remotes::install_github()`, for example.
+* To use `source`, you refer to the file by its path relative to the working directory,
+  or use an absolute reference, or preferably use Jenny Bryan's `here` package.
+
+That may be a lot to remember for a beginner, come to think of it.
+But for someone who's used R for a while it comes to be second nature.
+So how does it work in Python?
+
+It took me a bit to unravel the mysteries.
+But once you pick up the way things work it all makes sense.
+__Make this sentence better; even use it as a practical and specific intro to the next sections.__
+
+## First Real Section
+
+* The whole `as pd` thing.
+* The fact that there's `pip install`, and `conda install`, and virtual environments and everything,
+  But at its very basic there's an `autoexec.pth` file,
+  and python will look for files along that path.
+* The fact that import is sort of a hybrid between library and source.
+  See, when you run library package name,
+  all it does is runs all the R files in a particular directory of that package.
+  There are two things peculiar to this process, over that of sourcing scripts.
+  one is that package authors are very careful to write these files so that all they do is define functions.
+  
+  For a very simple example, see the R directory of my signs package.
+  It has only one R file, which has only two functions in it.
+  
+
 Note to self… maybe make the examples have 4 scripts with toy code in them,
 with 3 functions,
 so I can split them into 2 folders in the Python part.
