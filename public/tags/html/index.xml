@@ -898,10 +898,10 @@ and then deleting the rest.&lt;/p&gt;
 &lt;p&gt;To decide which files to keep,
 we’ll loop through the contents of the file
 and capture any remaining references with the &lt;a href=&#34;https://www.regular-expressions.info/&#34;&gt;regular expression&lt;/a&gt;
-&lt;code&gt;report_files/([^\&amp;quot;]+)&lt;/code&gt;:&lt;/p&gt;
+&lt;code&gt;report_files/([^\&#34;]+)&lt;/code&gt;:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;the string &lt;code&gt;report_files/&lt;/code&gt;,&lt;/li&gt;
-&lt;li&gt;followed by &lt;a href=&#34;https://www.regular-expressions.info/charclass.html&#34;&gt;anything but quotes&lt;/a&gt; &lt;code&gt;[^\&amp;quot;]&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;followed by &lt;a href=&#34;https://www.regular-expressions.info/charclass.html&#34;&gt;anything but quotes&lt;/a&gt; &lt;code&gt;[^\&#34;]&lt;/code&gt;,&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.regular-expressions.info/repeat.html&#34;&gt;one or more times&lt;/a&gt; &lt;code&gt;+&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;We use a &lt;a href=&#34;https://www.regular-expressions.info/brackets.html&#34;&gt;capture group&lt;/a&gt; &lt;code&gt;()&lt;/code&gt; to get just the part after &lt;code&gt;report_files/&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;

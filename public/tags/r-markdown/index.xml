@@ -5,12 +5,189 @@
     <link>/tags/r-markdown/</link>
       <atom:link href="/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
     <description>R Markdown</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 14 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 31 Jul 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/benjamin.jpeg</url>
       <title>R Markdown</title>
       <link>/tags/r-markdown/</link>
     </image>
+    
+    <item>
+      <title>Hugo Academic Source Links</title>
+      <link>/post/2020-07-31-hugo-academic-source-links/</link>
+      <pubDate>Fri, 31 Jul 2020 00:00:00 +0000</pubDate>
+      <guid>/post/2020-07-31-hugo-academic-source-links/</guid>
+      <description>
+
+&lt;div id=&#34;TOC&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#source-links&#34;&gt;Source Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#how-to-add-source-links&#34;&gt;How to Add Source Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#how-does-it-work&#34;&gt;How Does It Work?&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#site-parameters&#34;&gt;Site Parameters&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#post-header-yaml&#34;&gt;Post Header YAML&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#built-in-variables&#34;&gt;Built-In Variables&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#variable-definition&#34;&gt;Variable Definition&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#defaults&#34;&gt;Defaults&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#print-statement&#34;&gt;Print Statement&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#curly-curly-operators&#34;&gt;Curly-Curly Operators&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#html-partials&#34;&gt;HTML Partials&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div id=&#34;source-links&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Source Links&lt;/h2&gt;
+&lt;p&gt;If you’ve ever noticed, at the top of any Tidyverse documentation page
+is a link to the source file for the functions described on the page.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;stringr_docs.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This level of out-there transparency may or may not be
+what you want in your blog.
+But it’s especially useful in a work context.&lt;/p&gt;
+&lt;p&gt;Consider the scenario:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Aasif runs an analysis in January and writes about it in the team blog.
+Stakeholders and others throughout the company read about it there.&lt;/li&gt;
+&lt;li&gt;Bianca, a VP, is looking at the results 3 months later
+and is curious if they still hold with the new data that’s come in,
+or if we tweak such-and-such an assumption.&lt;/li&gt;
+&lt;li&gt;But Aasif is on vacation, so Bianca asks Charlie to run the analysis.
+She shows him the post where she read about it all.
+&lt;strong&gt;The source link literally could not be more obvious,&lt;/strong&gt;
+right at the top of the post.
+So Charlie has a much easier time re-running it.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Now we all know that’s not the end of the story;
+it only means he’s found the file!
+But finding the file &lt;em&gt;that easily&lt;/em&gt; is not at all trivial
+in a multi-team environment.&lt;/p&gt;
+&lt;p&gt;So I’ve implemented these little links at work,
+and I’ve done it here as well.
+It’s actually pretty easy to do.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;how-to-add-source-links&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;How to Add Source Links&lt;/h2&gt;
+&lt;p&gt;It takes no more than 6 steps—counting liberally.
+After we walk through those steps, I’ll explain how they work.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;In &lt;a href=&#34;https://github.com/BenjaminWolfe/benjamin/blob/main/config/_default/params.toml&#34;&gt;&lt;code&gt;config/_default/params.toml&lt;/code&gt;&lt;/a&gt; find this line
+and ensure it’s accurate:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;# Enable visitors to edit pages?
+#   `repo` defines the repository URL. `editable` defines which page types can be edited.
+edit_page = {repo_url = &amp;quot;https://github.com/BenjaminWolfe/benjamin&amp;quot;, content_dir = &amp;quot;&amp;quot;, repo_branch = &amp;quot;main&amp;quot;, editable = {docs = true, page = false, post = false}}&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Add these lines after it:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;# Show source links?
+#   `source_path` is everything between `repo_url` and `repo_branch` (above)
+#   in the link to an Rmd, ipynb, or md file. It varies from provider to provider.
+show_source_links = true
+source_path = &amp;quot;/blob/&amp;quot;&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Find the file &lt;code&gt;themes/hugo-academic/layouts/partials/page_metadata.html&lt;/code&gt;
+and copy it to &lt;a href=&#34;https://github.com/BenjaminWolfe/benjamin/blob/main/layouts/partials/page_metadata.html&#34;&gt;&lt;code&gt;layouts/partials/page_metadata.html&lt;/code&gt;&lt;/a&gt;.
+(That is, copy it from &lt;code&gt;themes/hugo-academic&lt;/code&gt; into the root of your site.)
+This is how you override a template in Hugo;
+that way if you update your Hugo Academic theme, you won’t lose your changes.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;At the top of the file after &lt;code&gt;$is_list&lt;/code&gt; and &lt;code&gt;$page&lt;/code&gt; are defined,
+add this line:&lt;/p&gt;
+&lt;pre class=&#34;go&#34;&gt;&lt;code&gt;{{ $source_url := print $page.File.Dir $page.File.BaseFileName ($page.Params.source_extension | default &amp;quot;.md&amp;quot;) }}&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Then, after the section on article reading time, add this code block:&lt;/p&gt;
+&lt;pre class=&#34;html&#34;&gt;&lt;code&gt;  {{ if and (site.Params.show_source_links) (eq $page.Type &amp;quot;post&amp;quot;) }}
+  &amp;lt;span class=&amp;quot;middot-divider&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;
+  &amp;lt;span class=&amp;quot;source-reference&amp;quot;&amp;gt;
+    &amp;lt;a href=&amp;quot;{{ site.Params.edit_page.repo_url }}{{ site.Params.source_path }}{{ site.Params.edit_page.repo_branch }}/content/{{ $source_url }}&amp;quot; target=&amp;quot;_blank&amp;quot; rel=&amp;quot;noopener&amp;quot;&amp;gt;{{ $source_url }}&amp;lt;/a&amp;gt;
+  &amp;lt;/span&amp;gt;
+  {{ end }}&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Finally, when you start &lt;a href=&#34;https://github.com/BenjaminWolfe/benjamin/blob/main/content/post/2020-07-31-hugo-academic-source-links/index.en.Rmd&#34;&gt;each post&lt;/a&gt;, include this in the YAML:&lt;/p&gt;
+&lt;pre class=&#34;yaml&#34;&gt;&lt;code&gt;source_extension: &amp;#39;.Rmd&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;how-does-it-work&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;How Does It Work?&lt;/h2&gt;
+&lt;p&gt;I think the &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo docs&lt;/a&gt; are actually really intuitive and user-friendly,
+on a par maybe with the &lt;a href=&#34;https://www.tidyverse.org/packages/&#34;&gt;Tidyverse&lt;/a&gt; and &lt;a href=&#34;https://api.jquery.com/&#34;&gt;jQuery&lt;/a&gt; docs.
+Reading through them even cursorily
+gives you a pretty good sense of how things work.&lt;/p&gt;
+&lt;div id=&#34;site-parameters&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Site Parameters&lt;/h3&gt;
+&lt;p&gt;Anything you put in &lt;a href=&#34;https://github.com/BenjaminWolfe/benjamin/blob/main/config/_default/params.toml&#34;&gt;&lt;code&gt;config/_default/params.toml&lt;/code&gt;&lt;/a&gt; is accessible
+with &lt;code&gt;site.Params.lowercase_toml_parameter&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;This is where we get
+&lt;code&gt;site.Params.show_source_links&lt;/code&gt; and &lt;code&gt;site.Params.source_path&lt;/code&gt;,
+parameters you’ve just added yourself.&lt;/li&gt;
+&lt;li&gt;Two others already existed:
+&lt;code&gt;site.Params.edit_page.repo_url&lt;/code&gt; and &lt;code&gt;site.Params.edit_page.repo_branch&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;post-header-yaml&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Post Header YAML&lt;/h3&gt;
+&lt;p&gt;Anything you put in the YAML headers of a file are accessible
+with &lt;code&gt;.page.Params.your_lowercase_yaml_parameter&lt;/code&gt;.
+The accessor is slightly different here—starting with &lt;code&gt;$p&lt;/code&gt; rather than &lt;code&gt;.p&lt;/code&gt;—only
+because &lt;code&gt;$page&lt;/code&gt; is defined as equal to &lt;code&gt;.page&lt;/code&gt; a few lines earlier.&lt;/p&gt;
+&lt;p&gt;This is where &lt;code&gt;$page.Params.source_extension&lt;/code&gt; comes from.
+Note that if you are sure you’ll always write &lt;code&gt;.Rmd&lt;/code&gt; files,
+you can hard-code this into the template!
+Then you can skip the parameter in your post headers.&lt;/p&gt;
+&lt;p&gt;Adding it to the YAML means the links will work for R Markdown,
+Jupyter Notebooks, or plain old markdown files.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;built-in-variables&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Built-In Variables&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;$page.File.Dir&lt;/code&gt; and &lt;code&gt;$page.File.BaseFileName&lt;/code&gt; are built-in page attributes,
+documented straightforwardly in the &lt;a href=&#34;https://gohugo.io/variables/files/&#34;&gt;Hugo docs&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;variable-definition&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Variable Definition&lt;/h3&gt;
+&lt;p&gt;Variables in Hugo are declared with the &lt;code&gt;:=&lt;/code&gt; operator.
+Later &lt;em&gt;changes&lt;/em&gt; to the variable’s value can be made with &lt;code&gt;=&lt;/code&gt; (no colon).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;defaults&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Defaults&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;default&lt;/code&gt; statement is a little trick I picked up
+from &lt;a href=&#34;https://github.com/BenjaminWolfe/benjamin/blob/main/themes/hugo-academic/layouts/partials/page_edit.html&#34;&gt;&lt;code&gt;themes/hugo-academic/layouts/partials/page_edit.html&lt;/code&gt;&lt;/a&gt;,
+as I was looking to replace instances of &lt;code&gt;master&lt;/code&gt; with &lt;code&gt;main&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;html&#34;&gt;&lt;code&gt;&amp;lt;a href=&amp;quot;{{site.Params.edit_page.repo_url}}/edit/{{site.Params.edit_page.repo_branch | default &amp;quot;master&amp;quot;}}/{{$content_dir}}/{{.File.Path}}&amp;quot;&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here it’s reasonable to assume an &lt;code&gt;.md&lt;/code&gt; file extension if one isn’t specified.
+This is especially the case if you happen to be using &lt;a href=&#34;https://github.com/r-lib/hugodown&#34;&gt;&lt;code&gt;hugodown&lt;/code&gt;&lt;/a&gt;;
+&lt;code&gt;hugodown&lt;/code&gt; will &lt;em&gt;always&lt;/em&gt; have an &lt;code&gt;.md&lt;/code&gt; file,
+since it allows Hugo to generate the HTML files server-side.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;print-statement&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Print Statement&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://gohugo.io/functions/print/&#34;&gt;&lt;code&gt;print&lt;/code&gt;&lt;/a&gt; here functions like &lt;code&gt;paste0&lt;/code&gt; in R,
+simply concatenating the arguments after it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;curly-curly-operators&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Curly-Curly Operators&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/BenjaminWolfe/benjamin/blob/main/layouts/partials/page_metadata.html&#34;&gt;&lt;code&gt;layouts/partials/page_metadata.html&lt;/code&gt;&lt;/a&gt; is written in HTML.
+Anything between the double curly braces is run and,
+if there’s output, that output is included in the HTML.
+You might think of it as a &lt;a href=&#34;https://glue.tidyverse.org/reference/glue.html&#34;&gt;&lt;code&gt;glue&lt;/code&gt;&lt;/a&gt; statement writ large.
+The operators will be even more familiar to you
+if you’ve ever used the &lt;a href=&#34;https://github.com/edwindj/whisker&#34;&gt;&lt;code&gt;whisker&lt;/code&gt;&lt;/a&gt; package.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;html-partials&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;HTML Partials&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;layouts/partials/page_metadata.html&lt;/code&gt; is not a full web page;
+it’s a &lt;em&gt;partial&lt;/em&gt; page dictating only how to display a page’s metadata.
+That allows this same HTML template to be reused in several places:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;layouts/partials/page_header.html&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;layouts/partials/li_compact.html&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;layouts/partials/li_list.html&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;layouts/partials/li_card.html&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can trace through what is used where if you have your site open in RStudio
+by using the &lt;code&gt;Command+Shift+F&lt;/code&gt; (or &lt;code&gt;Control+Shift+F&lt;/code&gt;, for Window)
+“Find in Files” functionality.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;page_header.html&lt;/code&gt; for example is in turn used in a whole host of HTML pages,
+including &lt;code&gt;layouts/section/post.html&lt;/code&gt;.
+And that is how we end up seeing our output
+at the top of the page you’re currently reading.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>R Markdown: Shrink &amp; Tidy Your HTML Output with CDNs</title>
@@ -898,10 +1075,10 @@ and then deleting the rest.&lt;/p&gt;
 &lt;p&gt;To decide which files to keep,
 we’ll loop through the contents of the file
 and capture any remaining references with the &lt;a href=&#34;https://www.regular-expressions.info/&#34;&gt;regular expression&lt;/a&gt;
-&lt;code&gt;report_files/([^\&amp;quot;]+)&lt;/code&gt;:&lt;/p&gt;
+&lt;code&gt;report_files/([^\&#34;]+)&lt;/code&gt;:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;the string &lt;code&gt;report_files/&lt;/code&gt;,&lt;/li&gt;
-&lt;li&gt;followed by &lt;a href=&#34;https://www.regular-expressions.info/charclass.html&#34;&gt;anything but quotes&lt;/a&gt; &lt;code&gt;[^\&amp;quot;]&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;followed by &lt;a href=&#34;https://www.regular-expressions.info/charclass.html&#34;&gt;anything but quotes&lt;/a&gt; &lt;code&gt;[^\&#34;]&lt;/code&gt;,&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.regular-expressions.info/repeat.html&#34;&gt;one or more times&lt;/a&gt; &lt;code&gt;+&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;We use a &lt;a href=&#34;https://www.regular-expressions.info/brackets.html&#34;&gt;capture group&lt;/a&gt; &lt;code&gt;()&lt;/code&gt; to get just the part after &lt;code&gt;report_files/&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;

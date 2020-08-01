@@ -73,6 +73,12 @@ privacy_pack = false
 #   `repo` defines the repository URL. `editable` defines which page types can be edited.
 edit_page = {repo_url = "https://github.com/BenjaminWolfe/benjamin", content_dir = "", repo_branch = "main", editable = {docs = true, page = false, post = false}}
 
+# Show source links?
+#   `source_path` is everything between `repo_url` and `repo_branch` (above)
+#   in the link to an Rmd, ipynb, or md file. It varies from provider to provider.
+show_source_links = true
+source_path = "/blob/"
+
 ############################
 ## Contact details
 ##

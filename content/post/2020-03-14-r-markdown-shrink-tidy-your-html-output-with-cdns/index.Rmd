@@ -22,9 +22,10 @@ output:
   blogdown::html_page:
     toc: true
     toc_depth: 3
+source_extension: ".Rmd"
 ---
 
-```{r setup, echo=F, message=F}
+```{r setup, echo=F, message=F, warning=F}
 library(tidyverse)
 library(kableExtra)
 library(emo)

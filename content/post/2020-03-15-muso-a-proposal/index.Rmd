@@ -19,6 +19,7 @@ image:
   preview_only: no
 projects: []
 draft: true
+source_extension: ".Rmd"
 ---
 
 This post is a draft! Good lord please don't read it.

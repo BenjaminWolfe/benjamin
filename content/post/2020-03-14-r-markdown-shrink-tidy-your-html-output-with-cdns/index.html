@@ -22,6 +22,7 @@ output:
   blogdown::html_page:
     toc: true
     toc_depth: 3
+source_extension: ".Rmd"
 ---
 
 <script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
@@ -904,10 +905,10 @@ and then deleting the rest.</p>
 <p>To decide which files to keep,
 we’ll loop through the contents of the file
 and capture any remaining references with the <a href="https://www.regular-expressions.info/">regular expression</a>
-<code>report_files/([^\&quot;]+)</code>:</p>
+<code>report_files/([^\"]+)</code>:</p>
 <ul>
 <li>the string <code>report_files/</code>,</li>
-<li>followed by <a href="https://www.regular-expressions.info/charclass.html">anything but quotes</a> <code>[^\&quot;]</code>,</li>
+<li>followed by <a href="https://www.regular-expressions.info/charclass.html">anything but quotes</a> <code>[^\"]</code>,</li>
 <li><a href="https://www.regular-expressions.info/repeat.html">one or more times</a> <code>+</code>.</li>
 <li>We use a <a href="https://www.regular-expressions.info/brackets.html">capture group</a> <code>()</code> to get just the part after <code>report_files/</code>.</li>
 </ul>
