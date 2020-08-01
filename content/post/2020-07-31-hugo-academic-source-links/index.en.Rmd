@@ -123,7 +123,7 @@ gives you a pretty good sense of how things work.
 ### Site Parameters
 
 Anything you put in [`config/_default/params.toml`][params] is accessible
-with `site.Params.lowercase_toml_parameter`.
+with `site.Params.your_lowercase_toml_parameter`.
 
 * This is where we get
   `site.Params.show_source_links` and `site.Params.source_path`,
