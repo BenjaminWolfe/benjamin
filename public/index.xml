@@ -265,6 +265,98 @@ at the top of the page you’re currently reading.&lt;/p&gt;
 
 
 &lt;p&gt;This is a draft post! Good lord please don’t read it.&lt;/p&gt;
+&lt;p&gt;one thing I consistently struggled with when first learning Python from R was,
+&lt;em&gt;“How the hell are the file structured?”&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Specifically, at the top of each file you see these &lt;code&gt;import&lt;/code&gt; statements:&lt;/p&gt;
+&lt;pre class=&#34;python&#34;&gt;&lt;code&gt;import pandas as pd
+from pathlib import Path&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;They’re obviously similar to &lt;code&gt;library&lt;/code&gt; statements in R—&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+library(signs)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;—but how similar are they?
+What are the differences?&lt;/p&gt;
+&lt;p&gt;One apparent difference I saw, for example,
+was that you could &lt;code&gt;import&lt;/code&gt; arbitrary files
+from the same folder as the one you were in.
+So is &lt;code&gt;import&lt;/code&gt; more similar to a &lt;code&gt;source&lt;/code&gt; statement in R?&lt;/p&gt;
+&lt;p&gt;Another thing that piqued my interest is just how Python &lt;em&gt;finds&lt;/em&gt; these files.
+How does it know what you’re talking about?
+This is important to everything from file organization to workflow
+to troubleshooting installation issues.
+I know how it works in R, for example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;To use &lt;code&gt;library&lt;/code&gt;, you must have installed the package
+using one of our canonical methods:
+&lt;code&gt;install.packages()&lt;/code&gt;, or &lt;code&gt;remotes::install_github()&lt;/code&gt;, for example.&lt;/li&gt;
+&lt;li&gt;To use &lt;code&gt;source&lt;/code&gt;, you refer to the file
+by its path relative to the working directory,
+or use an absolute reference,
+or preferably use &lt;a href=&#34;https://twitter.com/krlmlr&#34;&gt;Kirill Müller&lt;/a&gt;’s &lt;a href=&#34;https://github.com/jennybc/here_here&#34;&gt;&lt;code&gt;here&lt;/code&gt; package&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That may be a lot to remember for a beginner, come to think of it.
+But for someone who’s used R for a while it comes to be second nature.
+So how does it work in Python?&lt;/p&gt;
+&lt;p&gt;It took me a bit to unravel the mysteries.
+But once you pick up the way things work it all makes sense.
+&lt;strong&gt;Make this sentence better; even use it as a practical and specific intro to the next sections.&lt;/strong&gt;&lt;/p&gt;
+&lt;div id=&#34;how-does-library-work&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;How Does &lt;code&gt;library&lt;/code&gt; Work?&lt;/h2&gt;
+&lt;p&gt;The best way to understand how &lt;code&gt;import&lt;/code&gt; works in Python
+is to start with a deeper dive into &lt;code&gt;library&lt;/code&gt; in R.&lt;/p&gt;
+&lt;p&gt;See, when you run &lt;code&gt;library(package_name)&lt;/code&gt;,
+all it does is runs all the R files in a particular directory of that package.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;ggplot_r_directory.png&#34; alt=&#34;&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;a partial list of R files run when you load &lt;code&gt;ggplot2&lt;/code&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;There are two things peculiar to this process, over that of sourcing scripts.
+One is that package authors are very careful to write these files so that all they do is define functions.
+The other is that when you &lt;code&gt;library&lt;/code&gt; the file, those functions don’t show up in the upper right panel of RStudio, the way they would if you &lt;code&gt;source&lt;/code&gt;d the file.
+They don’t exist in what’s called “the global environment.”
+Instead, they get their own “namespace,” callable directly as &lt;code&gt;package_name::function()&lt;/code&gt;.
+And when you call &lt;code&gt;library(package_name)&lt;/code&gt;, they just sit there magically in the background ready to be used.
+(&lt;strong&gt;Maybe relocate that sentence.&lt;/strong&gt;)
+For a very simple example, see the R directory of my signs package.
+It has only one R file, which has only two functions in it.
+If you source that file, it will define those two functions, and they’ll sit in your global environment, showing up in the upper right panel of RStudio.
+If instead you run &lt;code&gt;install.packages(&#34;signs&#34;)&lt;/code&gt; and &lt;code&gt;library(signs)&lt;/code&gt;,
+it will &lt;em&gt;also&lt;/em&gt; define those two functions, running the same code,
+but they’ll exist in their own portioned-off world, their own namespace,
+and they won’t show up in your defined functions.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The whole &lt;code&gt;as pd&lt;/code&gt; thing.&lt;/li&gt;
+&lt;li&gt;The fact that there’s &lt;code&gt;pip install&lt;/code&gt;, and &lt;code&gt;conda install&lt;/code&gt;,
+and virtual environments and everything,
+But at its very basic there’s an &lt;code&gt;autoexec.pth&lt;/code&gt; file,
+and python will look for files along that path.
+&lt;strong&gt;Maybe look into &lt;code&gt;conda&lt;/code&gt;, &lt;code&gt;venv&lt;/code&gt;, and &lt;code&gt;renv&lt;/code&gt;?&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;The fact that import is sort of a hybrid between &lt;code&gt;library&lt;/code&gt; and &lt;code&gt;source&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;The fact that in R you can use double-colon notation without even attaching the package,
+but I’m not sure that you can do that in Python.
+&lt;strong&gt;(Worth checking.)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;So in any case &lt;code&gt;import&lt;/code&gt; then is actually just like &lt;code&gt;library&lt;/code&gt;,
+in that you’re running the file and anything created in it now lives in its own namespace.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;But!&lt;/em&gt; you still have to refer to it by that namespace,
+which is great for both avoiding conflicts and for readability.&lt;/li&gt;
+&lt;li&gt;But it’s a little annoying, which is why you can also &lt;strong&gt;alias&lt;/strong&gt; a package,
+with &lt;code&gt;import pandas as pd&lt;/code&gt;, which is just like aliasing in SQL
+(maybe show a SQL example with a simple join?).&lt;/li&gt;
+&lt;li&gt;If there’s a particular function you use all the time from a module,
+you can just import that function: &lt;code&gt;from itertools import repeat&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;And for that matter you can blow the lid off and say &lt;code&gt;from itertools import *&lt;/code&gt;,
+but that’s widely advised against.
+Interesting that this is essentially what you’re doing in R when you run &lt;code&gt;library(tidyverse)&lt;/code&gt;.
+But the precision Python allows around imports makes it a bit muddy by contrast.&lt;/li&gt;
+&lt;li&gt;Here’s where you say: but the super loosy goosy flexibility of &lt;code&gt;import&lt;/code&gt;
+is that even though you &lt;em&gt;feel&lt;/em&gt; like you’re using a &lt;code&gt;library&lt;/code&gt; statement,
+you can also just run it on the file next door,
+in the same directory, the way you would with &lt;code&gt;source&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;So how does Python know where to look for an &lt;code&gt;import&lt;/code&gt;?
+(See those notes.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Maybe do virtual environments and such as an addendum!&lt;/p&gt;
+&lt;p&gt;I think I know how I’ll write this! 💥&lt;/p&gt;
+&lt;hr /&gt;
 &lt;p&gt;Note to self… maybe make the examples have 4 scripts with toy code in them,
 with 3 functions,
 so I can split them into 2 folders in the Python part.&lt;/p&gt;
@@ -345,6 +437,7 @@ whether you’re just writing scripts or developing a package.&lt;/li&gt;
 &lt;p&gt;FWIW maybe note that it’s kind of cool to use pd.DataFrame etc.
 It makes it really clear where everything’s coming from.&lt;/p&gt;
 &lt;p&gt;Also remember the file in R where it says what all the imports are?&lt;/p&gt;
+&lt;/div&gt;
 </description>
     </item>
     

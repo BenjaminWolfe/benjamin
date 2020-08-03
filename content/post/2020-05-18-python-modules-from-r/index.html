@@ -22,6 +22,98 @@ source_extension: ".Rmd"
 
 
 <p>This is a draft post! Good lord please don’t read it.</p>
+<p>one thing I consistently struggled with when first learning Python from R was,
+<em>“How the hell are the file structured?”</em></p>
+<p>Specifically, at the top of each file you see these <code>import</code> statements:</p>
+<pre class="python"><code>import pandas as pd
+from pathlib import Path</code></pre>
+<p>They’re obviously similar to <code>library</code> statements in R—</p>
+<pre class="r"><code>library(tidyverse)
+library(signs)</code></pre>
+<p>—but how similar are they?
+What are the differences?</p>
+<p>One apparent difference I saw, for example,
+was that you could <code>import</code> arbitrary files
+from the same folder as the one you were in.
+So is <code>import</code> more similar to a <code>source</code> statement in R?</p>
+<p>Another thing that piqued my interest is just how Python <em>finds</em> these files.
+How does it know what you’re talking about?
+This is important to everything from file organization to workflow
+to troubleshooting installation issues.
+I know how it works in R, for example:</p>
+<ul>
+<li>To use <code>library</code>, you must have installed the package
+using one of our canonical methods:
+<code>install.packages()</code>, or <code>remotes::install_github()</code>, for example.</li>
+<li>To use <code>source</code>, you refer to the file
+by its path relative to the working directory,
+or use an absolute reference,
+or preferably use <a href="https://twitter.com/krlmlr">Kirill Müller</a>’s <a href="https://github.com/jennybc/here_here"><code>here</code> package</a>.</li>
+</ul>
+<p>That may be a lot to remember for a beginner, come to think of it.
+But for someone who’s used R for a while it comes to be second nature.
+So how does it work in Python?</p>
+<p>It took me a bit to unravel the mysteries.
+But once you pick up the way things work it all makes sense.
+<strong>Make this sentence better; even use it as a practical and specific intro to the next sections.</strong></p>
+<div id="how-does-library-work" class="section level2">
+<h2>How Does <code>library</code> Work?</h2>
+<p>The best way to understand how <code>import</code> works in Python
+is to start with a deeper dive into <code>library</code> in R.</p>
+<p>See, when you run <code>library(package_name)</code>,
+all it does is runs all the R files in a particular directory of that package.</p>
+<div class="figure">
+<img src="ggplot_r_directory.png" alt="" />
+<p class="caption"><em>a partial list of R files run when you load <code>ggplot2</code></em></p>
+</div>
+<p>There are two things peculiar to this process, over that of sourcing scripts.
+One is that package authors are very careful to write these files so that all they do is define functions.
+The other is that when you <code>library</code> the file, those functions don’t show up in the upper right panel of RStudio, the way they would if you <code>source</code>d the file.
+They don’t exist in what’s called “the global environment.”
+Instead, they get their own “namespace,” callable directly as <code>package_name::function()</code>.
+And when you call <code>library(package_name)</code>, they just sit there magically in the background ready to be used.
+(<strong>Maybe relocate that sentence.</strong>)
+For a very simple example, see the R directory of my signs package.
+It has only one R file, which has only two functions in it.
+If you source that file, it will define those two functions, and they’ll sit in your global environment, showing up in the upper right panel of RStudio.
+If instead you run <code>install.packages("signs")</code> and <code>library(signs)</code>,
+it will <em>also</em> define those two functions, running the same code,
+but they’ll exist in their own portioned-off world, their own namespace,
+and they won’t show up in your defined functions.</p>
+<ul>
+<li>The whole <code>as pd</code> thing.</li>
+<li>The fact that there’s <code>pip install</code>, and <code>conda install</code>,
+and virtual environments and everything,
+But at its very basic there’s an <code>autoexec.pth</code> file,
+and python will look for files along that path.
+<strong>Maybe look into <code>conda</code>, <code>venv</code>, and <code>renv</code>?</strong></li>
+<li>The fact that import is sort of a hybrid between <code>library</code> and <code>source</code>.</li>
+<li>The fact that in R you can use double-colon notation without even attaching the package,
+but I’m not sure that you can do that in Python.
+<strong>(Worth checking.)</strong></li>
+<li>So in any case <code>import</code> then is actually just like <code>library</code>,
+in that you’re running the file and anything created in it now lives in its own namespace.</li>
+<li><em>But!</em> you still have to refer to it by that namespace,
+which is great for both avoiding conflicts and for readability.</li>
+<li>But it’s a little annoying, which is why you can also <strong>alias</strong> a package,
+with <code>import pandas as pd</code>, which is just like aliasing in SQL
+(maybe show a SQL example with a simple join?).</li>
+<li>If there’s a particular function you use all the time from a module,
+you can just import that function: <code>from itertools import repeat</code>.</li>
+<li>And for that matter you can blow the lid off and say <code>from itertools import *</code>,
+but that’s widely advised against.
+Interesting that this is essentially what you’re doing in R when you run <code>library(tidyverse)</code>.
+But the precision Python allows around imports makes it a bit muddy by contrast.</li>
+<li>Here’s where you say: but the super loosy goosy flexibility of <code>import</code>
+is that even though you <em>feel</em> like you’re using a <code>library</code> statement,
+you can also just run it on the file next door,
+in the same directory, the way you would with <code>source</code>.</li>
+<li>So how does Python know where to look for an <code>import</code>?
+(See those notes.)</li>
+</ul>
+<p>Maybe do virtual environments and such as an addendum!</p>
+<p>I think I know how I’ll write this! :boom:</p>
+<hr />
 <p>Note to self… maybe make the examples have 4 scripts with toy code in them,
 with 3 functions,
 so I can split them into 2 folders in the Python part.</p>
@@ -102,3 +194,4 @@ whether you’re just writing scripts or developing a package.</li>
 <p>FWIW maybe note that it’s kind of cool to use pd.DataFrame etc.
 It makes it really clear where everything’s coming from.</p>
 <p>Also remember the file in R where it says what all the imports are?</p>
+</div>

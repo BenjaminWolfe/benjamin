@@ -42,18 +42,23 @@ library(signs)
 What are the differences?
 
 One apparent difference I saw, for example,
-was that you could `import` arbitrary files from the same folder as the one you were in.
+was that you could `import` arbitrary files
+from the same folder as the one you were in.
 So is `import` more similar to a `source` statement in R?
 
 Another thing that piqued my interest is just how Python _finds_ these files.
 How does it know what you're talking about?
-This is important to everything from file organization to workflow to troubleshooting installation issues.
+This is important to everything from file organization to workflow
+to troubleshooting installation issues.
 I know how it works in R, for example:
 
-* To use `library`, you must have installed the package using one of our canonical methods:
+* To use `library`, you must have installed the package
+  using one of our canonical methods:
   `install.packages()`, or `remotes::install_github()`, for example.
-* To use `source`, you refer to the file by its path relative to the working directory,
-  or use an absolute reference, or preferably use Jenny Bryan's `here` package.
+* To use `source`, you refer to the file
+  by its path relative to the working directory,
+  or use an absolute reference,
+  or preferably use [Kirill Müller][krlmlr]'s [`here` package][here-here].
 
 That may be a lot to remember for a beginner, come to think of it.
 But for someone who's used R for a while it comes to be second nature.
@@ -63,30 +68,39 @@ It took me a bit to unravel the mysteries.
 But once you pick up the way things work it all makes sense.
 __Make this sentence better; even use it as a practical and specific intro to the next sections.__
 
-## First Real Section
+## How Does `library` Work?
+
+The best way to understand how `import` works in Python
+is to start with a deeper dive into `library` in R.
+
+See, when you run `library(package_name)`,
+all it does is runs all the R files in a particular directory of that package.
+
+![_a partial list of R files run when you load `ggplot2`_](ggplot_r_directory.png)
+
+There are two things peculiar to this process, over that of sourcing scripts.
+One is that package authors are very careful to write these files so that all they do is define functions.
+The other is that when you `library` the file, those functions don't show up in the upper right panel of RStudio, the way they would if you `source`d the file.
+They don't exist in what's called "the global environment."
+Instead, they get their own "namespace," callable directly as `package_name::function()`.
+And when you call `library(package_name)`, they just sit there magically in the background ready to be used.
+(__Maybe relocate that sentence.__)
+For a very simple example, see the R directory of my signs package.
+It has only one R file, which has only two functions in it.
+If you source that file, it will define those two functions, and they'll sit in your global environment, showing up in the upper right panel of RStudio.
+If instead you run `install.packages("signs")` and `library(signs)`,
+it will _also_ define those two functions, running the same code,
+but they'll exist in their own portioned-off world, their own namespace,
+and they won't show up in your defined functions.
+
 
 * The whole `as pd` thing.
-* The fact that there's `pip install`, and `conda install`, and virtual environments and everything,
+* The fact that there's `pip install`, and `conda install`,
+  and virtual environments and everything,
   But at its very basic there's an `autoexec.pth` file,
   and python will look for files along that path.
   __Maybe look into `conda`, `venv`, and `renv`?__
 * The fact that import is sort of a hybrid between `library` and `source`.
-  See, when you run `library(package_name)`,
-  all it does is runs all the R files in a particular directory of that package.
-  There are two things peculiar to this process, over that of sourcing scripts.
-  One is that package authors are very careful to write these files so that all they do is define functions.
-  The other is that when you `library` the file, those functions don't show up in the upper right panel of RStudio, the way they would if you `source`d the file.
-  They don't exist in what's called "the global environment."
-  Instead, they get their own "namespace," callable directly as `package_name::function()`.
-  And when you call `library(package_name)`, they just sit there magically in the background ready to be used.
-  (__Maybe relocate that sentence.__)
-  For a very simple example, see the R directory of my signs package.
-  It has only one R file, which has only two functions in it.
-  If you source that file, it will define those two functions, and they'll sit in your global environment, showing up in the upper right panel of RStudio.
-  If instead you run `install.packages("signs")` and `library(signs)`,
-  it will _also_ define those two functions, running the same code,
-  but they'll exist in their own portioned-off world, their own namespace,
-  and they won't show up in your defined functions.
 * The fact that in R you can use double-colon notation without even attaching the package,
   but I'm not sure that you can do that in Python.
   __(Worth checking.)__
@@ -220,3 +234,7 @@ FWIW maybe note that it's kind of cool to use pd.DataFrame etc.
 It makes it really clear where everything's coming from.
 
 Also remember the file in R where it says what all the imports are?
+
+[krlmlr]: https://twitter.com/krlmlr
+[here-here]: https://github.com/jennybc/here_here
+
