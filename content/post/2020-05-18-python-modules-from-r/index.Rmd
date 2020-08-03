@@ -104,6 +104,8 @@ and they won't show up in your defined functions.
 * The fact that in R you can use double-colon notation without even attaching the package,
   but I'm not sure that you can do that in Python.
   __(Worth checking.)__
+  Maybe say perhaps it's because R has a dedicated operator
+  that it can unambiguously do that.
 * So in any case `import` then is actually just like `library`,
   in that you're running the file and anything created in it now lives in its own namespace.
 * _But!_ you still have to refer to it by that namespace,
@@ -123,6 +125,11 @@ and they won't show up in your defined functions.
   in the same directory, the way you would with `source`.
 * So how does Python know where to look for an `import`?
   (See those notes.)
+* Dot notation for importing within a folder.
+* `__init__.py` so you don't have to do that.
+  Maybe say wrapping with double underscores in Python
+  is like leading with a dot in the Tidyverse;
+  it's a way of saying "no one will actually do this, so let's use it for reserved names."
 
 Maybe do virtual environments and such as an addendum!
 
