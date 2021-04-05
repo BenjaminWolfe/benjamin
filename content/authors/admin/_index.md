@@ -1,7 +1,7 @@
 ---
 authors:
 - admin
-bio: Benjamin Wolfe is an R lover, Python learner, and poet. He loves writing, if he can ever finish a blog post.
+bio: Benjamin Wolfe is an R enthusiast, Python learner, and poet. He loves to write, if he can ever finish a blog post.
 email: benjamin.e.wolfe@gmail.com
 interests:
 - R & package development

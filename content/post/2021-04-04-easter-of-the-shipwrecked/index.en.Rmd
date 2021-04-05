@@ -14,8 +14,8 @@ authors: []
 lastmod: '2021-04-04T20:17:50-05:00'
 featured: no
 image:
-  caption: ''
-  focal_point: ''
+  caption: 'New growth pushing through cracks in pavement. Courtesy of J. Douglas Harrison.'
+  focal_point: 'smart'
   preview_only: no
 projects: []
 ---
@@ -90,7 +90,7 @@ and walk through the basics of Easter and Holy Week from the get go.
 ## Don Francisco
 
 I'd like to start, perhaps unfairly, with a song.
-I say unfairly because it encapsulates and embodies
+I say unfairly because the song embodies
 all my least favorite views of Easter!
 But it's where we'll start because it's vivid,
 and the ballad will set the scene for even those least familiar with the story.
