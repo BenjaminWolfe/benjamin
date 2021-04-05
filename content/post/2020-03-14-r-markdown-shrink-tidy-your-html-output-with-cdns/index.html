@@ -25,36 +25,44 @@ output:
 source_extension: ".Rmd"
 ---
 
-<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
 
 <div id="TOC">
 <ul>
-<li><a href="#the-simplicity-of-knitrs-html-output">The Simplicity of Knitr’s HTML Output</a><ul>
+<li><a href="#the-simplicity-of-knitrs-html-output">The Simplicity of Knitr’s HTML Output</a>
+<ul>
 <li><a href="#example-setup">Example Setup</a></li>
 </ul></li>
-<li><a href="#the-costs-of-simplicity-file-size-transparency">The Costs of Simplicity: File Size &amp; Transparency</a><ul>
+<li><a href="#the-costs-of-simplicity-file-size-transparency">The Costs of Simplicity: File Size &amp; Transparency</a>
+<ul>
 <li><a href="#file-size">File Size</a></li>
 <li><a href="#transparency">Transparency</a></li>
 </ul></li>
 <li><a href="#practical-consequences-diffing-files">Practical Consequences: Diffing Files</a></li>
-<li><a href="#intermission">Intermission!</a><ul>
+<li><a href="#intermission">Intermission!</a>
+<ul>
 <li><a href="#adding-the-dt-library">Adding the DT Library</a></li>
 </ul></li>
 <li><a href="#externalizing-code">Externalizing Code</a></li>
-<li><a href="#using-content-delivery-networks-cdns">Using Content Delivery Networks (CDNs)</a><ul>
+<li><a href="#using-content-delivery-networks-cdns">Using Content Delivery Networks (CDNs)</a>
+<ul>
 <li><a href="#getting-started-with-cdns">Getting Started with CDNs</a></li>
 <li><a href="#rounding-up-libraries">Rounding Up Libraries</a></li>
 <li><a href="#removing-local-files">Removing Local Files</a></li>
 <li><a href="#pause-what-weve-accomplished">Pause: What We’ve Accomplished</a></li>
 </ul></li>
 <li><a href="#zip-your-files">Zip Your Files</a></li>
-<li><a href="#have-a-script-do-the-work">Have a Script Do the Work</a><ul>
+<li><a href="#have-a-script-do-the-work">Have a Script Do the Work</a>
+<ul>
 <li><a href="#swapping-in-cdns">Swapping in CDNs</a></li>
 <li><a href="#listing-files-to-delete">Listing Files to Delete</a></li>
 <li><a href="#deleting-files">Deleting Files</a></li>
 <li><a href="#looping-through-multiple-reports">Looping through Multiple Reports</a></li>
 </ul></li>
-<li><a href="#have-git-run-the-script">Have Git Run the Script</a><ul>
+<li><a href="#have-git-run-the-script">Have Git Run the Script</a>
+<ul>
 <li><a href="#writing-a-bash-script">Writing a Bash Script</a></li>
 <li><a href="#passing-an-argument-to-the-r-script">Passing an Argument to the R Script</a></li>
 <li><a href="#troubleshooting">Troubleshooting</a></li>

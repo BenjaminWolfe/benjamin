@@ -22,16 +22,16 @@ draft: true
 source_extension: ".Rmd"
 ---
 
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
 
 
 <p>This post is a draft! Good lord please don’t read it.</p>
 <p>While editing this post, see the <a href="https://docs.google.com/forms/d/1Azw1fQuTQZ8Zj6OTi7pIYWxN14xb0Yn4XeTA8Blbjik/edit">form itself</a>.</p>
 <p>To do: add <a href="https://www.jepusto.com/code-folding-with-blogdown-academic/">code folding</a>!</p>
 <p>First we read the data in.</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.0.2</code></pre>
-<pre><code>## Warning: package &#39;tibble&#39; was built under R version 4.0.2</code></pre>
-<pre class="r"><code>responses &lt;- read_csv(&quot;survey-responses.csv&quot;)
+<pre class="r"><code>library(tidyverse)
+
+responses &lt;- read_csv(&quot;survey-responses.csv&quot;)
 questions &lt;- tibble(
   id = 1:ncol(responses),
   label = c(
@@ -73,9 +73,9 @@ questions &lt;- tibble(
 )
 colnames(responses) &lt;- questions$label</code></pre>
 <p>Looks like all the timestamps are in US Eastern Time:</p>
-<pre class="r"><code>library(lubridate)</code></pre>
-<pre><code>## Warning: package &#39;lubridate&#39; was built under R version 4.0.2</code></pre>
-<pre class="r"><code>responses %&gt;% 
+<pre class="r"><code>library(lubridate)
+
+responses %&gt;% 
   mutate(tz = str_extract(timestamp, &quot;(?&lt;=\\s)\\S+$&quot;)) %&gt;% 
   count(tz)</code></pre>
 <pre><code>## # A tibble: 1 x 2
@@ -139,7 +139,7 @@ responses %&gt;%
     axis.title = element_blank(),
     axis.ticks = element_blank()
   )</code></pre>
-<p><img src="/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre class="r"><code>responses %&gt;% 
   count(intro_music_while_coding) %&gt;% 
   filter(!is.na(intro_music_while_coding)) %&gt;% 
@@ -178,7 +178,7 @@ responses %&gt;%
     axis.title = element_blank(),
     axis.ticks = element_blank()
   )</code></pre>
-<p><img src="/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre class="r"><code>responses %&gt;% 
   count(intro_new_music_affinity) %&gt;% 
   filter(!is.na(intro_new_music_affinity)) %&gt;% 
@@ -217,7 +217,7 @@ responses %&gt;%
     axis.title = element_blank(),
     axis.ticks = element_blank()
   )</code></pre>
-<p><img src="/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>responses %&gt;% 
   count(intro_shares_music) %&gt;% 
   filter(!is.na(intro_shares_music)) %&gt;% 
@@ -260,4 +260,4 @@ responses %&gt;%
     axis.title = element_blank(),
     axis.ticks = element_blank()
   )</code></pre>
-<p><img src="/post/2020-03-15-muso-a-proposal/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>

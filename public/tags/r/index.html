@@ -514,22 +514,6 @@
       </div>
     </div>
   
-    
-    
-    
-    <div>
-      <h2><a href="/post/2020-03-15-muso-a-proposal/" >Muso: A Proposal</a></h2>
-      <div class="article-style">
-        
-          This post is a draft! Good lord please don’t read it.
-While editing this post, see the form itself.
-To do: add code folding!
-First we read the data in.
-library(tidyverse) ## Warning: package &#39;ggplot2&#39; was built under R version 4.0.2 ## Warning: package &#39;tibble&#39; was built under R version 4.0.2 responses &lt;- read_csv(&quot;survey-responses.csv&quot;) questions &lt;- tibble( id = 1:ncol(responses), label = c( &quot;timestamp&quot;, &quot;intro_r_while_coding&quot;, &quot;intro_music_while_coding&quot;, &quot;intro_new_music_affinity&quot;, &quot;intro_shares_music&quot;, &quot;music_playlist&quot;, &quot;music_radio&quot;, &quot;music_one_song&quot;, &quot;music_random&quot;, &quot;intro_remote&quot;, &quot;features_collaborative&quot;, &quot;features_use_r&quot;, &quot;features_use_twitter&quot;, &quot;features_edit_playlist&quot;, &quot;features_tidy_data&quot;, &quot;features_share_data&quot;, &quot;features_save_project&quot;, &quot;features_code_bots&quot;, &quot;features_hear_bots&quot;, &quot;features_shiny_app&quot;, &quot;priorities_import&quot;, &quot;priorities_export&quot;, &quot;streaming_which_services&quot;, &quot;streaming_preference_strength&quot;, &quot;streaming_preferred_service&quot;, &quot;streaming_conflict_resolution&quot;, &quot;priorities_conflict_resolution&quot;, &quot;streaming_comments&quot;, &quot;authentication_yes&quot;, &quot;authentication_no&quot;, &quot;authentication_comments&quot;, &quot;overall_help&quot;, &quot;overall_comments&quot; ), text = colnames(responses) ) colnames(responses) &lt;- questions$label Looks like all the timestamps are in US Eastern Time:
-        
-      </div>
-    </div>
-  
 
   
 
@@ -642,16 +626,6 @@ library(tidyverse) ## Warning: package &#39;ggplot2&#39; was built under R versi
   
   <div class="container">
     <footer class="site-footer">
-  
-  <p class="powered-by">
-    
-      <a href="/privacy/">Privacy Policy</a>
-    
-    
-       &middot; 
-      <a href="/terms/">Terms</a>
-    
-  </p>
   
 
   <p class="powered-by">

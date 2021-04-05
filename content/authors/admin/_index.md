@@ -1,14 +1,14 @@
 ---
 authors:
 - admin
-bio: Benjamin Wolfe is an R lover and Python learner. He loves writing, if he can ever finish a blog post.
+bio: Benjamin Wolfe is an R enthusiast, Python learner, and poet. He loves to write, if he can ever finish a blog post.
 email: benjamin.e.wolfe@gmail.com
 interests:
 - R & package development
 - learning & teaching
 - data visualization
 - analytics community building
-- music, fine teas, time in nature
+- poetry, music, artisan teas, and time in nature
 name: Benjamin E. Wolfe
 organizations:
 - name: Digital Partners, A Munich Re company
@@ -38,7 +38,7 @@ user_groups:
 
 Data scientist [@DP_InsurTech](https://www.twitter.com/DP_InsurTech),
 recreational [#rstats](https://www.twitter.com/#rstats) developer, 
-lifelong learner, analytics community builder, and tidyverse fan.
+lifelong learner, analytics community builder, poet, writer, and tidyverse fan.
 
 I live in Austin, TX with my wife Karin and kids Brylie & Evan,
 all of us Bay Area transplants. 

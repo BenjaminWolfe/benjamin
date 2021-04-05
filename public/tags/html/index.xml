@@ -18,36 +18,44 @@
       <pubDate>Sat, 14 Mar 2020 00:00:00 +0000</pubDate>
       <guid>/post/2020-03-14-r-markdown-shrink-tidy-your-html-output-with-cdns/</guid>
       <description>
-&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/post/2020-03-14-r-markdown-shrink-tidy-your-html-output-with-cdns/index_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/post/2020-03-14-r-markdown-shrink-tidy-your-html-output-with-cdns/index_files/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/post/2020-03-14-r-markdown-shrink-tidy-your-html-output-with-cdns/index_files/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
 
 &lt;div id=&#34;TOC&#34;&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#the-simplicity-of-knitrs-html-output&#34;&gt;The Simplicity of Knitr’s HTML Output&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#the-simplicity-of-knitrs-html-output&#34;&gt;The Simplicity of Knitr’s HTML Output&lt;/a&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#example-setup&#34;&gt;Example Setup&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#the-costs-of-simplicity-file-size-transparency&#34;&gt;The Costs of Simplicity: File Size &amp;amp; Transparency&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#the-costs-of-simplicity-file-size-transparency&#34;&gt;The Costs of Simplicity: File Size &amp;amp; Transparency&lt;/a&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#file-size&#34;&gt;File Size&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#transparency&#34;&gt;Transparency&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#practical-consequences-diffing-files&#34;&gt;Practical Consequences: Diffing Files&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#intermission&#34;&gt;Intermission!&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#intermission&#34;&gt;Intermission!&lt;/a&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#adding-the-dt-library&#34;&gt;Adding the DT Library&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#externalizing-code&#34;&gt;Externalizing Code&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#using-content-delivery-networks-cdns&#34;&gt;Using Content Delivery Networks (CDNs)&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#using-content-delivery-networks-cdns&#34;&gt;Using Content Delivery Networks (CDNs)&lt;/a&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#getting-started-with-cdns&#34;&gt;Getting Started with CDNs&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#rounding-up-libraries&#34;&gt;Rounding Up Libraries&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#removing-local-files&#34;&gt;Removing Local Files&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#pause-what-weve-accomplished&#34;&gt;Pause: What We’ve Accomplished&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#zip-your-files&#34;&gt;Zip Your Files&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#have-a-script-do-the-work&#34;&gt;Have a Script Do the Work&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#have-a-script-do-the-work&#34;&gt;Have a Script Do the Work&lt;/a&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#swapping-in-cdns&#34;&gt;Swapping in CDNs&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#listing-files-to-delete&#34;&gt;Listing Files to Delete&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#deleting-files&#34;&gt;Deleting Files&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#looping-through-multiple-reports&#34;&gt;Looping through Multiple Reports&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#have-git-run-the-script&#34;&gt;Have Git Run the Script&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#have-git-run-the-script&#34;&gt;Have Git Run the Script&lt;/a&gt;
+&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;#writing-a-bash-script&#34;&gt;Writing a Bash Script&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#passing-an-argument-to-the-r-script&#34;&gt;Passing an Argument to the R Script&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;#troubleshooting&#34;&gt;Troubleshooting&lt;/a&gt;&lt;/li&gt;
